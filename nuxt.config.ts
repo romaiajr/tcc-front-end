@@ -40,6 +40,9 @@ export default defineNuxtConfig({
       maxAge: 60 * 60 * 24 * 3, // 3 days, this value is in seconds.
     },
   },
+  build: {
+    transpile: ['pinia-plugin-persistedstate'],
+  },
   runtimeConfig: {
     cms: {
       username: process.env.NUXT_CMS_USERNAME,
@@ -56,5 +59,8 @@ export default defineNuxtConfig({
         moduleResolution: 'node',
       },
     },
+  },
+  imports: {
+    dirs: ['store', 'src/constants/routes'],
   },
 });
