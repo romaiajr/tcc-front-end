@@ -1,1 +1,76 @@
-{}
+{
+    "menu": {
+        "main": {
+            "title": "Menu principal",
+            "options": {
+                "my_projects": "Meus projetos",
+                "tts_options": "Configuração da síntese de voz",
+                "language": "Idioma",
+                "help": "Ajuda"
+            }
+        },
+        "projects": {
+            "title": "Meus projetos",
+            "options": {
+                "new_project": "Novo projeto",
+                "list_projects": "Listar projetos"
+            }
+        },
+        "project_actions": {
+            "title": "Ações para projetos",
+            "options": {
+                "edit_project": "Editar projeto",
+                "share_project": "Compartilhar projeto",
+                "export_project": "Exportar projeto",
+                "delete_project": "Excluir projeto"
+            }
+        },
+        "project_list": {
+            "title": "Lista de projetos"
+        },
+        "der_flow": {
+            "titles": {
+                "default": "Projeto {project}",
+                "entity_options": "Opções da entidade: {entity}",
+                "relationship_options": "Opções do relacionamento: {relationship}"
+            },
+            "options": {
+                "entity": {
+                    "create": "Criar entidade",
+                    "navigate": "Navegar pelas entidades do diagrama: {diagram}",
+                    "read": "Leitura das entidades do diagrama: {diagram}",
+                    "name": "Digite o nome da entidade",
+                    "edit": "Editar entidade",
+                    "delete": "Excluir entidade",
+                    "update_name": "Digite o novo nome da entidade",
+                    "attribute": {
+                        "create": "Criar atributo",
+                        "navigate":"Navegar pelos atributos da entidade: {entity}",
+                        "read": "Leitura dos atributos da entidade: {entity}",
+                        "name": "Digite o nome do atributo",
+                        "type": "Selecione o tipo do atributo",
+                        "delete": "Excluir atributo",
+                        "edit": "Editar atributo",
+                        "update_name": "Digite o novo nome do atributo",
+                        "update_type": "Selecione o novo tipo do atributo"
+                    }
+                },
+                "relationship": {
+                    "create": "Criar relacionamento",
+                    "navigate": "Navegar pelos relacionamentos do diagrama: {diagram}",
+                    "read":"Leitura dos relacionamentos do diagrama: {diagram}",
+                    "name": "Digite o nome do relacionamento",
+                    "edit": "Editar relacionamento",
+                    "delete": "Excluir relacionamento",
+                    "update_name": "Digite o novo nome do relacionamento",
+                    "elementA": "Definir entidade A",
+                    "elementB": "Definir entidade B",
+                    "cardinality": "Definir cardinalidade"
+                },
+                "diagram": {
+                    "read": "Leitura do diagrama: {diagram}"
+                }
+            }
+        }
+    }
+}
