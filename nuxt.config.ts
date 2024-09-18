@@ -63,4 +63,11 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['store', 'src/constants/routes'],
   },
+  components: [
+    {
+      path: '~/components/pdv',
+      extensions: ['vue'],
+    },
+  ],
+  css: ['vue-json-pretty/lib/styles.css'],
 });
