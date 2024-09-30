@@ -1,25 +1,28 @@
 <template>
-  <v-table class="pdv-menu-summary" @keydown="handleKeydown">
-    <thead>
-      <tr>
-        <th class="text-center">
-          <FocusableElement ref="titleElement" :title="menu.title" tag="text">
-            {{ menu.title }}
-          </FocusableElement>
-        </th>
-      </tr>
-    </thead>
-    <tbody class="text-center">
-      <tr v-for="item in menu.items" :key="item.label">
-        <td>
-          <FocusableElement :title="item.label" @click="item.action">
-            {{ item.label }}
-          </FocusableElement>
-        </td>
-      </tr>
-    </tbody>
-  </v-table>
+  <div class="pdv-menu-summary">
+    <ul>
+      <li ref="tableTitle" class="menu-title">
+        <FocusableElement :title="menu.title" :tabindex="0">
+          {{ menu.title }}
+        </FocusableElement>
+      </li>
+      <li
+        v-for="(item, index) in menu.items"
+        :key="item.label"
+        class="menu-item"
+      >
+        <FocusableElement
+          :title="item.label"
+          :tabindex="index + 1"
+          @click="item.action"
+        >
+          {{ item.label }}
+        </FocusableElement>
+      </li>
+    </ul>
+  </div>
 </template>
+
 <script setup lang="ts">
 import FocusableElement from '../FocusableElement.vue';
 import type { Menu } from '~/src/interfaces/pdv-menu';
@@ -29,44 +32,72 @@ interface PDVMenuProps {
 }
 
 const { menu } = defineProps<PDVMenuProps>();
+const tts = useTTS();
 
-const { hotkeys } = useKeyboardNavigation();
+const tableTitle = ref();
 
-const handleKeydown = (event: KeyboardEvent) => {
-  hotkeys(event);
+const handleInitalFocus = () => {
+  tts.addPhraseToQueue(menu.title);
+  tts.speakPhraseQueue();
+  tableTitle.value.focus();
 };
-
-const titleElement = ref<typeof FocusableElement | null>(null);
 
 onMounted(async () => {
   await nextTick();
-  if (titleElement.value) {
-    titleElement.value.focusableRef.focus();
-  }
+  handleInitalFocus();
 });
 </script>
 
 <style scoped>
 .pdv-menu-summary {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: table;
+  width: 50%;
+  text-align: center;
+  border-spacing: 0;
+  border-collapse: collapse;
 }
 
-.focusable-element {
-  display: inline-block;
+.pdv-menu-summary ul {
+  list-style-type: none;
+  padding: 0;
   width: 100%;
+  display: table-row-group;
+}
+
+.pdv-menu-summary li {
+  display: table-row;
+  width: 100%;
+}
+
+.menu-title {
+  font-size: 1.5rem;
+  font-weight: bold;
   padding: 10px;
-  text-align: center;
+  background-color: #fff;
+  margin-bottom: 16px !important;
+  cursor: default;
+  display: table-cell;
+}
+
+.menu-item {
+  display: table-cell;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.menu-item:nth-child(n + 2) .focusable-element {
-  cursor: pointer;
+.focusable-element {
+  outline: none;
+  border: none;
+  display: block;
+  width: 100%;
+  padding: 10px;
 }
 
 .focusable-element:focus {
-  outline: none;
-  background-color: #e6e6ff;
+  border: 1px solid #ff7043;
+  background-color: #ffe0b2;
 }
 </style>

@@ -31,22 +31,25 @@
         "der_flow": {
             "titles": {
                 "default": "Projeto {project}",
-                "entity_options": "Opções da entidade: {entity}",
-                "relationship_options": "Opções do relacionamento: {relationship}"
+                "entity_options": "Opções da entidade {entity}",
+                "relationship_options": "Opções do relacionamento {relationship}",
+                "attribute_options": "Opções do atributo {attribute}",
+                "entity_list": "Entidades do diagrama {diagram}",
+                "attribute_list": "Atributos da entidade {entity}"
             },
             "options": {
                 "entity": {
                     "create": "Criar entidade",
-                    "navigate": "Navegar pelas entidades do diagrama: {diagram}",
-                    "read": "Leitura das entidades do diagrama: {diagram}",
+                    "navigate": "Navegar pelas entidades do diagrama {diagram}",
+                    "read": "Leitura das entidades do diagrama {diagram}",
                     "name": "Digite o nome da entidade",
                     "edit": "Editar entidade",
                     "delete": "Excluir entidade",
                     "update_name": "Digite o novo nome da entidade",
                     "attribute": {
                         "create": "Criar atributo",
-                        "navigate":"Navegar pelos atributos da entidade: {entity}",
-                        "read": "Leitura dos atributos da entidade: {entity}",
+                        "navigate":"Navegar pelos atributos da entidade {entity}",
+                        "read": "Leitura dos atributos da entidade {entity}",
                         "name": "Digite o nome do atributo",
                         "type": "Selecione o tipo do atributo",
                         "delete": "Excluir atributo",
@@ -57,8 +60,8 @@
                 },
                 "relationship": {
                     "create": "Criar relacionamento",
-                    "navigate": "Navegar pelos relacionamentos do diagrama: {diagram}",
-                    "read":"Leitura dos relacionamentos do diagrama: {diagram}",
+                    "navigate": "Navegar pelos relacionamentos do diagrama {diagram}",
+                    "read":"Leitura dos relacionamentos do diagrama {diagram}",
                     "name": "Digite o nome do relacionamento",
                     "edit": "Editar relacionamento",
                     "delete": "Excluir relacionamento",
@@ -68,9 +71,23 @@
                     "cardinality": "Definir cardinalidade"
                 },
                 "diagram": {
-                    "read": "Leitura do diagrama: {diagram}"
+                    "read": "Leitura do diagrama {diagram}"
                 }
             }
+        }
+    },
+    "sql": {
+        "explanation": {
+            "VARCHAR": "Usado para armazenar strings de tamanho variável.",
+            "TEXT": "Usado para armazenar textos longos.",
+            "INT": "Usado para armazenar números inteiros.",
+            "FLOAT": "Usado para armazenar números de ponto flutuante.",
+            "DOUBLE": "Usado para armazenar números de ponto flutuante de maior precisão.",
+            "TIMESTAMP": "Usado para armazenar data e hora, com fuso horário opcional.",
+            "BOOLEAN": "Usado para armazenar valores booleanos (verdadeiro ou falso).",
+            "BLOB": "Usado para armazenar grandes objetos binários, como arquivos ou imagens.",
+            "JSON": "Usado para armazenar dados estruturados em formato JSON.",
+            "UUID": "Usado para armazenar identificadores únicos universais (UUID)."
         }
     }
 }

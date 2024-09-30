@@ -1,5 +1,5 @@
 export default defineNuxtPlugin((nuxtApp) => {
-  const setupSpeechPreferences = () => {
+  const setupTTSPrefenrences = () => {
     const i18n = useI18n();
     const { setSpeechPreferences } = useConfigStore();
 
@@ -23,8 +23,8 @@ export default defineNuxtPlugin((nuxtApp) => {
   };
 
   onMounted(() => {
-    setupSpeechPreferences();
+    setupTTSPrefenrences();
   });
 
-  nuxtApp.provide('setupSpeechPreferences', setupSpeechPreferences);
+  nuxtApp.provide('setupTTSPrefenrences', setupTTSPrefenrences);
 });

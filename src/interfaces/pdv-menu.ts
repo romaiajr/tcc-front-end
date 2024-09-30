@@ -3,7 +3,7 @@ export enum PDVMenusEnum {
   PROJECTS,
   TTS,
   LANGUAGE,
-  DER,
+  Der,
 }
 
 export interface MenuItem {
@@ -13,7 +13,6 @@ export interface MenuItem {
 }
 
 export interface Menu {
-  id: number;
   title: string;
   items: MenuItem[];
 }

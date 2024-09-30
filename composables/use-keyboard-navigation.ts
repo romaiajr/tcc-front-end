@@ -1,5 +1,6 @@
 export function useKeyboardNavigation() {
   const focusableElements = ref<HTMLElement[]>([]);
+  const menuStore = useMenuOptions();
 
   const updateFocusableElements = () => {
     focusableElements.value = Array.from(
@@ -17,7 +18,6 @@ export function useKeyboardNavigation() {
     );
 
     /** TODO - ESC para voltar ao menu anterior, guardar essa ação em algum lugar */
-
     if (event.code === 'Tab') {
       if (event.shiftKey) {
         const prevIndex = getPrevIndex(
@@ -47,6 +47,8 @@ export function useKeyboardNavigation() {
       );
       focusableElements.value[nextIndex]?.focus();
       event.preventDefault();
+    } else if (event.code === 'Escape') {
+      menuStore.setActiveMenu(menuStore.previousMenu ?? menuStore.activeMenu);
     }
   };
 

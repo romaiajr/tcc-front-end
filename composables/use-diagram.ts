@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { ref } from 'vue';
 
-export enum DERFlowEnum {
+export enum DerFlowEnum {
   DEFAULT,
   ENTITIES,
   ENTITY_OPTIONS,
@@ -16,41 +16,76 @@ export enum DERFlowEnum {
 }
 
 /** TODO - Adicionar ao JSON de tradução uma descrição do que é cada tipo de atributo  */
+/* REVIEW - Reduzir alguns destes atributos */
 export enum SqlDataType {
   VARCHAR = 'VARCHAR',
-  CHAR = 'CHAR',
   TEXT = 'TEXT',
   INT = 'INT',
-  BIGINT = 'BIGINT',
-  SMALLINT = 'SMALLINT',
-  TINYINT = 'TINYINT',
-  DECIMAL = 'DECIMAL',
-  NUMERIC = 'NUMERIC',
   FLOAT = 'FLOAT',
   DOUBLE = 'DOUBLE',
-  DATE = 'DATE',
-  TIME = 'TIME',
   TIMESTAMP = 'TIMESTAMP',
-  DATETIME = 'DATETIME',
   BOOLEAN = 'BOOLEAN',
   BLOB = 'BLOB',
   JSON = 'JSON',
   UUID = 'UUID',
 }
 
-export interface Attribute {
+export const sqlDataTypeInfo = {
+  [SqlDataType.VARCHAR]: {
+    title: SqlDataType.VARCHAR,
+    infoText: 'sql.explanation.VARCHAR',
+  },
+  [SqlDataType.TEXT]: {
+    title: SqlDataType.TEXT,
+    infoText: 'sql.explanation.TEXT',
+  },
+  [SqlDataType.INT]: {
+    title: SqlDataType.INT,
+    infoText: 'sql.explanation.INT',
+  },
+  [SqlDataType.FLOAT]: {
+    title: SqlDataType.FLOAT,
+    infoText: 'sql.explanation.FLOAT',
+  },
+  [SqlDataType.DOUBLE]: {
+    title: SqlDataType.DOUBLE,
+    infoText: 'sql.explanation.DOUBLE',
+  },
+  [SqlDataType.TIMESTAMP]: {
+    title: SqlDataType.TIMESTAMP,
+    infoText: 'sql.explanation.TIMESTAMP',
+  },
+  [SqlDataType.BOOLEAN]: {
+    title: SqlDataType.BOOLEAN,
+    infoText: 'sql.explanation.BOOLEAN',
+  },
+  [SqlDataType.BLOB]: {
+    title: SqlDataType.BLOB,
+    infoText: 'sql.explanation.BLOB',
+  },
+  [SqlDataType.JSON]: {
+    title: SqlDataType.JSON,
+    infoText: 'sql.explanation.JSON',
+  },
+  [SqlDataType.UUID]: {
+    title: SqlDataType.UUID,
+    infoText: 'sql.explanation.UUID',
+  },
+};
+
+export interface DerAttribute {
   id: string;
   name: string;
   type: SqlDataType;
 }
 
-export interface Entity {
+export interface DerEntity {
   id: string;
   name: string;
-  attrs?: Attribute[];
+  attrs?: DerAttribute[];
 }
 
-export interface Relationship {
+export interface DerRelationship {
   id: string;
   name: string;
   entityA: string;
@@ -62,16 +97,17 @@ export interface Relationship {
 export interface Diagram {
   id: string;
   name: string;
-  entities: Entity[];
-  relationships: Relationship[];
+  entities: DerEntity[];
+  relationships: DerRelationship[];
 }
 
 type UseDiagramReturn = {
   diagram: ReturnType<typeof ref<Diagram | null>>;
   createDiagram: (name: string) => void;
   createEntity: (name: string) => void;
-  editEntityName: (entityId: string, newName: string) => void;
-  removeEntity: (entityId: string) => void;
+  editEntityName: (newName: string) => void;
+  getEntity: () => DerEntity | undefined;
+  removeEntity: () => void;
   createRelationship: (
     name: string,
     entityAId: string,
@@ -79,22 +115,12 @@ type UseDiagramReturn = {
     cardinalityA: string,
     cardinalityB: string,
   ) => void;
-  editRelationship: (
-    relationshipId: string,
-    newData: Partial<Omit<Relationship, 'id'>>,
-  ) => void;
-  removeRelationship: (relationshipId: string) => void;
-  createAttribute: (
-    entityId: string,
-    attrName: string,
-    attrType: SqlDataType,
-  ) => void;
-  editAttribute: (
-    entityId: string,
-    attributeId: string,
-    newData: Partial<Omit<Attribute, 'id'>>,
-  ) => void;
-  removeAttribute: (entityId: string, attributeId: string) => void;
+  editRelationship: (newData: Partial<Omit<DerRelationship, 'id'>>) => void;
+  removeRelationship: () => void;
+  createAttribute: (props: { name: string; type: SqlDataType }) => void;
+  editAttribute: (newData: Partial<Omit<DerAttribute, 'id'>>) => void;
+  getAttribute: () => DerAttribute | undefined;
+  removeAttribute: () => void;
   loadDiagram: (diagramId: string) => void;
   updateDiagram: (diagramId: string) => void;
   deleteDiagram: (diagramId: string) => void;
@@ -103,6 +129,7 @@ type UseDiagramReturn = {
 let instance: UseDiagramReturn | null = null;
 
 export function useDiagram() {
+  const derStore = useDerOptions();
   if (!instance) {
     const diagram = ref<Diagram | null>(null);
 
@@ -113,7 +140,7 @@ export function useDiagram() {
     const createDiagram = (name: string) => {
       diagram.value = {
         id: uuidv4(),
-        name,
+        name: name.toLowerCase(),
         entities: [],
         relationships: [],
       };
@@ -128,28 +155,38 @@ export function useDiagram() {
     };
 
     const createEntity = (name: string) => {
+      const id = uuidv4();
       if (diagram.value) {
         diagram.value.entities.push({
-          id: uuidv4(),
-          name,
+          id,
+          name: name.toLowerCase(),
           attrs: [],
         });
       }
+      derStore.setCurrentEntityId(id);
     };
 
-    const editEntityName = (entityId: string, newName: string) => {
+    const editEntityName = (newName: string) => {
       if (diagram.value) {
-        const entity = diagram.value.entities.find((e) => e.id === entityId);
+        const entity = getEntity();
         if (entity) {
-          entity.name = newName;
+          entity.name = newName.toLowerCase();
         }
       }
     };
 
-    const removeEntity = (entityId: string) => {
+    const getEntity = () => {
+      if (diagram.value) {
+        return diagram.value.entities.find(
+          (e) => e.id === derStore.currentEntityId,
+        );
+      }
+    };
+
+    const removeEntity = () => {
       if (diagram.value) {
         diagram.value.entities = diagram.value.entities.filter(
-          (e) => e.id !== entityId,
+          (e) => e.id !== derStore.currentEntityId,
         );
       }
     };
@@ -170,28 +207,29 @@ export function useDiagram() {
         );
 
         if (entityAExists && entityBExists) {
+          const id = uuidv4();
           diagram.value.relationships.push({
-            id: uuidv4(),
-            name,
+            id,
+            name: name.toLowerCase(),
             entityA: entityAId,
             entityB: entityBId,
             cardinalityA,
             cardinalityB,
           });
+          derStore.setCurrentRelationshipId(id);
         }
       }
     };
 
     const editRelationship = (
-      relationshipId: string,
-      newData: Partial<Omit<Relationship, 'id'>>,
+      newData: Partial<Omit<DerRelationship, 'id'>>,
     ) => {
       if (diagram.value) {
         const relationship = diagram.value.relationships.find(
-          (r) => r.id === relationshipId,
+          (r) => r.id === derStore.currentRelationshipId,
         );
         if (relationship) {
-          relationship.name = newData.name ?? relationship.name;
+          relationship.name = (newData.name ?? relationship.name).toLowerCase();
           relationship.entityA = newData.entityA ?? relationship.entityA;
           relationship.entityB = newData.entityB ?? relationship.entityB;
           relationship.cardinalityA =
@@ -202,53 +240,54 @@ export function useDiagram() {
       }
     };
 
-    const removeRelationship = (relationshipId: string) => {
+    const removeRelationship = () => {
       if (diagram.value) {
         diagram.value.relationships = diagram.value.relationships.filter(
-          (r) => r.id !== relationshipId,
+          (r) => r.id !== derStore.currentRelationshipId,
         );
       }
     };
 
-    const createAttribute = (
-      entityId: string,
-      attrName: string,
-      attrType: SqlDataType,
-    ) => {
+    const createAttribute = (props: { name: string; type: SqlDataType }) => {
       if (diagram.value) {
-        const entity = diagram.value.entities.find((e) => e.id === entityId);
+        const entity = getEntity();
         if (entity?.attrs) {
+          const id = uuidv4();
           entity.attrs.push({
-            id: uuidv4(),
-            name: attrName,
-            type: attrType,
+            id,
+            name: props.name.toLowerCase(),
+            type: props.type,
           });
+          derStore.setCurrentAttrId(id);
         }
       }
     };
 
-    const editAttribute = (
-      entityId: string,
-      attributeId: string,
-      newData: Partial<Omit<Attribute, 'id'>>,
-    ) => {
+    const editAttribute = (newData: Partial<Omit<DerAttribute, 'id'>>) => {
       if (diagram.value) {
-        const entity = diagram.value.entities.find((e) => e.id === entityId);
-        if (entity && entity.attrs) {
-          const attr = entity.attrs.find((a) => a.id === attributeId);
-          if (attr) {
-            attr.name = newData.name ?? attr.name;
-            attr.type = newData.type ?? attr.type;
-          }
+        const attr = getAttribute();
+
+        if (attr) {
+          attr.name = (newData.name ?? attr.name).toLowerCase();
+          attr.type = newData.type ?? attr.type;
         }
       }
     };
 
-    const removeAttribute = (entityId: string, attributeId: string) => {
+    const getAttribute = () => {
+      const entity = getEntity();
+      if (entity && entity.attrs) {
+        return entity.attrs.find((a) => a.id === derStore.currentAttrId);
+      }
+    };
+
+    const removeAttribute = () => {
       if (diagram.value) {
-        const entity = diagram.value.entities.find((e) => e.id === entityId);
+        const entity = getEntity();
         if (entity && entity.attrs) {
-          entity.attrs = entity.attrs.filter((a) => a.id !== attributeId);
+          entity.attrs = entity.attrs.filter(
+            (a) => a.id !== derStore.currentAttrId,
+          );
         }
       }
     };
@@ -259,12 +298,14 @@ export function useDiagram() {
       createEntity,
       editEntityName,
       removeEntity,
+      getEntity,
       createRelationship,
       editRelationship,
       removeRelationship,
       createAttribute,
       editAttribute,
       removeAttribute,
+      getAttribute,
       loadDiagram,
       updateDiagram,
       deleteDiagram,
