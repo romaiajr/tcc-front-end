@@ -32,8 +32,7 @@ const handleKeydown = (event: KeyboardEvent) => {
   hotkeys(event);
 };
 
-onMounted(() => {
-  // TODO - Mock de diagrama
+onBeforeMount(() => {
   diagramTool.createDiagram('teste');
 });
 </script>

@@ -1,8 +1,8 @@
 <template>
   <div class="pdv-menu-summary">
     <ul>
-      <li ref="tableTitle" class="menu-title">
-        <FocusableElement :title="menu.title" :tabindex="0">
+      <li class="menu-title">
+        <FocusableElement ref="tableTitle" :title="menu.title" :tabindex="0">
           {{ menu.title }}
         </FocusableElement>
       </li>
@@ -37,9 +37,9 @@ const tts = useTTS();
 const tableTitle = ref();
 
 const handleInitalFocus = () => {
+  tableTitle.value.focusableRef.focus();
   tts.addPhraseToQueue(menu.title);
   tts.speakPhraseQueue();
-  tableTitle.value.focus();
 };
 
 onMounted(async () => {

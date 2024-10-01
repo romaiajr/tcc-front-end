@@ -15,8 +15,6 @@ export enum DerFlowEnum {
   NEW_RELATIONSHIP,
 }
 
-/** TODO - Adicionar ao JSON de tradução uma descrição do que é cada tipo de atributo  */
-/* REVIEW - Reduzir alguns destes atributos */
 export enum SqlDataType {
   VARCHAR = 'VARCHAR',
   TEXT = 'TEXT',

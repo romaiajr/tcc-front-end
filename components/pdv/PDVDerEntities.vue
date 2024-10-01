@@ -4,7 +4,7 @@
 <script setup lang="ts">
 import type { Menu } from '~/src/interfaces/pdv-menu';
 
-const { diagram } = useDiagram();
+const diagramTool = useDiagram();
 const menuStore = useMenuOptions();
 const derStore = useDerOptions();
 const { t } = useI18n();
@@ -15,17 +15,21 @@ const menu = ref({
 } as Menu);
 
 onBeforeMount(() => {
-  menu.value.title = t('menu.der_flow.titles.entity_list', {
-    diagram: diagram.value?.name,
-  });
-  diagram.value?.entities.forEach((entity) => {
-    menu.value.items.push({
-      label: entity.name,
-      action: () => {
-        menuStore.setActiveMenu(DerFlowEnum.ENTITY_OPTIONS);
-        derStore.setCurrentEntityId(entity.id);
-      },
+  if (!diagramTool.diagram.value?.entities) {
+    menuStore.setActiveMenu(DerFlowEnum.DEFAULT);
+  } else {
+    menu.value.title = t('menu.der_flow.titles.entity_list', {
+      diagram: diagramTool.diagram.value?.name,
     });
-  });
+    diagramTool.diagram.value?.entities.forEach((entity) => {
+      menu.value.items.push({
+        label: entity.name,
+        action: () => {
+          menuStore.setActiveMenu(DerFlowEnum.ENTITY_OPTIONS);
+          derStore.setCurrentEntityId(entity.id);
+        },
+      });
+    });
+  }
 });
 </script>

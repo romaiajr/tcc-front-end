@@ -1,12 +1,8 @@
 <template>
   <div class="pdv-select">
     <ul>
-      <li ref="selectTitle" class="pdv-select-title">
-        <FocusableElement
-          :title="title"
-          :tabindex="0"
-          @focus="handleInitalFocus"
-        >
+      <li class="pdv-select-title">
+        <FocusableElement ref="selectTitle" :title="title" :tabindex="1">
           {{ title }}
         </FocusableElement>
       </li>
@@ -46,7 +42,7 @@ const handleFocus = (event: any) => {
 };
 
 const handleInitalFocus = () => {
-  tts.addPhraseToQueue(title);
+  selectTitle.value.focusableRef.focus();
   tts.addPhraseToQueue(
     'Pressione a tecla SHIFT para saber mais sobre a opção selecionada',
   );
@@ -65,7 +61,7 @@ const selectTitle = ref();
 
 onMounted(async () => {
   await nextTick();
-  selectTitle.value.focus();
+  handleInitalFocus();
 });
 </script>
 
