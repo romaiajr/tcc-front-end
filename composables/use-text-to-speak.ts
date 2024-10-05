@@ -1,15 +1,15 @@
 export function useTTS() {
-  const config = useConfigStore();
+  const tts = useTtsStore();
   const phrasesQueue = ref<string[]>([]);
 
-  // REVIEW - Nomenclatura da função
-  const speak = (phrase: string) => {
+  const speakPhrase = (phrase: string) => {
     if (speechSynthesis.speaking) {
       speechSynthesis.cancel();
     }
     const utterance = new SpeechSynthesisUtterance(phrase);
-    Object.assign(utterance, config.speech);
+    Object.assign(utterance, tts.speech);
     speechSynthesis.speak(utterance);
+    tts.addPhraseToHistory(phrase);
   };
 
   const addPhraseToQueue = (phrase: string) => {
@@ -18,22 +18,24 @@ export function useTTS() {
 
   const speakPhraseQueue = () => {
     if (phrasesQueue.value.length > 0) {
-      const utterance = new SpeechSynthesisUtterance(
-        phrasesQueue.value.shift(),
-      );
-      Object.assign(utterance, config.speech);
+      const phrase = phrasesQueue.value.shift();
+      const utterance = new SpeechSynthesisUtterance(phrase);
+      Object.assign(utterance, tts.speech);
       utterance.onend = () => {
         speakPhraseQueue();
       };
 
       speechSynthesis.speak(utterance);
+      if (phrase) {
+        tts.addPhraseToHistory(phrase);
+      }
     }
   };
 
   // TODO - Permitir configuração do rate
 
   return {
-    speak,
+    speakPhrase,
     addPhraseToQueue,
     speakPhraseQueue,
   };

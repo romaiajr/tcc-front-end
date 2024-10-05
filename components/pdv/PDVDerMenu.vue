@@ -19,11 +19,10 @@
       v-else-if="menuStore.activeMenu === DerFlowEnum.NEW_ATTR"
     />
   </div>
-  <vueJsonPretty :data="diagramTool.diagram.value" />
+  <TeachingAssistantMenu />
 </template>
 <script setup lang="ts">
 import { DerFlowEnum } from '~/composables/use-diagram';
-
 const diagramTool = useDiagram();
 const menuStore = useMenuOptions();
 const { hotkeys } = useKeyboardNavigation();

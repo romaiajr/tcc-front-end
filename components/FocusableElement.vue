@@ -32,10 +32,10 @@ const computedTabindex = computed(() =>
   props.tabindex !== undefined ? props.tabindex : 0,
 );
 
-const { speak } = useTTS();
+const { speakPhrase } = useTTS();
 
 const handleFocus = (event: any) => {
-  speak(event.target.title);
+  speakPhrase(event.target.title);
 };
 
 const focusableRef = ref<HTMLElement | null>(null);

@@ -24,7 +24,6 @@
 </template>
 
 <script setup lang="ts">
-import FocusableElement from '../FocusableElement.vue';
 import type { Menu } from '~/src/interfaces/pdv-menu';
 
 interface PDVMenuProps {

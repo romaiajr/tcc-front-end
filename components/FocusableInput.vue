@@ -31,18 +31,18 @@ const computedTabindex = computed(() =>
   props.tabindex !== undefined ? props.tabindex : 0,
 );
 
-const { addPhraseToQueue, speakPhraseQueue, speak } = useTTS();
+const { addPhraseToQueue, speakPhraseQueue, speakPhrase } = useTTS();
 
 const emit = defineEmits(['submit', 'update:modelValue']);
 
 const handleInput = (event: any) => {
-  speak(event.target.value.charAt(inputValue.value.length - 1));
+  speakPhrase(event.target.value.charAt(inputValue.value.length - 1));
   addPhraseToQueue(event.target.value);
   speakPhraseQueue();
 };
 
 const handleFocus = (event: any) => {
-  speak(event.target.title);
+  speakPhrase(event.target.title);
 };
 
 const handleSubmit = () => {

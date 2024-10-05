@@ -1,7 +1,7 @@
 export default defineNuxtPlugin((nuxtApp) => {
   const setupTTSPrefenrences = () => {
     const i18n = useI18n();
-    const { setSpeechPreferences } = useConfigStore();
+    const { setSpeechPreferences } = useTtsStore();
 
     const onVoicesChanged = () => {
       const voices = speechSynthesis.getVoices();

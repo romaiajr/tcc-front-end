@@ -7,7 +7,6 @@
 </template>
 
 <script setup lang="ts">
-import FocusableInput from '../FocusableInput.vue';
 import { FormScope } from '~/stores/menu.store';
 
 const { scope, isEditScope, setActiveMenu } = useMenuOptions();

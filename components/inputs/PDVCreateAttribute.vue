@@ -14,9 +14,6 @@
 </template>
 
 <script setup lang="ts">
-import FocusableInput from '../FocusableInput.vue';
-import FocusableSelect from '../FocusableSelect.vue';
-
 import { SqlDataType } from '~/composables/use-diagram';
 
 const diagramTool = useDiagram();

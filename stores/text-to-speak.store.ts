@@ -4,13 +4,14 @@ export type SpeechPreferences = {
   voice: SpeechSynthesisVoice | null;
 };
 
-export const useConfigStore = defineStore('config', {
-  state: (): { speech: SpeechPreferences } => ({
+export const useTtsStore = defineStore('tts', {
+  state: (): { speech: SpeechPreferences; history: string[] } => ({
     speech: {
       rate: 3,
       lang: 'pt-BR',
       voice: null,
     },
+    history: [],
   }),
   actions: {
     setSpeechPreferences(preferences: Partial<SpeechPreferences>) {
@@ -19,6 +20,14 @@ export const useConfigStore = defineStore('config', {
         ...preferences,
       };
     },
+    addPhraseToHistory(phrase: string) {
+      if (this.history.length === 50) {
+        this.history.shift();
+      }
+      this.history.push(phrase);
+    },
   },
-  persist: true,
+  persist: {
+    paths: ['speech'],
+  },
 });

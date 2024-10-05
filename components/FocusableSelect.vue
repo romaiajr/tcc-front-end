@@ -21,8 +21,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-import FocusableElement from './FocusableElement';
-
 interface PDVSelectProps {
   title: string;
   items: {
@@ -38,7 +36,7 @@ const tts = useTTS();
 const emit = defineEmits(['submit']);
 
 const handleFocus = (event: any) => {
-  tts.speak(event.target.title);
+  tts.speakPhrase(event.target.title);
 };
 
 const handleInitalFocus = () => {
@@ -50,7 +48,7 @@ const handleInitalFocus = () => {
 };
 
 const readInfoText = (infoText: string) => {
-  tts.speak(infoText);
+  tts.speakPhrase(infoText);
 };
 
 const handleSubmit = (event: any) => {
@@ -65,17 +63,6 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped>
-.chip-container {
-  display: flex;
-  flex-wrap: wrap; /* Permite que os chips quebrem para a linha seguinte */
-  gap: 8px; /* Espaçamento entre os chips */
-}
-
-.sql-chip {
-  cursor: pointer; /* Indica que os chips são interativos */
-}
-</style>
 <style scoped>
 .pdv-select {
   display: table;
