@@ -71,6 +71,32 @@ export const sqlDataTypeInfo = {
   },
 };
 
+export enum CardinalityOptions {
+  OneToOne,
+  OneToMany,
+  ManyToOne,
+  ManyToMany,
+}
+
+export const cardinalityInfo = {
+  [CardinalityOptions.OneToOne]: {
+    title: 'sql.cardinality.OneToOne',
+    infoText: 'sql.explanation.OneToOne',
+  },
+  [CardinalityOptions.OneToMany]: {
+    title: 'sql.cardinality.OneToMany',
+    infoText: 'sql.explanation.OneToMany',
+  },
+  [CardinalityOptions.ManyToOne]: {
+    title: 'sql.cardinality.ManyToOne',
+    infoText: 'sql.explanation.ManyToOne',
+  },
+  [CardinalityOptions.ManyToMany]: {
+    title: 'sql.cardinality.ManyToMany',
+    infoText: 'sql.explanation.ManyToMany',
+  },
+};
+
 export interface DerAttribute {
   id: string;
   name: string;
@@ -88,8 +114,7 @@ export interface DerRelationship {
   name: string;
   entityA: string;
   entityB: string;
-  cardinalityA: string;
-  cardinalityB: string;
+  cardinality: CardinalityOptions;
 }
 
 export interface Diagram {
@@ -106,14 +131,14 @@ type UseDiagramReturn = {
   editEntityName: (newName: string) => void;
   getEntity: () => DerEntity | undefined;
   removeEntity: () => void;
-  createRelationship: (
-    name: string,
-    entityAId: string,
-    entityBId: string,
-    cardinalityA: string,
-    cardinalityB: string,
-  ) => void;
+  createRelationship: (props: {
+    name: string;
+    entityAId: string;
+    entityBId: string;
+    cardinality: CardinalityOptions;
+  }) => void;
   editRelationship: (newData: Partial<Omit<DerRelationship, 'id'>>) => void;
+  getRelationship: () => DerRelationship | undefined;
   removeRelationship: () => void;
   createAttribute: (props: { name: string; type: SqlDataType }) => void;
   editAttribute: (newData: Partial<Omit<DerAttribute, 'id'>>) => void;
@@ -189,30 +214,30 @@ export function useDiagram() {
       }
     };
 
-    const createRelationship = (
-      name: string,
-      entityAId: string,
-      entityBId: string,
-      cardinalityA: string,
-      cardinalityB: string,
-    ) => {
+    const createRelationship = (props: {
+      name: string;
+      entityAId: string;
+      entityBId: string;
+      cardinality: CardinalityOptions;
+    }) => {
       if (diagram.value) {
         const entityAExists = diagram.value.entities.some(
-          (e) => e.id === entityAId,
+          (e) => e.id === props.entityAId,
         );
         const entityBExists = diagram.value.entities.some(
-          (e) => e.id === entityBId,
+          (e) => e.id === props.entityBId,
         );
+
+        console.log(entityAExists, entityBExists, props);
 
         if (entityAExists && entityBExists) {
           const id = uuidv4();
           diagram.value.relationships.push({
             id,
-            name: name.toLowerCase(),
-            entityA: entityAId,
-            entityB: entityBId,
-            cardinalityA,
-            cardinalityB,
+            name: props.name.toLowerCase(),
+            entityA: props.entityAId,
+            entityB: props.entityBId,
+            cardinality: props.cardinality,
           });
           derStore.setCurrentRelationshipId(id);
         }
@@ -230,11 +255,17 @@ export function useDiagram() {
           relationship.name = (newData.name ?? relationship.name).toLowerCase();
           relationship.entityA = newData.entityA ?? relationship.entityA;
           relationship.entityB = newData.entityB ?? relationship.entityB;
-          relationship.cardinalityA =
-            newData.cardinalityA ?? relationship.cardinalityA;
-          relationship.cardinalityB =
-            newData.cardinalityB ?? relationship.cardinalityB;
+          relationship.cardinality =
+            newData.cardinality ?? relationship.cardinality;
         }
+      }
+    };
+
+    const getRelationship = () => {
+      if (diagram.value) {
+        return diagram.value.relationships.find(
+          (r) => r.id === derStore.currentRelationshipId,
+        );
       }
     };
 
@@ -300,6 +331,7 @@ export function useDiagram() {
       createRelationship,
       editRelationship,
       removeRelationship,
+      getRelationship,
       createAttribute,
       editAttribute,
       removeAttribute,

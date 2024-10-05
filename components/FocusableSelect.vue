@@ -9,12 +9,12 @@
       <li v-for="(item, index) in items" :key="index" class="pdv-select-item">
         <FocusableElement
           :tabindex="index + 2"
-          :title="item.title"
-          @keydown.enter.exact="handleSubmit"
+          :title="$t(item.title)"
+          @keydown.enter.exact="() => handleSubmit(index)"
           @keydown.shift="() => readInfoText($t(item.infotext))"
           @focus="handleFocus"
         >
-          {{ item.title }}
+          {{ $t(item.title) }}
         </FocusableElement>
       </li>
     </ul>
@@ -25,11 +25,12 @@ interface PDVSelectProps {
   title: string;
   items: {
     title: string;
-    infotext: string;
+    infotext?: string;
   }[];
+  shiftFlag?: boolean;
 }
 
-const { title } = defineProps<PDVSelectProps>();
+const { title, items, shiftFlag } = defineProps<PDVSelectProps>();
 
 const tts = useTTS();
 
@@ -41,18 +42,22 @@ const handleFocus = (event: any) => {
 
 const handleInitalFocus = () => {
   selectTitle.value.focusableRef.focus();
-  tts.addPhraseToQueue(
-    'Pressione a tecla SHIFT para saber mais sobre a opção selecionada',
-  );
+  if (shiftFlag) {
+    tts.addPhraseToQueue(
+      'Pressione a tecla SHIFT para saber mais sobre a opção selecionada',
+    );
+  }
   tts.speakPhraseQueue();
 };
 
 const readInfoText = (infoText: string) => {
-  tts.speakPhrase(infoText);
+  if (shiftFlag) {
+    tts.speakPhrase(infoText);
+  }
 };
 
-const handleSubmit = (event: any) => {
-  emit('submit', event.target.title);
+const handleSubmit = (index: number) => {
+  emit('submit', index);
 };
 
 const selectTitle = ref();

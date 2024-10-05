@@ -9,12 +9,14 @@
     v-else
     :items="sqlTypes"
     :title="$t('menu.der_flow.options.entity.attribute.type')"
+    shift-flag
     @submit="createAttr"
+    @keydown.esc.stop="() => (step = AttrFormSteps.NAME)"
   />
 </template>
 
 <script setup lang="ts">
-import { SqlDataType } from '~/composables/use-diagram';
+import { sqlDataTypeInfo } from '~/composables/use-diagram';
 
 const diagramTool = useDiagram();
 const { scope, isEditScope, setActiveMenu } = useMenuOptions();
@@ -41,8 +43,8 @@ const saveAttrName = (attrName: string) => {
   step.value = AttrFormSteps.TYPE;
 };
 
-const createAttr = (attrType: SqlDataType) => {
-  attributeForm.type = attrType;
+const createAttr = (index: number) => {
+  attributeForm.type = sqlTypes[index].title;
 
   if (scope === FormScope.CREATE) {
     diagramTool.createAttribute(attributeForm);

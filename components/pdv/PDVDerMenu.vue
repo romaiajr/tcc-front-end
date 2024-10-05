@@ -18,6 +18,9 @@
     <PDVCreateAttribute
       v-else-if="menuStore.activeMenu === DerFlowEnum.NEW_ATTR"
     />
+    <PDVCreateRelationship
+      v-else-if="menuStore.activeMenu === DerFlowEnum.NEW_RELATIONSHIP"
+    />
   </div>
   <TeachingAssistantMenu />
 </template>

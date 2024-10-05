@@ -87,7 +87,17 @@
             "BOOLEAN": "Usado para armazenar valores booleanos (verdadeiro ou falso).",
             "BLOB": "Usado para armazenar grandes objetos binários, como arquivos ou imagens.",
             "JSON": "Usado para armazenar dados estruturados em formato JSON.",
-            "UUID": "Usado para armazenar identificadores únicos universais (UUID)."
+            "UUID": "Usado para armazenar identificadores únicos universais (UUID).",
+            "OneToOne": "Uma instância de A se relaciona com uma única instância de B.",
+            "OneToMany": "Uma instância de A pode estar relacionada a várias instâncias de B.",
+            "ManyToOne": "Várias instâncias de A podem estar relacionadas a uma única instância de B.",
+            "ManyToMany": "Muitas instâncias de A podem estar relacionadas a muitas instâncias de B."
+        },
+        "cardinality": {
+            "OneToOne": "Um para um",
+            "OneToMany": "Um para muitos",
+            "ManyToOne": "Muitos para um",
+            "ManyToMany": "Muitos para muitos"
         }
     }
 }
