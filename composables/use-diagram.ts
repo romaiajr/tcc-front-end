@@ -112,8 +112,8 @@ export interface DerEntity {
 export interface DerRelationship {
   id: string;
   name: string;
-  entityA: string;
-  entityB: string;
+  entityAId: string;
+  entityBId: string;
   cardinality: CardinalityOptions;
 }
 
@@ -200,16 +200,21 @@ export function useDiagram() {
 
     const getEntity = () => {
       if (diagram.value) {
-        return diagram.value.entities.find(
-          (e) => e.id === derStore.currentEntityId,
-        );
+        const id = derStore.currentEntityId;
+        return diagram.value.entities.find((e) => e.id === id);
       }
     };
 
     const removeEntity = () => {
       if (diagram.value) {
+        const id = derStore.currentEntityId;
         diagram.value.entities = diagram.value.entities.filter(
-          (e) => e.id !== derStore.currentEntityId,
+          (e) => e.id !== id,
+        );
+        diagram.value.relationships = diagram.value.relationships.filter(
+          (r) => {
+            return r.entityAId !== id && r.entityBId !== id;
+          },
         );
       }
     };
@@ -228,15 +233,13 @@ export function useDiagram() {
           (e) => e.id === props.entityBId,
         );
 
-        console.log(entityAExists, entityBExists, props);
-
         if (entityAExists && entityBExists) {
           const id = uuidv4();
           diagram.value.relationships.push({
             id,
             name: props.name.toLowerCase(),
-            entityA: props.entityAId,
-            entityB: props.entityBId,
+            entityAId: props.entityAId,
+            entityBId: props.entityBId,
             cardinality: props.cardinality,
           });
           derStore.setCurrentRelationshipId(id);
@@ -248,13 +251,14 @@ export function useDiagram() {
       newData: Partial<Omit<DerRelationship, 'id'>>,
     ) => {
       if (diagram.value) {
+        const id = derStore.currentRelationshipId;
         const relationship = diagram.value.relationships.find(
-          (r) => r.id === derStore.currentRelationshipId,
+          (r) => r.id === id,
         );
         if (relationship) {
           relationship.name = (newData.name ?? relationship.name).toLowerCase();
-          relationship.entityA = newData.entityA ?? relationship.entityA;
-          relationship.entityB = newData.entityB ?? relationship.entityB;
+          relationship.entityAId = newData.entityAId ?? relationship.entityAId;
+          relationship.entityBId = newData.entityBId ?? relationship.entityBId;
           relationship.cardinality =
             newData.cardinality ?? relationship.cardinality;
         }
@@ -263,16 +267,16 @@ export function useDiagram() {
 
     const getRelationship = () => {
       if (diagram.value) {
-        return diagram.value.relationships.find(
-          (r) => r.id === derStore.currentRelationshipId,
-        );
+        const id = derStore.currentRelationshipId;
+        return diagram.value.relationships.find((r) => r.id === id);
       }
     };
 
     const removeRelationship = () => {
       if (diagram.value) {
+        const id = derStore.currentRelationshipId;
         diagram.value.relationships = diagram.value.relationships.filter(
-          (r) => r.id !== derStore.currentRelationshipId,
+          (r) => r.id !== id,
         );
       }
     };
@@ -306,7 +310,8 @@ export function useDiagram() {
     const getAttribute = () => {
       const entity = getEntity();
       if (entity && entity.attrs) {
-        return entity.attrs.find((a) => a.id === derStore.currentAttrId);
+        const id = derStore.currentAttrId;
+        return entity.attrs.find((a) => a.id === id);
       }
     };
 
@@ -314,9 +319,8 @@ export function useDiagram() {
       if (diagram.value) {
         const entity = getEntity();
         if (entity && entity.attrs) {
-          entity.attrs = entity.attrs.filter(
-            (a) => a.id !== derStore.currentAttrId,
-          );
+          const id = derStore.currentAttrId;
+          entity.attrs = entity.attrs.filter((a) => a.id !== id);
         }
       }
     };

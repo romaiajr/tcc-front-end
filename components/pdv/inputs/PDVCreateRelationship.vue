@@ -10,22 +10,23 @@
     :items="entitiesAOptions"
     :title="$t('menu.der_flow.options.relationship.elementA')"
     @submit="saveRelationshipEntityAId"
-    @keydown.esc.stop="() => (step = AttrFormSteps.NAME)"
+    @keydown.esc.stop="() => (step = RelationshipFormStep.NAME)"
   />
   <FocusableSelect
     v-else-if="step === RelationshipFormStep.ENTITYB"
     :items="entitiesBOptions"
     :title="$t('menu.der_flow.options.relationship.elementB')"
     @submit="saveRelationshipEntityBId"
-    @keydown.esc.stop="() => (step = AttrFormSteps.CARDINALITY)"
+    @keydown.esc.stop="() => (step = RelationshipFormStep.CARDINALITY)"
   />
   <FocusableSelect
     v-else-if="step === RelationshipFormStep.CARDINALITY"
     :items="cardinalityOptions"
     :title="$t('menu.der_flow.options.relationship.cardinality')"
     shift-flag
+    should-translate
     @submit="saveRelationshipCardinality"
-    @keydown.esc.stop="() => (step = AttrFormSteps.ENTITYB)"
+    @keydown.esc.stop="() => (step = RelationshipFormStep.ENTITYB)"
   />
 </template>
 

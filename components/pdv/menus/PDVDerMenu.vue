@@ -5,18 +5,21 @@
     <PDVDerEntityOptions
       v-else-if="menuStore.activeMenu === DerFlowEnum.ENTITY_OPTIONS"
     />
+    <PDVCreateEntity
+      v-else-if="menuStore.activeMenu === DerFlowEnum.NEW_ENTITY"
+    />
     <PDVDerAttributes v-else-if="menuStore.activeMenu === DerFlowEnum.ATTRS" />
     <PDVDerAttrOptions
       v-else-if="menuStore.activeMenu === DerFlowEnum.ATTR_OPTIONS"
     />
-    <PDVDerRelationshipOptions
-      v-else-if="menuStore.activeMenu === DerFlowEnum.RELATIONSHIP_OPTIONS"
-    />
-    <PDVCreateEntity
-      v-else-if="menuStore.activeMenu === DerFlowEnum.NEW_ENTITY"
-    />
     <PDVCreateAttribute
       v-else-if="menuStore.activeMenu === DerFlowEnum.NEW_ATTR"
+    />
+    <PDVDerRelationships
+      v-else-if="menuStore.activeMenu === DerFlowEnum.RELATIONSHIPS"
+    />
+    <PDVDerRelationshipOptions
+      v-else-if="menuStore.activeMenu === DerFlowEnum.RELATIONSHIP_OPTIONS"
     />
     <PDVCreateRelationship
       v-else-if="menuStore.activeMenu === DerFlowEnum.NEW_RELATIONSHIP"

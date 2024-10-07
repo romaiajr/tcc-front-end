@@ -35,7 +35,8 @@
                 "relationship_options": "Opções do relacionamento {relationship}",
                 "attribute_options": "Opções do atributo {attribute}",
                 "entity_list": "Entidades do diagrama {diagram}",
-                "attribute_list": "Atributos da entidade {entity}"
+                "attribute_list": "Atributos da entidade {entity}",
+                "relationships_list": "Relacionamentos do diagrama {diagram}"
             },
             "options": {
                 "entity": {
@@ -66,8 +67,8 @@
                     "edit": "Editar relacionamento",
                     "delete": "Excluir relacionamento",
                     "update_name": "Digite o novo nome do relacionamento",
-                    "elementA": "Definir entidade A",
-                    "elementB": "Definir entidade B",
+                    "elementA": "Definir entidade Pai",
+                    "elementB": "Definir entidade Filho",
                     "cardinality": "Definir cardinalidade"
                 },
                 "diagram": {
@@ -88,10 +89,10 @@
             "BLOB": "Usado para armazenar grandes objetos binários, como arquivos ou imagens.",
             "JSON": "Usado para armazenar dados estruturados em formato JSON.",
             "UUID": "Usado para armazenar identificadores únicos universais (UUID).",
-            "OneToOne": "Uma instância de A se relaciona com uma única instância de B.",
-            "OneToMany": "Uma instância de A pode estar relacionada a várias instâncias de B.",
-            "ManyToOne": "Várias instâncias de A podem estar relacionadas a uma única instância de B.",
-            "ManyToMany": "Muitas instâncias de A podem estar relacionadas a muitas instâncias de B."
+            "OneToOne": "Uma entidade Pai se relaciona com uma única entidade Filho.",
+            "OneToMany": "Uma entidade Pai pode estar relacionada a várias entidades Filho.",
+            "ManyToOne": "Várias entidades Pai podem estar relaciondas a uma única entidade Filho.",
+            "ManyToMany": "Várias entidades Pai podem estar relaciondas a várias entidades Filho."
         },
         "cardinality": {
             "OneToOne": "Um para um",

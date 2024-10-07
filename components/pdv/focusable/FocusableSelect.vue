@@ -9,12 +9,12 @@
       <li v-for="(item, index) in items" :key="index" class="pdv-select-item">
         <FocusableElement
           :tabindex="index + 2"
-          :title="$t(item.title)"
+          :title="shouldTranslate ? $t(item.title) : item.title"
           @keydown.enter.exact="() => handleSubmit(index)"
           @keydown.shift="() => readInfoText($t(item.infotext))"
           @focus="handleFocus"
         >
-          {{ $t(item.title) }}
+          {{ shouldTranslate ? $t(item.title) : item.title }}
         </FocusableElement>
       </li>
     </ul>
@@ -28,6 +28,7 @@ interface PDVSelectProps {
     infotext?: string;
   }[];
   shiftFlag?: boolean;
+  shouldTranslate?: boolean;
 }
 
 const { title, items, shiftFlag } = defineProps<PDVSelectProps>();

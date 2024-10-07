@@ -10,6 +10,7 @@
     :items="sqlTypes"
     :title="$t('menu.der_flow.options.entity.attribute.type')"
     shift-flag
+    should-translate
     @submit="createAttr"
     @keydown.esc.stop="() => (step = AttrFormSteps.NAME)"
   />

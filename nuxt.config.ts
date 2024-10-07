@@ -65,16 +65,13 @@ export default defineNuxtConfig({
   },
   components: [
     {
-      path: '~/components/pdv',
-      extensions: ['vue'],
-    },
-    {
-      path: '~/components/inputs',
-      extensions: ['vue'],
-    },
-    {
       path: '~/components',
       extensions: ['vue'],
+    },
+    {
+      path: '~/components/pdv',
+      extensions: ['vue'],
+      pathPrefix: false,
     },
   ],
   css: ['vue-json-pretty/lib/styles.css'],
