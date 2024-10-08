@@ -16,7 +16,7 @@ const menu = ref({
     {
       label: t('menu.der_flow.options.entity.attribute.edit'),
       action: () => {
-        menuStore.setActiveMenu(DerFlowEnum.NEW_ATTR);
+        menuStore.setActiveDerMenu(DerFlowEnum.NEW_ATTR);
         menuStore.setScope(FormScope.EDIT);
       },
     },
@@ -24,7 +24,7 @@ const menu = ref({
       label: t('menu.der_flow.options.entity.attribute.delete'),
       action: () => {
         diagramTool?.removeAttribute();
-        menuStore.setActiveMenu(DerFlowEnum.ATTRS);
+        menuStore.setActiveDerMenu(DerFlowEnum.ATTRS);
       },
     },
   ],

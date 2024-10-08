@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { FormScope } from '~/stores/menu.store';
 
-const { scope, isEditScope, setActiveMenu } = useMenuOptions();
+const { scope, isEditScope, setActiveDerMenu } = useMenuOptions();
 const diagramTool = useDiagram();
 const derStore = useDerOptions();
 const entityName = ref();
@@ -20,7 +20,7 @@ const handleSubmit = (entityName: string) => {
   } else if (derStore.currentEntityId) {
     diagramTool.editEntityName(entityName);
   }
-  setActiveMenu(DerFlowEnum.ENTITY_OPTIONS);
+  setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
 };
 
 onMounted(() => {

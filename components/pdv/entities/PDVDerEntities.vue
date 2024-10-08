@@ -16,7 +16,7 @@ const menu = ref({
 
 onBeforeMount(() => {
   if (!diagramTool.diagram.value?.entities) {
-    menuStore.setActiveMenu(DerFlowEnum.DEFAULT);
+    menuStore.setActiveDerMenu(DerFlowEnum.DEFAULT);
   } else {
     menu.value.title = t('menu.der_flow.titles.entity_list', {
       diagram: diagramTool.diagram.value?.name,
@@ -25,7 +25,7 @@ onBeforeMount(() => {
       menu.value.items.push({
         label: entity.name,
         action: () => {
-          menuStore.setActiveMenu(DerFlowEnum.ENTITY_OPTIONS);
+          menuStore.setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
           derStore.setCurrentEntityId(entity.id);
         },
       });

@@ -32,9 +32,6 @@ export default defineNuxtConfig({
     strategy: 'no_prefix',
     vueI18n: './i18n.config.ts',
   },
-  pinia: {
-    autoImports: ['defineStore'],
-  },
   piniaPersistedstate: {
     cookieOptions: {
       maxAge: 60 * 60 * 24 * 3, // 3 days, this value is in seconds.

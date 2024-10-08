@@ -16,7 +16,7 @@ const menu = ref({
     {
       label: t('menu.der_flow.options.relationship.edit'),
       action: () => {
-        menuStore.setActiveMenu(DerFlowEnum.NEW_RELATIONSHIP);
+        menuStore.setActiveDerMenu(DerFlowEnum.NEW_RELATIONSHIP);
         menuStore.setScope(FormScope.EDIT);
       },
     },
@@ -24,7 +24,7 @@ const menu = ref({
       label: t('menu.der_flow.options.relationship.delete'),
       action: () => {
         diagramTool?.removeRelationship();
-        menuStore.setActiveMenu(DerFlowEnum.RELATIONSHIPS);
+        menuStore.setActiveDerMenu(DerFlowEnum.RELATIONSHIPS);
       },
     },
   ],

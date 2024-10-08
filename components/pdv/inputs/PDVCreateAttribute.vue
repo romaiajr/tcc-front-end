@@ -20,7 +20,7 @@
 import { sqlDataTypeInfo } from '~/composables/use-diagram';
 
 const diagramTool = useDiagram();
-const { scope, isEditScope, setActiveMenu } = useMenuOptions();
+const { scope, isEditScope, setActiveDerMenu } = useMenuOptions();
 
 const sqlTypes = Object.values(sqlDataTypeInfo).map((data) => ({
   title: data.title,
@@ -52,7 +52,7 @@ const createAttr = (index: number) => {
   } else {
     diagramTool.editAttribute(attributeForm);
   }
-  setActiveMenu(DerFlowEnum.ENTITY_OPTIONS);
+  setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
 };
 
 onMounted(() => {

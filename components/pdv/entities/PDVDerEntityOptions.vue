@@ -16,14 +16,14 @@ const menu = ref({
     {
       label: t('menu.der_flow.options.entity.attribute.create'),
       action: () => {
-        menuStore.setActiveMenu(DerFlowEnum.NEW_ATTR);
+        menuStore.setActiveDerMenu(DerFlowEnum.NEW_ATTR);
         menuStore.setScope(FormScope.CREATE);
       },
     },
     {
       label: t('menu.der_flow.options.entity.attribute.navigate'),
       action: () => {
-        menuStore.setActiveMenu(DerFlowEnum.ATTRS);
+        menuStore.setActiveDerMenu(DerFlowEnum.ATTRS);
       },
     },
     {
@@ -32,7 +32,7 @@ const menu = ref({
     {
       label: t('menu.der_flow.options.entity.update_name'),
       action: () => {
-        menuStore.setActiveMenu(DerFlowEnum.NEW_ENTITY);
+        menuStore.setActiveDerMenu(DerFlowEnum.NEW_ENTITY);
         menuStore.setScope(FormScope.EDIT);
       },
     },
@@ -40,7 +40,7 @@ const menu = ref({
       label: t('menu.der_flow.options.entity.delete'),
       action: () => {
         diagramTool?.removeEntity();
-        menuStore.setActiveMenu(DerFlowEnum.ENTITIES);
+        menuStore.setActiveDerMenu(DerFlowEnum.ENTITIES);
       },
     },
   ],

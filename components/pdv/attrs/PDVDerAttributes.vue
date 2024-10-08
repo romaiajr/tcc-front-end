@@ -24,13 +24,13 @@ onBeforeMount(() => {
       menu.value.items.push({
         label: attr.name,
         action: () => {
-          menuStore.setActiveMenu(DerFlowEnum.ATTR_OPTIONS);
+          menuStore.setActiveDerMenu(DerFlowEnum.ATTR_OPTIONS);
           derStore.setCurrentAttrId(attr.id);
         },
       });
     });
   } else {
-    menuStore.setActiveMenu(DerFlowEnum.ENTITY_OPTIONS);
+    menuStore.setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
   }
 });
 </script>

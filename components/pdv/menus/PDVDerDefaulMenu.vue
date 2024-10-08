@@ -17,7 +17,7 @@ onBeforeMount(() => {
       {
         label: t('menu.der_flow.options.entity.create'),
         action: () => {
-          menuStore.setActiveMenu(DerFlowEnum.NEW_ENTITY);
+          menuStore.setActiveDerMenu(DerFlowEnum.NEW_ENTITY);
           menuStore.setScope(FormScope.CREATE);
         },
       },
@@ -26,7 +26,7 @@ onBeforeMount(() => {
           diagram: diagramTool.diagram.value?.name,
         }),
         action: () => {
-          menuStore.setActiveMenu(DerFlowEnum.ENTITIES);
+          menuStore.setActiveDerMenu(DerFlowEnum.ENTITIES);
         },
       },
       {
@@ -37,14 +37,14 @@ onBeforeMount(() => {
       {
         label: t('menu.der_flow.options.relationship.create'),
         action: () => {
-          menuStore.setActiveMenu(DerFlowEnum.NEW_RELATIONSHIP);
+          menuStore.setActiveDerMenu(DerFlowEnum.NEW_RELATIONSHIP);
           menuStore.setScope(FormScope.CREATE);
         },
       },
       {
         label: t('menu.der_flow.options.relationship.navigate'),
         action: () => {
-          menuStore.setActiveMenu(DerFlowEnum.RELATIONSHIPS);
+          menuStore.setActiveDerMenu(DerFlowEnum.RELATIONSHIPS);
         },
       },
       {

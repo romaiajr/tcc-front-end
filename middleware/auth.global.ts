@@ -1,4 +1,4 @@
-export default defineNuxtRouteMiddleware((to, from) => {
+export default defineNuxtRouteMiddleware((to) => {
   if (to.fullPath === '/') {
     return navigateTo(Routes.WELCOME);
   }

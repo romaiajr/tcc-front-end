@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { cardinalityInfo } from '~/composables/use-diagram';
 const diagramTool = useDiagram();
-const { scope, isEditScope, setActiveMenu } = useMenuOptions();
+const { scope, isEditScope, setActiveDerMenu } = useMenuOptions();
 
 const entitiesAOptions = Object.values(diagramTool.diagram.value.entities).map(
   (data) => ({
@@ -100,7 +100,7 @@ const createRelationship = () => {
   } else {
     diagramTool.editRelationship(relationshipForm);
   }
-  setActiveMenu(DerFlowEnum.RELATIONSHIP_OPTIONS);
+  setActiveDerMenu(DerFlowEnum.RELATIONSHIP_OPTIONS);
 };
 
 onMounted(() => {

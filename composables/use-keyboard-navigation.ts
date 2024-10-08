@@ -48,7 +48,9 @@ export function useKeyboardNavigation() {
       focusableElements.value[nextIndex]?.focus();
       event.preventDefault();
     } else if (event.code === 'Escape') {
-      menuStore.setActiveMenu(menuStore.previousMenu ?? menuStore.activeMenu);
+      menuStore.setActiveDerMenu(
+        menuStore.previousDerMenu ?? menuStore.activeDerMenu,
+      );
     }
   };
 

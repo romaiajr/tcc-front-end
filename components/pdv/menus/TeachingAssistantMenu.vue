@@ -1,6 +1,10 @@
 <template>
   <div class="teaching-assistant-menu">
-    <vueJsonPretty :data="diagramTool.diagram.value" class="der-json" />
+    <vueJsonPretty
+      v-if="diagramTool.diagram.value"
+      :data="diagramTool.diagram.value"
+      class="der-json"
+    />
     <div ref="phraseHistory" class="phrase-history">
       <ul v-if="ttsStore.history.length">
         <li v-for="(phrase, index) in ttsStore.history" :key="index">
@@ -25,10 +29,6 @@ watch(
   },
   { deep: true },
 );
-
-onBeforeMount(() => {
-  diagramTool.createDiagram('teste');
-});
 </script>
 <style scoped css>
 .teaching-assistant-menu {

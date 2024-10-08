@@ -1,9 +1,8 @@
 export enum PDVMenusEnum {
-  MAIN,
+  DEFAULT,
   PROJECTS,
   TTS,
   LANGUAGE,
-  Der,
 }
 
 export interface MenuItem {

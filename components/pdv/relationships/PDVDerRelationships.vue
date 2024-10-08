@@ -26,13 +26,13 @@ onBeforeMount(() => {
       menu.value.items.push({
         label: relationship.name,
         action: () => {
-          menuStore.setActiveMenu(DerFlowEnum.RELATIONSHIP_OPTIONS);
+          menuStore.setActiveDerMenu(DerFlowEnum.RELATIONSHIP_OPTIONS);
           derStore.setCurrentRelationshipId(relationship.id);
         },
       });
     });
   } else {
-    menuStore.setActiveMenu(DerFlowEnum.DEFAULT);
+    menuStore.setActiveDerMenu(DerFlowEnum.DEFAULT);
   }
 });
 </script>
