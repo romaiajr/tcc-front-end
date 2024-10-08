@@ -33,6 +33,9 @@ onBeforeMount(() => {
         label: t('menu.der_flow.options.entity.read', {
           diagram: diagramTool.diagram.value?.name,
         }),
+        action: () => {
+          diagramTool.readEntities();
+        },
       },
       {
         label: t('menu.der_flow.options.relationship.create'),

@@ -17,7 +17,6 @@ export function useKeyboardNavigation() {
       (el) => el === document.activeElement,
     );
 
-    /** TODO - ESC para voltar ao menu anterior, guardar essa ação em algum lugar */
     if (event.code === 'Tab') {
       if (event.shiftKey) {
         const prevIndex = getPrevIndex(

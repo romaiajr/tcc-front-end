@@ -43,6 +43,7 @@
                     "create": "Criar entidade",
                     "navigate": "Navegar pelas entidades do diagrama {diagram}",
                     "read": "Leitura das entidades do diagrama {diagram}",
+                    "created_entities": "Entidades criadas: {entities}",
                     "name": "Digite o nome da entidade",
                     "edit": "Editar entidade",
                     "delete": "Excluir entidade",

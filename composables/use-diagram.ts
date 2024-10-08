@@ -131,6 +131,7 @@ type UseDiagramReturn = {
   editEntityName: (newName: string) => void;
   getEntity: () => DerEntity | undefined;
   removeEntity: () => void;
+  readEntities: () => void;
   createRelationship: (props: {
     name: string;
     entityAId: string;
@@ -153,6 +154,9 @@ let instance: UseDiagramReturn | null = null;
 
 export function useDiagram() {
   const derStore = useDerOptions();
+  const tts = useTTS();
+  const i18n = useI18n();
+
   if (!instance) {
     const diagram = ref<Diagram | null>(null);
 
@@ -216,6 +220,23 @@ export function useDiagram() {
             return r.entityAId !== id && r.entityBId !== id;
           },
         );
+      }
+    };
+
+    const readEntities = () => {
+      if (diagram.value) {
+        if (diagram.value.entities) {
+          let entities = '';
+          diagram.value.entities.forEach((e) => {
+            entities += `${e.name}, `;
+          });
+
+          tts.speakPhrase(
+            i18n.t('menu.der_flow.options.entity.created_entities', {
+              entities,
+            }),
+          );
+        }
       }
     };
 
@@ -332,6 +353,7 @@ export function useDiagram() {
       editEntityName,
       removeEntity,
       getEntity,
+      readEntities,
       createRelationship,
       editRelationship,
       removeRelationship,
