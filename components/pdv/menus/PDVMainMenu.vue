@@ -1,8 +1,5 @@
 <template>
-  <div class="menu" @keydown="handleKeydown">
-    <PDVMenu :menu="menu" />
-  </div>
-  <TeachingAssistantMenu />
+  <PDVMenu v-if="menu" :menu="menu" @keydown="handleKeydown" />
 </template>
 <script setup lang="ts">
 import { PDVMenusEnum } from '~/src/interfaces/pdv-menu';
@@ -48,10 +45,3 @@ onBeforeMount(() => {
   };
 });
 </script>
-<style scoped lang="css">
-.menu {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>

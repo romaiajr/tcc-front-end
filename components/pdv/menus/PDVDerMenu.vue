@@ -1,5 +1,5 @@
 <template>
-  <div class="menu" @keydown="handleKeydown">
+  <div @keydown="handleKeydown">
     <PDVDerDefaulMenu
       v-if="menuStore.activeDerMenu === DerFlowEnum.DEFAULT"
       @keydown.esc.stop="
@@ -34,7 +34,6 @@
       v-else-if="menuStore.activeDerMenu === DerFlowEnum.NEW_RELATIONSHIP"
     />
   </div>
-  <TeachingAssistantMenu />
 </template>
 <script setup lang="ts">
 import { DerFlowEnum } from '~/composables/use-diagram';
@@ -51,10 +50,3 @@ onBeforeMount(() => {
   diagramTool.createDiagram('teste');
 });
 </script>
-<style scoped lang="css">
-.menu {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
