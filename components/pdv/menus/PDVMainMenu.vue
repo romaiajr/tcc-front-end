@@ -29,7 +29,7 @@ onBeforeMount(() => {
       {
         label: t('menu.main.options.tts_options'),
         action: () => {
-          menuStore.setActiveMainMenu(PDVMenusEnum.TTS_CONFIG);
+          menuStore.setActiveMainMenu(PDVMenusEnum.TTS);
         },
       },
       {
@@ -41,7 +41,7 @@ onBeforeMount(() => {
       {
         label: t('menu.main.options.help'),
         action: () => {
-          menuStore.setActiveMainMenu(PDVMenusEnum.HELP);
+          menuStore.setActiveMainMenu(PDVMenusEnum.DEFAULT);
         },
       },
     ],

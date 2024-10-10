@@ -74,7 +74,6 @@ export const sqlDataTypeInfo = {
 export enum CardinalityOptions {
   OneToOne,
   OneToMany,
-  ManyToOne,
   ManyToMany,
 }
 
@@ -87,13 +86,31 @@ export const cardinalityInfo = {
     title: 'sql.cardinality.OneToMany',
     infoText: 'sql.explanation.OneToMany',
   },
-  [CardinalityOptions.ManyToOne]: {
-    title: 'sql.cardinality.ManyToOne',
-    infoText: 'sql.explanation.ManyToOne',
+};
+
+export enum TypeOptions {
+  COMMON,
+  WEAK,
+  INHERITANCE,
+  ASSOCIATIVE,
+}
+
+export const typeInfo = {
+  [TypeOptions.COMMON]: {
+    title: 'sql.relationship_type.common',
+    infoText: 'sql.explanation.common',
   },
-  [CardinalityOptions.ManyToMany]: {
-    title: 'sql.cardinality.ManyToMany',
-    infoText: 'sql.explanation.ManyToMany',
+  [TypeOptions.WEAK]: {
+    title: 'sql.relationship_type.weak',
+    infoText: 'sql.explanation.weak',
+  },
+  [TypeOptions.INHERITANCE]: {
+    title: 'sql.relationship_type.inheritance',
+    infoText: 'sql.explanation.inheritance',
+  },
+  [TypeOptions.ASSOCIATIVE]: {
+    title: 'sql.relationship_type.associative',
+    infoText: 'sql.explanation.associative',
   },
 };
 
@@ -115,6 +132,7 @@ export interface DerRelationship {
   entityAId: string;
   entityBId: string;
   cardinality: CardinalityOptions;
+  type: TypeOptions;
 }
 
 export interface Diagram {
@@ -137,12 +155,13 @@ type UseDiagramReturn = {
     entityAId: string;
     entityBId: string;
     cardinality: CardinalityOptions;
+    type: TypeOptions;
   }) => void;
-  editRelationship: (newData: Partial<Omit<DerRelationship, 'id'>>) => void;
+  editRelationship: (newData: Omit<DerRelationship, 'id'>) => void;
   getRelationship: () => DerRelationship | undefined;
   removeRelationship: () => void;
   createAttribute: (props: { name: string; type: SqlDataType }) => void;
-  editAttribute: (newData: Partial<Omit<DerAttribute, 'id'>>) => void;
+  editAttribute: (newData: Omit<DerAttribute, 'id'>) => void;
   getAttribute: () => DerAttribute | undefined;
   removeAttribute: () => void;
   loadDiagram: (diagramId: string) => void;
@@ -245,6 +264,7 @@ export function useDiagram() {
       entityAId: string;
       entityBId: string;
       cardinality: CardinalityOptions;
+      type: TypeOptions;
     }) => {
       if (diagram.value) {
         const entityAExists = diagram.value.entities.some(
@@ -262,26 +282,25 @@ export function useDiagram() {
             entityAId: props.entityAId,
             entityBId: props.entityBId,
             cardinality: props.cardinality,
+            type: props.type,
           });
           derStore.setCurrentRelationshipId(id);
         }
       }
     };
 
-    const editRelationship = (
-      newData: Partial<Omit<DerRelationship, 'id'>>,
-    ) => {
+    const editRelationship = (newData: Omit<DerRelationship, 'id'>) => {
       if (diagram.value) {
         const id = derStore.currentRelationshipId;
         const relationship = diagram.value.relationships.find(
           (r) => r.id === id,
         );
         if (relationship) {
-          relationship.name = (newData.name ?? relationship.name).toLowerCase();
-          relationship.entityAId = newData.entityAId ?? relationship.entityAId;
-          relationship.entityBId = newData.entityBId ?? relationship.entityBId;
-          relationship.cardinality =
-            newData.cardinality ?? relationship.cardinality;
+          relationship.name = newData.name.toLowerCase();
+          relationship.entityAId = newData.entityAId;
+          relationship.entityBId = newData.entityBId;
+          relationship.cardinality = newData.cardinality;
+          relationship.type = newData.type;
         }
       }
     };
@@ -317,13 +336,13 @@ export function useDiagram() {
       }
     };
 
-    const editAttribute = (newData: Partial<Omit<DerAttribute, 'id'>>) => {
+    const editAttribute = (newData: Omit<DerAttribute, 'id'>) => {
       if (diagram.value) {
         const attr = getAttribute();
 
         if (attr) {
-          attr.name = (newData.name ?? attr.name).toLowerCase();
-          attr.type = newData.type ?? attr.type;
+          attr.name = newData.name.toLowerCase();
+          attr.type = newData.type;
         }
       }
     };

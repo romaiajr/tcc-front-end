@@ -68,8 +68,9 @@
                     "edit": "Editar relacionamento",
                     "delete": "Excluir relacionamento",
                     "update_name": "Digite o novo nome do relacionamento",
-                    "elementA": "Definir entidade Pai",
-                    "elementB": "Definir entidade Filho",
+                    "elementA": "Definir entidade A",
+                    "elementB": "Definir entidade B",
+                    "type": "Definir tipo do relacionamento",
                     "cardinality": "Definir cardinalidade"
                 },
                 "diagram": {
@@ -90,16 +91,22 @@
             "BLOB": "Usado para armazenar grandes objetos binários, como arquivos ou imagens.",
             "JSON": "Usado para armazenar dados estruturados em formato JSON.",
             "UUID": "Usado para armazenar identificadores únicos universais (UUID).",
-            "OneToOne": "Uma entidade Pai se relaciona com uma única entidade Filho.",
-            "OneToMany": "Uma entidade Pai pode estar relacionada a várias entidades Filho.",
-            "ManyToOne": "Várias entidades Pai podem estar relaciondas a uma única entidade Filho.",
-            "ManyToMany": "Várias entidades Pai podem estar relaciondas a várias entidades Filho."
+            "OneToOne": "Esse tipo de relacionamento ocorre quando cada instância da entidade A está associada a, no máximo, uma instância da entidade B",
+            "OneToMany": "Esse tipo de relacionamento ocorre quando cada instância da entidade A pode estar associada a várias instâncias da entidade B, mas cada instância da entidade B está associada a, no máximo, uma instância da entidade A.",
+            "common": "Esse tipo de relacionamento ocorre quando uma entidade depende totalmente da outra para existir",
+            "weak": "Esse tipo de relacionamento ocorre quando uma entidade, chamada de entidade fraca, depende de outra entidade, conhecida como entidade forte, para existir.",
+            "inheritance": "Esse tipo de relacionamento reflete um modelo de herança entre entidades. No contexto de bancos de dados, isso pode ser representado por entidades que compartilham atributos comuns",
+            "associative": "Esse tipo de relacionamento é utilizado para modelar relacionamentos muitos para muitos. Geralmente, é representado por uma tabela associativa que liga duas ou mais entidades."
         },
         "cardinality": {
             "OneToOne": "Um para um",
-            "OneToMany": "Um para muitos",
-            "ManyToOne": "Muitos para um",
-            "ManyToMany": "Muitos para muitos"
+            "OneToMany": "Um para muitos"
+        },
+        "relationship_type": {
+            "common": "Relacionamento Comum",
+            "weak": "Relacionamento Fraco",
+            "inheritance": "Herança",
+            "associative": "Associativo"
         }
     }
 }

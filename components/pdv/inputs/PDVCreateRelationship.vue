@@ -17,7 +17,16 @@
     :items="entitiesBOptions"
     :title="$t('menu.der_flow.options.relationship.elementB')"
     @submit="saveRelationshipEntityBId"
-    @keydown.esc.stop="() => (step = RelationshipFormStep.CARDINALITY)"
+    @keydown.esc.stop="() => (step = RelationshipFormStep.ENTITYA)"
+  />
+  <FocusableSelect
+    v-else-if="step === RelationshipFormStep.TYPE"
+    :items="typeOptions"
+    :title="$t('menu.der_flow.options.relationship.type')"
+    shift-flag
+    should-translate
+    @submit="handleRelationshipType"
+    @keydown.esc.stop="() => (step = RelationshipFormStep.ENTITYB)"
   />
   <FocusableSelect
     v-else-if="step === RelationshipFormStep.CARDINALITY"
@@ -26,12 +35,17 @@
     shift-flag
     should-translate
     @submit="saveRelationshipCardinality"
-    @keydown.esc.stop="() => (step = RelationshipFormStep.ENTITYB)"
+    @keydown.esc.stop="() => (step = RelationshipFormStep.TYPE)"
   />
 </template>
 
 <script setup lang="ts">
-import { cardinalityInfo } from '~/composables/use-diagram';
+import {
+  cardinalityInfo,
+  typeInfo,
+  TypeOptions,
+  CardinalityOptions,
+} from '~/composables/use-diagram';
 const diagramTool = useDiagram();
 const { scope, isEditScope, setActiveDerMenu } = useMenuOptions();
 
@@ -52,14 +66,15 @@ const relationshipForm = reactive({
   name: '',
   entityAId: '',
   entityBId: '',
-  cardinalityA: '',
-  cardinalityB: '',
+  cardinality: 0,
+  type: 0,
 });
 
 enum RelationshipFormStep {
   NAME,
   ENTITYA,
   ENTITYB,
+  TYPE,
   CARDINALITY,
 }
 
@@ -70,6 +85,12 @@ const cardinalityOptions = Object.values(cardinalityInfo).map(
     infotext: data.infoText,
   }),
 );
+
+const typeOptions = Object.values(typeInfo).map((data, index) => ({
+  id: index,
+  title: data.title,
+  infotext: data.infoText,
+}));
 
 const step = ref(RelationshipFormStep.NAME);
 
@@ -86,7 +107,28 @@ const saveRelationshipEntityAId = (index: number) => {
 
 const saveRelationshipEntityBId = (index: number) => {
   relationshipForm.entityBId = entitiesBOptions.value[index].id;
-  step.value = RelationshipFormStep.CARDINALITY;
+  step.value = RelationshipFormStep.TYPE;
+};
+
+const handleRelationshipType = (index: number) => {
+  relationshipForm.type = typeOptions[index].id;
+  switch (index) {
+    case TypeOptions.COMMON:
+      step.value = RelationshipFormStep.CARDINALITY;
+      break;
+    case TypeOptions.WEAK:
+      relationshipForm.cardinality = CardinalityOptions.OneToOne;
+      createRelationship();
+      break;
+    case TypeOptions.INHERITANCE:
+      relationshipForm.cardinality = CardinalityOptions.OneToOne;
+      createRelationship();
+      break;
+    case TypeOptions.ASSOCIATIVE:
+      relationshipForm.cardinality = CardinalityOptions.ManyToMany;
+      createRelationship();
+      break;
+  }
 };
 
 const saveRelationshipCardinality = (index: number) => {
@@ -103,13 +145,20 @@ const createRelationship = () => {
   setActiveDerMenu(DerFlowEnum.RELATIONSHIP_OPTIONS);
 };
 
-onMounted(() => {
-  if (isEditScope()) {
+onBeforeMount(() => {
+  if (
+    diagramTool.diagram.value?.entities &&
+    diagramTool.diagram.value?.entities.length < 2
+  ) {
+    return setActiveDerMenu(DerFlowEnum.DEFAULT);
+  } else if (isEditScope()) {
     const relationship = diagramTool?.getRelationship();
-    relationshipForm.name = relationship.name;
-    relationshipForm.entityAId = relationship.entityAId;
-    relationshipForm.entityBId = relationship.entityBId;
-    relationshipForm.cardinality = relationship.cardinality;
+    if (relationship) {
+      relationshipForm.name = relationship.name;
+      relationshipForm.entityAId = relationship.entityAId;
+      relationshipForm.entityBId = relationship.entityBId;
+      relationshipForm.cardinality = relationship.cardinality;
+    }
   }
 });
 </script>
