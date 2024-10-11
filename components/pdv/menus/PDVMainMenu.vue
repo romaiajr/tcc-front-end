@@ -1,8 +1,5 @@
 <template>
-  <div class="menu" @keydown="handleKeydown">
-    <PDVMenu :menu="menu" />
-  </div>
-  <TeachingAssistantMenu />
+  <PDVMenu :menu="menu" />
 </template>
 <script setup lang="ts">
 import { PDVMenusEnum } from '~/src/interfaces/pdv-menu';
@@ -10,11 +7,6 @@ import { PDVMenusEnum } from '~/src/interfaces/pdv-menu';
 const { t } = useI18n();
 const menuStore = useMenuOptions();
 const menu = ref();
-const { hotkeys } = useKeyboardNavigation();
-
-const handleKeydown = (event: KeyboardEvent) => {
-  hotkeys(event);
-};
 
 onBeforeMount(() => {
   menu.value = {

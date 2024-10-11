@@ -1,5 +1,6 @@
 export function useTTS() {
   const tts = useTtsStore();
+  const { t } = useI18n();
   const phrasesQueue = ref<string[]>([]);
 
   const speakPhrase = (phrase: string) => {
@@ -32,11 +33,15 @@ export function useTTS() {
     }
   };
 
-  // TODO - Permitir configuração do rate
+  const updateTTSPreferences = (increase: boolean) => {
+    tts.setRate(increase ? tts.speech.rate + 2 : tts.speech.rate - 2);
+    speakPhrase(t('message.speech_rate_test', { rate: tts.speech.rate / 2 }));
+  };
 
   return {
     speakPhrase,
     addPhraseToQueue,
     speakPhraseQueue,
+    updateTTSPreferences,
   };
 }

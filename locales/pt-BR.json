@@ -9,6 +9,13 @@
                 "help": "Ajuda"
             }
         },
+        "tts": {
+            "title": "Configuração da síntese de voz",
+            "options": {
+                "increase": "Aumentar velocidade da fala",
+                "decrease": "Reduzir velocidade da fala"
+            }
+        },
         "projects": {
             "title": "Meus projetos",
             "options": {
@@ -108,5 +115,9 @@
             "inheritance": "Herança",
             "associative": "Associativo"
         }
+    },
+    "message": {
+        "speech_rate_test": "Essa é uma fala teste para verificar a velocidade da leitura. Ajuste conforme necessário para garantir que a fala esteja clara e compreensível. Velocidade atual: {rate}"
+
     }
 }

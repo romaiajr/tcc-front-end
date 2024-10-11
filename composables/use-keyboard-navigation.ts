@@ -1,3 +1,5 @@
+import { PDVMenusEnum } from '~/src/interfaces/pdv-menu';
+
 export function useKeyboardNavigation() {
   const focusableElements = ref<HTMLElement[]>([]);
   const menuStore = useMenuOptions();
@@ -47,9 +49,11 @@ export function useKeyboardNavigation() {
       focusableElements.value[nextIndex]?.focus();
       event.preventDefault();
     } else if (event.code === 'Escape') {
-      menuStore.setActiveDerMenu(
-        menuStore.previousDerMenu ?? menuStore.activeDerMenu,
-      );
+      if (menuStore.activeMainMenu === PDVMenusEnum.PROJECTS) {
+        menuStore.setActiveDerMenu(
+          menuStore.previousDerMenu ?? menuStore.activeDerMenu,
+        );
+      }
     }
   };
 
