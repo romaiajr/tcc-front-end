@@ -13,9 +13,8 @@
       >
         <FocusableElement
           :title="shouldTranslate ? $t(item.title) : item.title"
-          @keydown.enter.exact="() => handleSubmit(index)"
+          @click="() => handleSubmit(index)"
           @keydown.shift="() => readInfoText($t(item.infotext ?? ''))"
-          @focus="handleFocus"
         >
           {{ shouldTranslate ? $t(item.title) : item.title }}
         </FocusableElement>
@@ -39,10 +38,6 @@ const { title, items, shiftFlag } = defineProps<FocusableSelectProps>();
 const tts = useTTS();
 
 const emit = defineEmits(['submit']);
-
-const handleFocus = (event: any) => {
-  tts.speakPhrase(event.target.title);
-};
 
 const handleInitalFocus = () => {
   selectTitle.value.focusableRef.focus();

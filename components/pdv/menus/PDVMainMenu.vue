@@ -25,12 +25,6 @@ onBeforeMount(() => {
           menuStore.setActiveMainMenu(PDVMenusEnum.TTS);
         },
       },
-      {
-        label: t('menu.main.options.language'),
-        action: () => {
-          menuStore.setActiveMainMenu(PDVMenusEnum.LANGUAGE);
-        },
-      },
     ],
   };
 });

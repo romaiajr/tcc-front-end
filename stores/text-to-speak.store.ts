@@ -1,7 +1,6 @@
 export type SpeechPreferences = {
   rate: number;
   lang: string;
-  voice: SpeechSynthesisVoice | null;
 };
 
 export const useTtsStore = defineStore('tts', {
@@ -9,7 +8,6 @@ export const useTtsStore = defineStore('tts', {
     speech: {
       rate: 4,
       lang: 'pt-BR',
-      voice: null,
     },
     history: [],
   }),

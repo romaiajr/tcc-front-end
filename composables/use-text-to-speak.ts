@@ -3,13 +3,26 @@ export function useTTS() {
   const { t } = useI18n();
   const phrasesQueue = ref<string[]>([]);
 
+  const configUtterance = (
+    utterance: SpeechSynthesisUtterance,
+    lang?: string,
+  ) => {
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.filter((v) => v.lang === (lang ?? tts.speech.lang));
+
+    utterance.lang = lang ?? utterance.lang;
+    utterance.rate = tts.speech.rate;
+    if (voice) {
+      utterance.voice = voice[0];
+    }
+    speechSynthesis.speak(utterance);
+  };
+
   const speakPhrase = (phrase: string) => {
     if (speechSynthesis.speaking) {
       speechSynthesis.cancel();
     }
-    const utterance = new SpeechSynthesisUtterance(phrase);
-    Object.assign(utterance, tts.speech);
-    speechSynthesis.speak(utterance);
+    configUtterance(new SpeechSynthesisUtterance(phrase));
     tts.addPhraseToHistory(phrase);
   };
 
@@ -40,6 +53,7 @@ export function useTTS() {
 
   return {
     speakPhrase,
+    speakKeywords,
     addPhraseToQueue,
     speakPhraseQueue,
     updateTTSPreferences,

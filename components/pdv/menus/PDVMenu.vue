@@ -23,19 +23,12 @@ interface PDVMenuProps {
 }
 
 const { menu } = defineProps<PDVMenuProps>();
-const tts = useTTS();
 
 const tableTitle = ref();
 
-const handleInitalFocus = () => {
-  tableTitle.value.focusableRef.focus();
-  tts.addPhraseToQueue(menu.title);
-  tts.speakPhraseQueue();
-};
-
 onMounted(async () => {
   await nextTick();
-  handleInitalFocus();
+  tableTitle.value.focusableRef.focus();
 });
 </script>
 
