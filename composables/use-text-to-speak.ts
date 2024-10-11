@@ -53,7 +53,6 @@ export function useTTS() {
 
   return {
     speakPhrase,
-    speakKeywords,
     addPhraseToQueue,
     speakPhraseQueue,
     updateTTSPreferences,
