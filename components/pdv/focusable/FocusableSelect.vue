@@ -1,17 +1,20 @@
 <template>
-  <div class="pdv-select">
+  <div class="focusable-select">
     <ul>
-      <li class="pdv-select-title">
-        <FocusableElement ref="selectTitle" :title="title" :tabindex="1">
+      <li class="focusable-select-title">
+        <FocusableElement ref="selectTitle" :title="title">
           {{ title }}
         </FocusableElement>
       </li>
-      <li v-for="(item, index) in items" :key="index" class="pdv-select-item">
+      <li
+        v-for="(item, index) in items"
+        :key="index"
+        class="focusable-select-item"
+      >
         <FocusableElement
-          :tabindex="index + 2"
           :title="shouldTranslate ? $t(item.title) : item.title"
           @keydown.enter.exact="() => handleSubmit(index)"
-          @keydown.shift="() => readInfoText($t(item.infotext))"
+          @keydown.shift="() => readInfoText($t(item.infotext ?? ''))"
           @focus="handleFocus"
         >
           {{ shouldTranslate ? $t(item.title) : item.title }}
@@ -21,7 +24,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-interface PDVSelectProps {
+interface FocusableSelectProps {
   title: string;
   items: {
     title: string;
@@ -31,7 +34,7 @@ interface PDVSelectProps {
   shouldTranslate?: boolean;
 }
 
-const { title, items, shiftFlag } = defineProps<PDVSelectProps>();
+const { title, items, shiftFlag } = defineProps<FocusableSelectProps>();
 
 const tts = useTTS();
 
@@ -70,7 +73,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.pdv-select {
+.focusable-select {
   display: table;
   width: 50%;
   text-align: center;
@@ -78,14 +81,14 @@ onMounted(async () => {
   border-collapse: collapse;
 }
 
-.pdv-select ul {
+.focusable-select ul {
   list-style-type: none;
   padding: 0;
   width: 100%;
   display: table-row-group;
 }
 
-.pdv-select li {
+.focusable-select li {
   display: table-row;
   width: 100%;
 }

@@ -16,6 +16,7 @@ onBeforeMount(() => {
         label: t('menu.main.options.my_projects'),
         action: () => {
           menuStore.setActiveMainMenu(PDVMenusEnum.PROJECTS);
+          menuStore.setActiveDerMenu(DerFlowEnum.DEFAULT);
         },
       },
       {
@@ -28,12 +29,6 @@ onBeforeMount(() => {
         label: t('menu.main.options.language'),
         action: () => {
           menuStore.setActiveMainMenu(PDVMenusEnum.LANGUAGE);
-        },
-      },
-      {
-        label: t('menu.main.options.help'),
-        action: () => {
-          menuStore.setActiveMainMenu(PDVMenusEnum.DEFAULT);
         },
       },
     ],

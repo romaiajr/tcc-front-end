@@ -1,13 +1,12 @@
 <template>
-  <div class="pdv-input-container">
-    <p class="pdv-input-title">
+  <div class="focusable-input-container">
+    <p class="focusable-input-title">
       {{ title }}
     </p>
     <input
       ref="focusableInput"
       v-model="inputValue"
-      class="pdv-input"
-      :tabindex="computedTabindex"
+      class="focusable-input"
       :title="title"
       @focus="handleFocus"
       @input="handleInput"
@@ -16,29 +15,26 @@
   </div>
 </template>
 <script setup lang="ts">
-interface PDVInputProps {
+interface FocusableInputProps {
   title: string;
   modelValue?: string;
-  tabindex?: number;
 }
 
-const props = defineProps<PDVInputProps>();
+const props = defineProps<FocusableInputProps>();
 
 const inputValue = ref(props.modelValue);
 let isInternalUpdate = false;
-
-const computedTabindex = computed(() =>
-  props.tabindex !== undefined ? props.tabindex : 0,
-);
 
 const { addPhraseToQueue, speakPhraseQueue, speakPhrase } = useTTS();
 
 const emit = defineEmits(['submit', 'update:modelValue']);
 
 const handleInput = (event: any) => {
-  speakPhrase(event.target.value.charAt(inputValue.value.length - 1));
-  addPhraseToQueue(event.target.value);
-  speakPhraseQueue();
+  if (inputValue.value) {
+    speakPhrase(event.target.value.charAt(inputValue.value.length - 1));
+    addPhraseToQueue(event.target.value);
+    speakPhraseQueue();
+  }
 };
 
 const handleFocus = (event: any) => {
@@ -74,19 +70,19 @@ onMounted(async () => {
 });
 </script>
 <style scoped>
-.pdv-input-container {
+.focusable-input-container {
   display: flex;
   flex-direction: column;
 }
 
-.pdv-input-title {
+.focusable-input-title {
   font-size: 1.5rem;
   font-weight: bold;
   padding: 10px;
   cursor: default;
 }
 
-.pdv-input {
+.focusable-input {
   padding: 10px;
   background-color: #fff;
   border: 1px solid #ccc;

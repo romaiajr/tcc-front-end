@@ -2,20 +2,12 @@
   <div class="pdv-menu-summary">
     <ul>
       <li class="menu-title">
-        <FocusableElement ref="tableTitle" :title="menu.title" :tabindex="0">
+        <FocusableElement ref="tableTitle" :title="menu.title">
           {{ menu.title }}
         </FocusableElement>
       </li>
-      <li
-        v-for="(item, index) in menu.items"
-        :key="item.label"
-        class="menu-item"
-      >
-        <FocusableElement
-          :title="item.label"
-          :tabindex="index + 1"
-          @click="item.action"
-        >
+      <li v-for="item in menu.items" :key="item.label" class="menu-item">
+        <FocusableElement :title="item.label" @click="item.action">
           {{ item.label }}
         </FocusableElement>
       </li>
@@ -61,6 +53,7 @@ onMounted(async () => {
   padding: 0;
   width: 100%;
   display: table-row-group;
+  margin-bottom: 16px;
 }
 
 .pdv-menu-summary li {

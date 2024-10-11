@@ -7,7 +7,7 @@ export function useKeyboardNavigation() {
   const updateFocusableElements = () => {
     focusableElements.value = Array.from(
       document.querySelectorAll(
-        'a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        '.focusable-input, .focusable-element, .focusable-select, [tabindex]:not([tabindex="-1"])',
       ),
     ) as HTMLElement[];
   };
@@ -18,23 +18,10 @@ export function useKeyboardNavigation() {
     const currentIndex = focusableElements.value.findIndex(
       (el) => el === document.activeElement,
     );
-
-    if (event.code === 'Tab') {
-      if (event.shiftKey) {
-        const prevIndex = getPrevIndex(
-          currentIndex,
-          focusableElements.value.length,
-        );
-        focusableElements.value[prevIndex]?.focus();
-      } else {
-        const nextIndex = getNextIndex(
-          currentIndex,
-          focusableElements.value.length,
-        );
-        focusableElements.value[nextIndex]?.focus();
-      }
-      event.preventDefault();
-    } else if (event.code === 'ArrowUp') {
+    focusableElements.value.forEach((el, index) => {
+      (el as HTMLElement).tabIndex = index + 1;
+    });
+    if (event.code === 'ArrowUp') {
       const prevIndex = getPrevIndex(
         currentIndex,
         focusableElements.value.length,
@@ -50,10 +37,18 @@ export function useKeyboardNavigation() {
       event.preventDefault();
     } else if (event.code === 'Escape') {
       if (menuStore.activeMainMenu === PDVMenusEnum.PROJECTS) {
-        menuStore.setActiveDerMenu(
-          menuStore.previousDerMenu ?? menuStore.activeDerMenu,
-        );
+        if (menuStore.previousDerMenu !== undefined) {
+          menuStore.setActiveDerMenu(menuStore.previousDerMenu);
+        } else {
+          menuStore.setActiveMainMenu(PDVMenusEnum.DEFAULT);
+        }
+      } else if (menuStore.activeMainMenu === PDVMenusEnum.TTS) {
+        menuStore.setActiveMainMenu(PDVMenusEnum.DEFAULT);
       }
+    } else if (event.key === 'Home' && event.ctrlKey) {
+      menuStore.setActiveMainMenu(PDVMenusEnum.DEFAULT);
+    } else if (event.key === 'Alt' && event.ctrlKey) {
+      menuStore.setActiveMainMenu(PDVMenusEnum.TTS);
     }
   };
 

@@ -117,7 +117,8 @@
         }
     },
     "message": {
-        "speech_rate_test": "Essa é uma fala teste para verificar a velocidade da leitura. Ajuste conforme necessário para garantir que a fala esteja clara e compreensível. Velocidade atual: {rate}"
+        "speech_rate_test": "Essa é uma fala teste para verificar a velocidade da leitura. Ajuste conforme necessário para garantir que a fala esteja clara e compreensível. Velocidade atual: {rate}",
+        "navigation_helper": "Para navegar entre as opções do menu, utilize as teclas CIMA e BAIXO para se mover entre as opções. Se preferir, use TAB para avançar para a próxima opção. Pressione ENTER para confirmar sua escolha ou ESC para voltar ao menu anterior. Para retornar ao menu principal, pressione CTRL + HOME. Para acessar o menu de configuração da síntese de voz, pressione CTRL + ALT."
 
     }
 }

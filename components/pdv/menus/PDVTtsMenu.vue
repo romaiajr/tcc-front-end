@@ -1,17 +1,10 @@
 <template>
-  <PDVMenu v-if="menu" :menu="menu" @keydown.esc.stop="handleKeydown" />
+  <PDVMenu v-if="menu" :menu="menu" />
 </template>
 <script setup lang="ts">
-import { PDVMenusEnum } from '~/src/interfaces/pdv-menu';
-
 const { t } = useI18n();
 const menu = ref();
 const tts = useTTS();
-const menuStore = useMenuOptions();
-
-const handleKeydown = () => {
-  menuStore.setActiveMainMenu(PDVMenusEnum.DEFAULT);
-};
 
 onBeforeMount(() => {
   menu.value = {

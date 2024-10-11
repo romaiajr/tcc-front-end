@@ -1,8 +1,5 @@
 <template>
-  <PDVDerDefaulMenu
-    v-if="menuStore.activeDerMenu === DerFlowEnum.DEFAULT"
-    @keydown.esc.stop="() => menuStore.setActiveMainMenu(PDVMenusEnum.DEFAULT)"
-  />
+  <PDVDerDefaulMenu v-if="menuStore.activeDerMenu === DerFlowEnum.DEFAULT" />
   <PDVDerEntities
     v-else-if="menuStore.activeDerMenu === DerFlowEnum.ENTITIES"
   />
@@ -31,7 +28,7 @@
 </template>
 <script setup lang="ts">
 import { DerFlowEnum } from '~/composables/use-diagram';
-import { PDVMenusEnum } from '~/src/interfaces/pdv-menu';
+
 const diagramTool = useDiagram();
 const menuStore = useMenuOptions();
 

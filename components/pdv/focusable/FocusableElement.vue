@@ -4,7 +4,6 @@
     v-bind="$attrs"
     ref="focusableRef"
     class="focusable-element"
-    :tabindex="computedTabindex"
     :title="title"
     @focus="handleFocus"
   >
@@ -13,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
+defineProps({
   title: {
     type: String,
     required: true,
@@ -22,15 +21,7 @@ const props = defineProps({
     type: String,
     default: 'button',
   },
-  tabindex: {
-    type: [Number, String],
-    default: 0,
-  },
 });
-
-const computedTabindex = computed(() =>
-  props.tabindex !== undefined ? props.tabindex : 0,
-);
 
 const { speakPhrase } = useTTS();
 
