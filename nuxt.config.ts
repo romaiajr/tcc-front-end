@@ -22,7 +22,7 @@ export default defineNuxtConfig({
         file: 'pt-BR.json',
       },
       {
-        code: 'en-GB',
+        code: 'en-US',
         language: 'en-US',
         name: 'English(US)',
         file: 'en-US.json',

@@ -1,28 +1,24 @@
 export function useTTS() {
   const tts = useTtsStore();
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const phrasesQueue = ref<string[]>([]);
 
-  const configUtterance = (
-    utterance: SpeechSynthesisUtterance,
-    lang?: string,
-  ) => {
+  const configSpeech = (phrase: string) => {
     const voices = speechSynthesis.getVoices();
-    const voice = voices.filter((v) => v.lang === (lang ?? tts.speech.lang));
-
-    utterance.lang = lang ?? utterance.lang;
-    utterance.rate = tts.speech.rate;
-    if (voice) {
-      utterance.voice = voice[0];
-    }
-    speechSynthesis.speak(utterance);
+    const voice = voices.find((v) => v.lang === locale.value);
+    const speech = useSpeechSynthesis(phrase, {
+      voice,
+      rate: tts.speech.rate,
+    });
+    return speech;
   };
 
   const speakPhrase = (phrase: string) => {
     if (speechSynthesis.speaking) {
       speechSynthesis.cancel();
     }
-    configUtterance(new SpeechSynthesisUtterance(phrase));
+    const speech = configSpeech(phrase);
+    speech.speak();
     tts.addPhraseToHistory(phrase);
   };
 
@@ -33,13 +29,12 @@ export function useTTS() {
   const speakPhraseQueue = () => {
     if (phrasesQueue.value.length > 0) {
       const phrase = phrasesQueue.value.shift();
-      const utterance = new SpeechSynthesisUtterance(phrase);
-      Object.assign(utterance, tts.speech);
-      utterance.onend = () => {
+      const speech = configSpeech(phrase as string);
+      speech.utterance.value.onend = () => {
         speakPhraseQueue();
       };
 
-      speechSynthesis.speak(utterance);
+      speech.speak();
       if (phrase) {
         tts.addPhraseToHistory(phrase);
       }
