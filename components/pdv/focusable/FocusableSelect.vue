@@ -2,7 +2,7 @@
   <div class="focusable-select">
     <ul>
       <li class="focusable-select-title">
-        <FocusableElement ref="selectTitle" :title="title">
+        <FocusableElement ref="selectTitle" :title="title" shift-flag>
           {{ title }}
         </FocusableElement>
       </li>
@@ -34,19 +34,10 @@ interface FocusableSelectProps {
 }
 
 const { title, items, shiftFlag } = defineProps<FocusableSelectProps>();
-const { t } = useI18n();
 
 const tts = useTTS();
 
 const emit = defineEmits(['submit']);
-
-const handleInitalFocus = () => {
-  selectTitle.value.focusableRef.focus();
-  if (shiftFlag) {
-    tts.addPhraseToQueue(t('message.shift_helper'));
-  }
-  tts.speakPhraseQueue();
-};
 
 const readInfoText = (infoText: string) => {
   if (shiftFlag) {
@@ -60,9 +51,9 @@ const handleSubmit = (index: number) => {
 
 const selectTitle = ref();
 
-onMounted(async () => {
-  await nextTick();
-  handleInitalFocus();
+onMounted(() => {
+  nextTick();
+  selectTitle.value.focusableRef.focus();
 });
 </script>
 

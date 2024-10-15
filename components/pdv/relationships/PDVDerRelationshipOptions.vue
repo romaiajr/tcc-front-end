@@ -10,8 +10,8 @@ const menuStore = useMenuOptions();
 const { t } = useI18n();
 
 const menu = ref({
-  title: t('menu.der_flow.titles.attribute_options', {
-    attribute: diagramTool.getRelationship()?.name,
+  title: t('menu.der_flow.titles.relationship_options', {
+    relationship: diagramTool.getRelationship()?.name,
   }),
   items: [
     {
@@ -24,7 +24,7 @@ const menu = ref({
     {
       label: t('menu.der_flow.options.relationship.delete'),
       action: () => {
-        diagramTool?.removeRelationship();
+        menuStore.setActiveDerMenu(DerFlowEnum.DELETE_RELATIONSHIP);
       },
     },
   ],

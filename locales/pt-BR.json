@@ -41,7 +41,9 @@
                 "entity_options": "Opções da entidade {entity}",
                 "delete_entity": "Excluir entidade {entity}",
                 "relationship_options": "Opções do relacionamento {relationship}",
+                "delete_relationship": "Excluir relacionamento {relationship}",
                 "attribute_options": "Opções do atributo {attribute}",
+                "delete_attribute": "Excluir atributo {attribute}",
                 "entity_list": "Entidades do diagrama {diagram}",
                 "attribute_list": "Atributos da entidade {entity}",
                 "relationships_list": "Relacionamentos do diagrama {diagram}"

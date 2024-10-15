@@ -8,20 +8,20 @@ const menuStore = useMenuOptions();
 const { t } = useI18n();
 
 const menu = ref({
-  title: t('menu.der_flow.titles.delete_entity', {
-    entity: diagramTool.getEntity()?.name,
+  title: t('menu.der_flow.titles.delete_relationship', {
+    relationship: diagramTool.getRelationship().name,
   }),
   items: [
     {
       label: t('common.confirm'),
       action: () => {
-        diagramTool?.removeEntity();
+        diagramTool?.removeRelationship();
       },
     },
     {
       label: t('common.cancel'),
       action: () => {
-        menuStore.setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
+        menuStore.setActiveDerMenu(DerFlowEnum.RELATIONSHIP_OPTIONS);
       },
     },
   ],

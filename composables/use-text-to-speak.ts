@@ -17,6 +17,7 @@ export function useTTS() {
   const speakPhrase = (phrase: string) => {
     if (speechSynthesis.speaking) {
       speechSynthesis.cancel();
+      phrasesQueue.value = [];
     }
     const speech = configSpeech(phrase);
     speech.speak();

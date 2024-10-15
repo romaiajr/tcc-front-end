@@ -24,7 +24,7 @@ const menu = ref({
     {
       label: t('menu.der_flow.options.entity.attribute.delete'),
       action: () => {
-        diagramTool?.removeAttribute();
+        menuStore.setActiveDerMenu(DerFlowEnum.DELETE_ATTR);
       },
     },
   ],

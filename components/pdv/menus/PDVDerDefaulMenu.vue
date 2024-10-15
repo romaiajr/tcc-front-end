@@ -99,7 +99,7 @@ function createRelationships() {
     diagramTool.diagram.value &&
     diagramTool.diagram.value?.entities.length < 2
   ) {
-    tts.speakPhrase(t('message.has_not_two_entites'));
+    tts.speakPhrase(t('message.has_not_two_entities'));
   } else {
     menuStore.setActiveDerMenu(DerFlowEnum.NEW_RELATIONSHIP);
     menuStore.setScope(FormScope.CREATE);

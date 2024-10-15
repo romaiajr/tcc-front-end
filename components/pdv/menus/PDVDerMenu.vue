@@ -16,6 +16,9 @@
   <PDVDerAttrOptions
     v-else-if="menuStore.activeDerMenu === DerFlowEnum.ATTR_OPTIONS"
   />
+  <PDVDerDeleteAttr
+    v-else-if="menuStore.activeDerMenu === DerFlowEnum.DELETE_ATTR"
+  />
   <PDVCreateAttribute
     v-else-if="menuStore.activeDerMenu === DerFlowEnum.NEW_ATTR"
   />
@@ -24,6 +27,9 @@
   />
   <PDVDerRelationshipOptions
     v-else-if="menuStore.activeDerMenu === DerFlowEnum.RELATIONSHIP_OPTIONS"
+  />
+  <PDVDerDeleteRelationship
+    v-else-if="menuStore.activeDerMenu === DerFlowEnum.DELETE_RELATIONSHIP"
   />
   <PDVCreateRelationship
     v-else-if="menuStore.activeDerMenu === DerFlowEnum.NEW_RELATIONSHIP"

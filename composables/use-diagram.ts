@@ -243,8 +243,12 @@ export function useDiagram() {
         if (entity && entity.attrs) {
           const id = derStore.currentAttrId;
           entity.attrs = entity.attrs.filter((a) => a.id !== id);
+          if (entity?.attrs?.length > 0) {
+            menu.setActiveDerMenu(DerFlowEnum.ATTRS);
+          } else {
+            menu.setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
+          }
         }
-        menu.setActiveDerMenu(DerFlowEnum.ATTRS);
       }
     };
 
