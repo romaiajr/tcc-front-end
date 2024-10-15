@@ -7,7 +7,12 @@
         </FocusableElement>
       </li>
       <li v-for="item in menu.items" :key="item.label" class="menu-item">
-        <FocusableElement :title="item.label" @click="item.action">
+        <FocusableElement
+          :title="item.label"
+          :shift-flag="Boolean(item.infoText)"
+          @click="item.action"
+          @keydown.shift="() => readInfoText($t(item.infoText ?? ''))"
+        >
           {{ item.label }}
         </FocusableElement>
       </li>
@@ -23,8 +28,15 @@ interface PDVMenuProps {
 }
 
 const { menu } = defineProps<PDVMenuProps>();
+const tts = useTTS();
 
 const tableTitle = ref();
+
+const readInfoText = (infoText: string) => {
+  if (infoText) {
+    tts.speakPhrase(infoText);
+  }
+};
 
 onMounted(async () => {
   await nextTick();

@@ -6,8 +6,8 @@ export enum PDVMenusEnum {
 
 export interface MenuItem {
   label: string;
-  targetMenu?: PDVMenusEnum;
   action?: () => void;
+  infoText?: string;
 }
 
 export interface Menu {

@@ -2,10 +2,11 @@ export function useTTS() {
   const tts = useTtsStore();
   const { t, locale } = useI18n();
   const phrasesQueue = ref<string[]>([]);
+  const voice = ref();
 
   const configSpeech = (phrase: string) => {
     const voices = speechSynthesis.getVoices();
-    const voice = voices.find((v) => v.lang === locale.value);
+    voice.value = voices.find((v) => v.lang === locale.value);
     const speech = useSpeechSynthesis(phrase, {
       voice,
       rate: tts.speech.rate,

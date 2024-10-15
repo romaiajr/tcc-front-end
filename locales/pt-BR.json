@@ -103,7 +103,10 @@
             "common": "Esse tipo de relacionamento ocorre quando uma entidade depende totalmente da outra para existir",
             "weak": "Esse tipo de relacionamento ocorre quando uma entidade, chamada de entidade fraca, depende de outra entidade, conhecida como entidade forte, para existir.",
             "inheritance": "Esse tipo de relacionamento reflete um modelo de herança entre entidades. No contexto de bancos de dados, isso pode ser representado por entidades que compartilham atributos comuns",
-            "associative": "Esse tipo de relacionamento é utilizado para modelar relacionamentos muitos para muitos. Geralmente, é representado por uma tabela associativa que liga duas ou mais entidades."
+            "associative": "Esse tipo de relacionamento é utilizado para modelar relacionamentos muitos para muitos. Geralmente, é representado por uma tabela associativa que liga duas ou mais entidades.",
+            "entity": "Entidades representam os objetos ou conceitos principais sobre os quais você deseja armazenar informações no banco de dados. Cada entidade geralmente se torna uma tabela no banco de dados.",
+            "attribute": "Os atributos são as características ou propriedades das entidades. Cada entidade possui um conjunto de atributos que descrevem as informações armazenadas. Em uma tabela de banco de dados, os atributos correspondem às colunas.",
+            "relationship": "Relacionamentos definem como as entidades estão conectadas entre si. No modelo ER, um relacionamento indica a forma como duas ou mais entidades interagem. Por exemplo, o relacionamento entre uma entidade Cliente e uma entidade Pedido pode ser que um cliente faz vários pedidos, enquanto um pedido é feito por um único cliente"
         },
         "cardinality": {
             "OneToOne": "Um para um",
@@ -118,7 +121,7 @@
     },
     "message": {
         "speech_rate_test": "Essa é uma fala teste para verificar a velocidade da leitura. Ajuste conforme necessário para garantir que a fala esteja clara e compreensível. Velocidade atual: {rate}",
-        "navigation_helper": "Para navegar entre as opções do menu, utilize as teclas CIMA e BAIXO para se mover entre as opções. Se preferir, use TAB para avançar para a próxima opção. Pressione ENTER para confirmar sua escolha ou ESC para voltar ao menu anterior. Para retornar ao menu principal, pressione CTRL + HOME. Para acessar o menu de configuração da síntese de voz, pressione CTRL + ALT."
-
+        "navigation_helper": "Para navegar entre as opções do menu, utilize as teclas CIMA e BAIXO para se mover entre as opções. Se preferir, use TAB para avançar para a próxima opção. Pressione ENTER para confirmar sua escolha ou ESC para voltar ao menu anterior. Para retornar ao menu principal, pressione CTRL + HOME. Para acessar o menu de configuração da síntese de voz, pressione CTRL + ALT.",
+        "shift_helper": "Pressione a tecla SHIFT para mais informações sobre a opção selecionada"
     }
 }

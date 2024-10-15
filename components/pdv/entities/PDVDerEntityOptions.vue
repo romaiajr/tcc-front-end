@@ -19,6 +19,7 @@ const menu = ref({
         menuStore.setActiveDerMenu(DerFlowEnum.NEW_ATTR);
         menuStore.setScope(FormScope.CREATE);
       },
+      infoText: t('sql.explanation.attribute'),
     },
     {
       label: t('menu.der_flow.options.entity.attribute.navigate'),

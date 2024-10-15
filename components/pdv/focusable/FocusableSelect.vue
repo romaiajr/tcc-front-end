@@ -34,6 +34,7 @@ interface FocusableSelectProps {
 }
 
 const { title, items, shiftFlag } = defineProps<FocusableSelectProps>();
+const { t } = useI18n();
 
 const tts = useTTS();
 
@@ -42,9 +43,7 @@ const emit = defineEmits(['submit']);
 const handleInitalFocus = () => {
   selectTitle.value.focusableRef.focus();
   if (shiftFlag) {
-    tts.addPhraseToQueue(
-      'Pressione a tecla SHIFT para saber mais sobre a opção selecionada',
-    );
+    tts.addPhraseToQueue(t('message.shift_helper'));
   }
   tts.speakPhraseQueue();
 };

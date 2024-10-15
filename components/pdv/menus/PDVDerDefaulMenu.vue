@@ -20,6 +20,7 @@ onBeforeMount(() => {
           menuStore.setActiveDerMenu(DerFlowEnum.NEW_ENTITY);
           menuStore.setScope(FormScope.CREATE);
         },
+        infoText: t('sql.explanation.entity'),
       },
       {
         label: t('menu.der_flow.options.entity.navigate', {
@@ -43,6 +44,7 @@ onBeforeMount(() => {
           menuStore.setActiveDerMenu(DerFlowEnum.NEW_RELATIONSHIP);
           menuStore.setScope(FormScope.CREATE);
         },
+        infoText: t('sql.explanation.relationship'),
       },
       {
         label: t('menu.der_flow.options.relationship.navigate'),
