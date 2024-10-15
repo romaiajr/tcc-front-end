@@ -15,21 +15,17 @@ const menu = ref({
 } as Menu);
 
 onBeforeMount(() => {
-  if (!diagramTool.diagram.value?.entities) {
-    menuStore.setActiveDerMenu(DerFlowEnum.DEFAULT);
-  } else {
-    menu.value.title = t('menu.der_flow.titles.entity_list', {
-      diagram: diagramTool.diagram.value?.name,
+  menu.value.title = t('menu.der_flow.titles.entity_list', {
+    diagram: diagramTool.diagram.value?.name,
+  });
+  diagramTool.diagram.value?.entities.forEach((entity) => {
+    menu.value.items.push({
+      label: entity.name,
+      action: () => {
+        menuStore.setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
+        derStore.setCurrentEntityId(entity.id);
+      },
     });
-    diagramTool.diagram.value?.entities.forEach((entity) => {
-      menu.value.items.push({
-        label: entity.name,
-        action: () => {
-          menuStore.setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
-          derStore.setCurrentEntityId(entity.id);
-        },
-      });
-    });
-  }
+  });
 });
 </script>

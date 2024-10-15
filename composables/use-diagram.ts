@@ -10,6 +10,7 @@ import type {
   SqlDataType,
   TypeOptions,
 } from '~/src/interfaces/der-diagram';
+import { DerFlowEnum } from '~/src/interfaces/pdv-menu';
 
 type UseDiagramReturn = {
   diagram: ReturnType<typeof ref<Diagram | null>>;
@@ -42,6 +43,7 @@ let instance: UseDiagramReturn | null = null;
 
 export function useDiagram() {
   const derStore = useDerOptions();
+  const menu = useMenuOptions();
   const tts = useTTS();
   const i18n = useI18n();
 
@@ -79,6 +81,7 @@ export function useDiagram() {
         });
       }
       derStore.setCurrentEntityId(id);
+      menu.setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
     };
 
     const editEntityName = (newName: string) => {
@@ -87,6 +90,7 @@ export function useDiagram() {
         if (entity) {
           entity.name = newName.toLowerCase();
         }
+        menu.setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
       }
     };
 
@@ -108,6 +112,11 @@ export function useDiagram() {
             return r.entityAId !== id && r.entityBId !== id;
           },
         );
+        if (diagram.value.entities.length > 0) {
+          menu.setActiveDerMenu(DerFlowEnum.ENTITIES);
+        } else {
+          menu.setActiveDerMenu(DerFlowEnum.DEFAULT);
+        }
       }
     };
 
@@ -154,6 +163,7 @@ export function useDiagram() {
             type: props.type,
           });
           derStore.setCurrentRelationshipId(id);
+          menu.setActiveDerMenu(DerFlowEnum.RELATIONSHIP_OPTIONS);
         }
       }
     };
@@ -171,6 +181,7 @@ export function useDiagram() {
           relationship.cardinality = newData.cardinality;
           relationship.type = newData.type;
         }
+        menu.setActiveDerMenu(DerFlowEnum.RELATIONSHIP_OPTIONS);
       }
     };
 
@@ -187,6 +198,7 @@ export function useDiagram() {
         diagram.value.relationships = diagram.value.relationships.filter(
           (r) => r.id !== id,
         );
+        menu.setActiveDerMenu(DerFlowEnum.RELATIONSHIPS);
       }
     };
 
@@ -200,7 +212,7 @@ export function useDiagram() {
             name: props.name.toLowerCase(),
             type: props.type,
           });
-          derStore.setCurrentAttrId(id);
+          menu.setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
         }
       }
     };
@@ -213,6 +225,7 @@ export function useDiagram() {
           attr.name = newData.name.toLowerCase();
           attr.type = newData.type;
         }
+        menu.setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
       }
     };
 
@@ -231,6 +244,7 @@ export function useDiagram() {
           const id = derStore.currentAttrId;
           entity.attrs = entity.attrs.filter((a) => a.id !== id);
         }
+        menu.setActiveDerMenu(DerFlowEnum.ATTRS);
       }
     };
 

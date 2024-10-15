@@ -49,9 +49,9 @@ const menu = ref({
     {
       label: t('menu.der_flow.options.entity.delete'),
       action: () => {
-        diagramTool?.removeEntity();
-        menuStore.setActiveDerMenu(DerFlowEnum.ENTITIES);
+        menuStore.setActiveDerMenu(DerFlowEnum.DELETE_ENTITY);
       },
+      complementText: t('message.delete_entity'),
     },
   ],
 });

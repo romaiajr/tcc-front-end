@@ -6,6 +6,9 @@
   <PDVDerEntityOptions
     v-else-if="menuStore.activeDerMenu === DerFlowEnum.ENTITY_OPTIONS"
   />
+  <PDVDerDeleteEntity
+    v-else-if="menuStore.activeDerMenu === DerFlowEnum.DELETE_ENTITY"
+  />
   <PDVCreateEntity
     v-else-if="menuStore.activeDerMenu === DerFlowEnum.NEW_ENTITY"
   />
@@ -27,6 +30,7 @@
   />
 </template>
 <script setup lang="ts">
+import PDVDerDeleteEntity from '../entities/PDVDerDeleteEntity.vue';
 import { DerFlowEnum } from '~/src/interfaces/pdv-menu';
 
 const diagramTool = useDiagram();

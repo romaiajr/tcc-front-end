@@ -10,6 +10,7 @@
         <FocusableElement
           :title="item.label"
           :shift-flag="Boolean(item.infoText)"
+          :complement-text="item.complementText"
           @click="item.action"
           @keydown.shift="() => readInfoText($t(item.infoText ?? ''))"
         >

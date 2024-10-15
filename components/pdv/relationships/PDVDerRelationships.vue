@@ -31,8 +31,6 @@ onBeforeMount(() => {
         },
       });
     });
-  } else {
-    menuStore.setActiveDerMenu(DerFlowEnum.DEFAULT);
   }
 });
 </script>

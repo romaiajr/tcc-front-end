@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-const { shiftFlag } = defineProps({
+const { shiftFlag, complementText } = defineProps({
   title: {
     type: String,
     required: true,
@@ -25,15 +25,28 @@ const { shiftFlag } = defineProps({
     type: Boolean,
     default: false,
   },
+  complementText: {
+    type: String,
+    default: '',
+  },
 });
 
-const { speakPhrase } = useTTS();
+const { speakPhrase, speakPhraseQueue, addPhraseToQueue } = useTTS();
 const { t } = useI18n();
 
 const handleFocus = (event: any) => {
-  let phrase = event.target.title;
-  phrase += shiftFlag ? `, ${t('message.shift_helper')}` : '';
-  speakPhrase(phrase);
+  const phrase = event.target.title;
+  if (!shiftFlag && !complementText) {
+    speakPhrase(phrase);
+    return;
+  }
+  addPhraseToQueue(phrase);
+  if (shiftFlag) {
+    addPhraseToQueue(t('message.shift_helper'));
+  } else if (complementText) {
+    addPhraseToQueue(complementText);
+  }
+  speakPhraseQueue();
 };
 
 const focusableRef = ref<HTMLElement | null>(null);

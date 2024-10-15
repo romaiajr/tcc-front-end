@@ -25,7 +25,6 @@ const menu = ref({
       label: t('menu.der_flow.options.relationship.delete'),
       action: () => {
         diagramTool?.removeRelationship();
-        menuStore.setActiveDerMenu(DerFlowEnum.RELATIONSHIPS);
       },
     },
   ],

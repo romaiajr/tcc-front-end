@@ -29,8 +29,6 @@ onBeforeMount(() => {
         },
       });
     });
-  } else {
-    menuStore.setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
   }
 });
 </script>

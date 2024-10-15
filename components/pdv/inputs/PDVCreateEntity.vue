@@ -7,10 +7,9 @@
 </template>
 
 <script setup lang="ts">
-import { DerFlowEnum } from '~/src/interfaces/pdv-menu';
 import { FormScope } from '~/stores/menu.store';
 
-const { scope, isEditScope, setActiveDerMenu } = useMenuOptions();
+const { scope, isEditScope } = useMenuOptions();
 const diagramTool = useDiagram();
 const derStore = useDerOptions();
 const entityName = ref();
@@ -21,7 +20,6 @@ const handleSubmit = (entityName: string) => {
   } else if (derStore.currentEntityId) {
     diagramTool.editEntityName(entityName);
   }
-  setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
 };
 
 onMounted(() => {

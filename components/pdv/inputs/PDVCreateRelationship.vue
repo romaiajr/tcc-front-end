@@ -46,9 +46,9 @@ import {
   TypeOptions,
   CardinalityOptions,
 } from '~/src/interfaces/der-diagram';
-import { DerFlowEnum } from '~/src/interfaces/pdv-menu';
+
 const diagramTool = useDiagram();
-const { scope, isEditScope, setActiveDerMenu } = useMenuOptions();
+const { scope, isEditScope } = useMenuOptions();
 
 const entitiesAOptions = Object.values(diagramTool.diagram.value.entities).map(
   (data) => ({
@@ -143,16 +143,10 @@ const createRelationship = () => {
   } else {
     diagramTool.editRelationship(relationshipForm);
   }
-  setActiveDerMenu(DerFlowEnum.RELATIONSHIP_OPTIONS);
 };
 
 onBeforeMount(() => {
-  if (
-    diagramTool.diagram.value?.entities &&
-    diagramTool.diagram.value?.entities.length < 2
-  ) {
-    return setActiveDerMenu(DerFlowEnum.DEFAULT);
-  } else if (isEditScope()) {
+  if (isEditScope()) {
     const relationship = diagramTool?.getRelationship();
     if (relationship) {
       relationshipForm.name = relationship.name;

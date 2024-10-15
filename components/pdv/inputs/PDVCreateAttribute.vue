@@ -18,10 +18,9 @@
 
 <script setup lang="ts">
 import { SqlDataType, sqlDataTypeInfo } from '~/src/interfaces/der-diagram';
-import { DerFlowEnum } from '~/src/interfaces/pdv-menu';
 
 const diagramTool = useDiagram();
-const { scope, isEditScope, setActiveDerMenu } = useMenuOptions();
+const { scope, isEditScope } = useMenuOptions();
 
 const sqlTypes = Object.values(sqlDataTypeInfo).map((data) => ({
   title: data.title,
@@ -53,7 +52,6 @@ const createAttr = (index: number) => {
   } else {
     diagramTool.editAttribute(attributeForm);
   }
-  setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
 };
 
 onMounted(() => {
