@@ -54,7 +54,7 @@
                     "name": "Digite o nome da entidade",
                     "edit": "Editar entidade",
                     "delete": "Excluir entidade",
-                    "update_name": "Digite o novo nome da entidade",
+                    "update_name": "Editar o nome da entidade",
                     "attribute": {
                         "create": "Criar atributo",
                         "navigate":"Navegar pelos atributos da entidade {entity}",
@@ -63,7 +63,7 @@
                         "type": "Selecione o tipo do atributo",
                         "delete": "Excluir atributo",
                         "edit": "Editar atributo",
-                        "update_name": "Digite o novo nome do atributo",
+                        "update_name": "Editar o nome do atributo",
                         "update_type": "Selecione o novo tipo do atributo"
                     }
                 },
@@ -74,7 +74,7 @@
                     "name": "Digite o nome do relacionamento",
                     "edit": "Editar relacionamento",
                     "delete": "Excluir relacionamento",
-                    "update_name": "Digite o novo nome do relacionamento",
+                    "update_name": "Editar o nome do relacionamento",
                     "elementA": "Definir entidade A",
                     "elementB": "Definir entidade B",
                     "type": "Definir tipo do relacionamento",
@@ -122,6 +122,10 @@
     "message": {
         "speech_rate_test": "Essa é uma fala teste para verificar a velocidade da leitura. Ajuste conforme necessário para garantir que a fala esteja clara e compreensível. Velocidade atual: {rate}",
         "navigation_helper": "Para navegar entre as opções do menu, utilize as teclas CIMA e BAIXO para se mover entre as opções. Se preferir, use TAB para avançar para a próxima opção. Pressione ENTER para confirmar sua escolha ou ESC para voltar ao menu anterior. Para retornar ao menu principal, pressione CTRL + HOME. Para acessar o menu de configuração da síntese de voz, pressione CTRL + ALT.",
-        "shift_helper": "Pressione a tecla SHIFT para mais informações sobre a opção selecionada"
+        "shift_helper": "Pressione a tecla SHIFT para mais informações sobre a opção selecionada",
+        "has_no_entities": "É necessário criar ao menos uma entidade para acessar essa funcionalidade.",
+        "has_no_relationships": "É necessário criar ao menos um relacionamento para acessar essa funcionalidade.",
+        "has_not_two_entities": "É necessário criar ao menos duas entidades para acessar essa funcionalidade.",
+        "has_no_attributes": "É necessário que a entidade possua ao menos um atributo para acessar essa funcionalidade."
     }
 }

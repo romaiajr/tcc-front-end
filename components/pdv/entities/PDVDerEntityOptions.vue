@@ -7,6 +7,7 @@ import { FormScope } from '~/stores/menu.store';
 const diagramTool = useDiagram();
 const menuStore = useMenuOptions();
 const { t } = useI18n();
+const tts = useTTS();
 
 const menu = ref({
   title: t('menu.der_flow.titles.entity_options', {
@@ -24,11 +25,18 @@ const menu = ref({
     {
       label: t('menu.der_flow.options.entity.attribute.navigate'),
       action: () => {
-        menuStore.setActiveDerMenu(DerFlowEnum.ATTRS);
+        if (hasAttrs()) {
+          menuStore.setActiveDerMenu(DerFlowEnum.ATTRS);
+        }
       },
     },
     {
       label: t('menu.der_flow.options.entity.attribute.read'),
+      action: () => {
+        if (hasAttrs()) {
+          // TODO - Read attributes
+        }
+      },
     },
     {
       label: t('menu.der_flow.options.entity.update_name'),
@@ -46,4 +54,12 @@ const menu = ref({
     },
   ],
 });
+
+function hasAttrs() {
+  if (diagramTool.getEntity()?.attrs?.length === 0) {
+    tts.speakPhrase(t('message.has_no_attributes'));
+    return false;
+  }
+  return true;
+}
 </script>

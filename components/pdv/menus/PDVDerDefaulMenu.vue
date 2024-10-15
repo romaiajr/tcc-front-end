@@ -7,6 +7,7 @@ import { FormScope } from '~/stores/menu.store';
 const diagramTool = useDiagram();
 const menuStore = useMenuOptions();
 const { t } = useI18n();
+const tts = useTTS();
 
 const menu = ref();
 
@@ -27,7 +28,9 @@ onBeforeMount(() => {
           diagram: diagramTool.diagram.value?.name,
         }),
         action: () => {
-          menuStore.setActiveDerMenu(DerFlowEnum.ENTITIES);
+          if (hasEntities()) {
+            menuStore.setActiveDerMenu(DerFlowEnum.ENTITIES);
+          }
         },
       },
       {
@@ -35,25 +38,31 @@ onBeforeMount(() => {
           diagram: diagramTool.diagram.value?.name,
         }),
         action: () => {
-          diagramTool.readEntities();
+          if (hasEntities()) {
+            diagramTool.readEntities();
+          }
         },
       },
       {
         label: t('menu.der_flow.options.relationship.create'),
-        action: () => {
-          menuStore.setActiveDerMenu(DerFlowEnum.NEW_RELATIONSHIP);
-          menuStore.setScope(FormScope.CREATE);
-        },
+        action: createRelationships,
         infoText: t('sql.explanation.relationship'),
       },
       {
         label: t('menu.der_flow.options.relationship.navigate'),
         action: () => {
-          menuStore.setActiveDerMenu(DerFlowEnum.RELATIONSHIPS);
+          if (hasRelationships()) {
+            menuStore.setActiveDerMenu(DerFlowEnum.RELATIONSHIPS);
+          }
         },
       },
       {
         label: t('menu.der_flow.options.relationship.read'),
+        action: () => {
+          if (hasRelationships()) {
+            // TODO - Read relationships
+          }
+        },
       },
       {
         label: t('menu.der_flow.options.diagram.read'),
@@ -61,4 +70,38 @@ onBeforeMount(() => {
     ],
   };
 });
+
+function hasEntities() {
+  if (
+    diagramTool.diagram.value &&
+    diagramTool.diagram.value?.entities.length === 0
+  ) {
+    tts.speakPhrase(t('message.has_no_entities'));
+    return false;
+  }
+  return true;
+}
+
+function hasRelationships() {
+  if (
+    diagramTool.diagram.value &&
+    diagramTool.diagram.value?.relationships.length === 0
+  ) {
+    tts.speakPhrase(t('message.has_no_relationships'));
+    return false;
+  }
+  return true;
+}
+
+function createRelationships() {
+  if (
+    diagramTool.diagram.value &&
+    diagramTool.diagram.value?.entities.length < 2
+  ) {
+    tts.speakPhrase(t('message.has_not_two_entites'));
+  } else {
+    menuStore.setActiveDerMenu(DerFlowEnum.NEW_RELATIONSHIP);
+    menuStore.setScope(FormScope.CREATE);
+  }
+}
 </script>
