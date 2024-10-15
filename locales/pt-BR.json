@@ -39,6 +39,7 @@
             "titles": {
                 "default": "Projeto {project}",
                 "entity_options": "Opções da entidade {entity}",
+                "delete_entity": "Excluir entidade {entity}",
                 "relationship_options": "Opções do relacionamento {relationship}",
                 "attribute_options": "Opções do atributo {attribute}",
                 "entity_list": "Entidades do diagrama {diagram}",
@@ -126,6 +127,11 @@
         "has_no_entities": "É necessário criar ao menos uma entidade para acessar essa funcionalidade.",
         "has_no_relationships": "É necessário criar ao menos um relacionamento para acessar essa funcionalidade.",
         "has_not_two_entities": "É necessário criar ao menos duas entidades para acessar essa funcionalidade.",
-        "has_no_attributes": "É necessário que a entidade possua ao menos um atributo para acessar essa funcionalidade."
+        "has_no_attributes": "É necessário que a entidade possua ao menos um atributo para acessar essa funcionalidade.",
+        "delete_entity": "Ao excluir a entidade, todos os relacionamentos e atributos relacionados a ela serão perdidos"
+    },
+    "common": {
+        "confirm": "Confirmar",
+        "cancel": "Cancelar"
     }
 }
