@@ -2,7 +2,7 @@
   <PDVMenu :menu="menu" />
 </template>
 <script setup lang="ts">
-import { PDVMenusEnum } from '~/src/interfaces/pdv-menu';
+import { DerFlowEnum, PDVMenusEnum } from '~/src/interfaces/pdv-menu';
 
 const { t } = useI18n();
 const menuStore = useMenuOptions();

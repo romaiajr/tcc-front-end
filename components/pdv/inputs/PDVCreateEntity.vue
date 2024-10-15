@@ -7,6 +7,7 @@
 </template>
 
 <script setup lang="ts">
+import { DerFlowEnum } from '~/src/interfaces/pdv-menu';
 import { FormScope } from '~/stores/menu.store';
 
 const { scope, isEditScope, setActiveDerMenu } = useMenuOptions();

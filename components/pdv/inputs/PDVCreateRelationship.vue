@@ -46,6 +46,7 @@ import {
   TypeOptions,
   CardinalityOptions,
 } from '~/src/interfaces/der-diagram';
+import { DerFlowEnum } from '~/src/interfaces/pdv-menu';
 const diagramTool = useDiagram();
 const { scope, isEditScope, setActiveDerMenu } = useMenuOptions();
 
