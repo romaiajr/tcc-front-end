@@ -45,7 +45,7 @@ import {
   typeInfo,
   TypeOptions,
   CardinalityOptions,
-} from '~/composables/use-diagram';
+} from '~/src/interfaces/der-diagram';
 const diagramTool = useDiagram();
 const { scope, isEditScope, setActiveDerMenu } = useMenuOptions();
 

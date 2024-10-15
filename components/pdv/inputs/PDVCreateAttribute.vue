@@ -17,7 +17,8 @@
 </template>
 
 <script setup lang="ts">
-import { sqlDataTypeInfo } from '~/composables/use-diagram';
+import { SqlDataType, sqlDataTypeInfo } from '~/src/interfaces/der-diagram';
+import { DerFlowEnum } from '~/src/interfaces/pdv-menu';
 
 const diagramTool = useDiagram();
 const { scope, isEditScope, setActiveDerMenu } = useMenuOptions();
@@ -29,7 +30,7 @@ const sqlTypes = Object.values(sqlDataTypeInfo).map((data) => ({
 
 const attributeForm = reactive({
   name: '',
-  type: '',
+  type: '' as SqlDataType,
 });
 
 enum AttrFormSteps {

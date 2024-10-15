@@ -27,7 +27,7 @@
   />
 </template>
 <script setup lang="ts">
-import { DerFlowEnum } from '~/composables/use-diagram';
+import { DerFlowEnum } from '~/src/interfaces/pdv-menu';
 
 const diagramTool = useDiagram();
 const menuStore = useMenuOptions();
