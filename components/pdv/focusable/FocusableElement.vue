@@ -52,3 +52,12 @@ const handleFocus = (event: any) => {
 const focusableRef = ref<HTMLElement | null>(null);
 defineExpose({ focusableRef });
 </script>
+<style>
+.focusable-element {
+  outline: none;
+  border: none;
+  display: block;
+  width: 100%;
+  padding: 10px;
+}
+</style>

@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   modules: [
     '@pinia/nuxt', // https://nuxt.com/modules/pinia
     '@pinia-plugin-persistedstate/nuxt', // https://nuxt.com/modules/pinia-plugin-persistedstate
@@ -71,5 +71,5 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
-  css: ['vue-json-pretty/lib/styles.css'],
+  css: ['vue-json-pretty/lib/styles.css', '@/assets/styles/global.css'],
 });

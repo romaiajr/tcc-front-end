@@ -72,10 +72,10 @@ export const cardinalityInfo = {
 };
 
 export enum TypeOptions {
-  COMMON,
-  WEAK,
-  INHERITANCE,
-  ASSOCIATIVE,
+  COMMON = 'COMMON',
+  WEAK = 'WEAK',
+  INHERITANCE = 'INHERITANCE',
+  ASSOCIATIVE = 'ASSOCIATIVE',
 }
 
 export const typeInfo = {

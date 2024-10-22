@@ -1,0 +1,9 @@
+:root {
+    --font-family: 'Arial, sans-serif';
+    --border-style: 1px solid #bbb;
+    --stroke-color: #ccc;
+    --neutral-color: #fff;
+    --focus-border-style: 1px solid #ff7043;
+    --focus-background-color: #ffe0b2;
+    --primary-color: #cece;
+  }

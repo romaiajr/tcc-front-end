@@ -84,10 +84,14 @@ onMounted(async () => {
 
 .focusable-input {
   padding: 10px;
-  background-color: #fff;
-  border: 1px solid #ccc;
+  background-color: var(--neutral-color);
+  border: var(--border-style);
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+}
+
+input:focus {
+  background-color: var(--focus-background-color);
+  outline: var(--focus-border-style);
 }
 </style>

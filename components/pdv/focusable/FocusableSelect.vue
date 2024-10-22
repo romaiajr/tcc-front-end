@@ -1,27 +1,36 @@
 <template>
   <div class="focusable-select">
-    <ul>
-      <li class="focusable-select-title">
-        <FocusableElement ref="selectTitle" :title="title" shift-flag>
-          {{ title }}
-        </FocusableElement>
-      </li>
-      <li
-        v-for="(item, index) in items"
-        :key="index"
-        class="focusable-select-item"
-      >
-        <FocusableElement
-          :title="shouldTranslate ? $t(item.title) : item.title"
-          @click="() => handleSubmit(index)"
-          @keydown.shift="() => readInfoText($t(item.infotext ?? ''))"
+    <table>
+      <thead>
+        <tr class="focusable-select-title">
+          <th colspan="2">
+            <FocusableElement ref="selectTitle" :title="title" shift-flag>
+              {{ title }}
+            </FocusableElement>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(item, index) in items"
+          :key="index"
+          class="focusable-select-item"
         >
-          {{ shouldTranslate ? $t(item.title) : item.title }}
-        </FocusableElement>
-      </li>
-    </ul>
+          <td>
+            <FocusableElement
+              :title="shouldTranslate ? $t(item.title) : item.title"
+              @click="() => handleSubmit(index)"
+              @keydown.shift="() => readInfoText($t(item.infotext ?? ''))"
+            >
+              {{ shouldTranslate ? $t(item.title) : item.title }}
+            </FocusableElement>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
+
 <script lang="ts" setup>
 interface FocusableSelectProps {
   title: string;
@@ -59,53 +68,32 @@ onMounted(() => {
 
 <style scoped>
 .focusable-select {
-  display: table;
   width: 50%;
   text-align: center;
-  border-spacing: 0;
-  border-collapse: collapse;
 }
 
-.focusable-select ul {
-  list-style-type: none;
-  padding: 0;
+table {
   width: 100%;
-  display: table-row-group;
+  border-collapse: collapse; /* Colapsa bordas */
 }
 
-.focusable-select li {
-  display: table-row;
-  width: 100%;
-}
-
-.pdv-select-title {
+th {
+  border: var(--border-style);
   font-size: 1.5rem;
   font-weight: bold;
-  padding: 10px;
-  background-color: #fff;
-  margin-bottom: 16px;
+  background-color: var(--n eutral-color);
   cursor: default;
-  display: table-cell;
+  text-align: center; /* Centraliza o título */
 }
 
-.pdv-select-item {
-  display: table-cell;
-  padding: 10px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  cursor: pointer;
+.focusable-select-item td {
+  background-color: var(--n eutral-color);
+  border: var(--border-style);
 }
 
-.focusable-element {
-  outline: none;
-  border: none;
-  display: block;
-  width: 100%;
-  padding: 10px;
-}
-
-.focusable-element:focus {
-  border: 1px solid #ff7043;
-  background-color: #ffe0b2;
+.focusable-select-item td:focus-within,
+.focusable-select-title th:focus-within {
+  border: var(--focus-border-style);
+  background-color: var(--focus-background-color);
 }
 </style>

@@ -1,23 +1,31 @@
 <template>
   <div class="pdv-menu-summary">
-    <ul>
-      <li class="menu-title">
-        <FocusableElement ref="tableTitle" :title="menu.title">
-          {{ menu.title }}
-        </FocusableElement>
-      </li>
-      <li v-for="item in menu.items" :key="item.label" class="menu-item">
-        <FocusableElement
-          :title="item.label"
-          :shift-flag="Boolean(item.infoText)"
-          :complement-text="item.complementText"
-          @click="item.action"
-          @keydown.shift="() => readInfoText($t(item.infoText ?? ''))"
-        >
-          {{ item.label }}
-        </FocusableElement>
-      </li>
-    </ul>
+    <table>
+      <thead>
+        <tr class="menu-item">
+          <th colspan="2">
+            <FocusableElement ref="tableTitle" :title="menu.title">
+              {{ menu.title }}
+            </FocusableElement>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in menu.items" :key="item.label" class="menu-item">
+          <td colspan="2">
+            <FocusableElement
+              :title="item.label"
+              :shift-flag="Boolean(item.infoText)"
+              :complement-text="item.complementText"
+              @click="item.action"
+              @keydown.shift="() => readInfoText($t(item.infoText ?? ''))"
+            >
+              {{ item.label }}
+            </FocusableElement>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -47,55 +55,33 @@ onMounted(async () => {
 
 <style scoped>
 .pdv-menu-summary {
-  display: table;
   width: 50%;
   text-align: center;
-  border-spacing: 0;
   border-collapse: collapse;
 }
 
-.pdv-menu-summary ul {
-  list-style-type: none;
-  padding: 0;
-  width: 100%;
-  display: table-row-group;
-  margin-bottom: 16px;
-}
-
-.pdv-menu-summary li {
-  display: table-row;
+table {
+  border-spacing: 0;
   width: 100%;
 }
 
-.menu-title {
+th {
+  border: var(--border-style);
   font-size: 1.5rem;
   font-weight: bold;
-  padding: 10px;
-  background-color: #fff;
-  margin-bottom: 16px !important;
+  background-color: var(--neutral-color);
   cursor: default;
-  display: table-cell;
 }
 
-.menu-item {
-  display: table-cell;
-  padding: 10px;
-  background-color: #fff;
-  border: 1px solid #ccc;
+.menu-item td {
+  background-color: var(--neutral-color);
+  border: var(--border-style);
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.focusable-element {
-  outline: none;
-  border: none;
-  display: block;
-  width: 100%;
-  padding: 10px;
-}
-
-.focusable-element:focus {
-  border: 1px solid #ff7043;
-  background-color: #ffe0b2;
+.menu-item td:focus-within,
+.menu-item th:focus-within {
+  border: var(--focus-border-style);
+  background-color: var(--focus-background-color);
 }
 </style>

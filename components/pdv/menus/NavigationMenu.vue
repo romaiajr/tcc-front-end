@@ -73,23 +73,15 @@ function handleHelp() {
 .option {
   display: inline-flex;
   padding: 10px;
-  background-color: #fff;
-  border: 1px solid #ccc !important;
+  background-color: var(--neutral-color);
+  border: var(--border-style) !important;
   cursor: pointer;
   align-items: center;
   justify-content: center;
 }
 
-.focusable-element {
-  outline: none;
-  border: none;
-  display: block;
-  width: 100%;
-  padding: 10px;
-}
-
-.focusable-element:focus {
-  border: 1px solid #ff7043 !important;
-  background-color: #ffe0b2;
+.option:focus-within {
+  border: var(--focus-border-style) !important;
+  background-color: var(--focus-background-color);
 }
 </style>
