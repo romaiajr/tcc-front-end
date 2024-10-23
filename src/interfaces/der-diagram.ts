@@ -72,10 +72,10 @@ export const cardinalityInfo = {
 };
 
 export enum TypeOptions {
-  COMMON = 'COMMON',
-  WEAK = 'WEAK',
-  INHERITANCE = 'INHERITANCE',
-  ASSOCIATIVE = 'ASSOCIATIVE',
+  COMMON,
+  WEAK,
+  INHERITANCE,
+  ASSOCIATIVE,
 }
 
 export const typeInfo = {
@@ -103,10 +103,16 @@ export interface DerAttribute {
   type: SqlDataType;
 }
 
+export interface DiagramPosition {
+  x: number | null;
+  y: number | null;
+}
+
 export interface DerEntity {
   id: string;
   name: string;
   attrs?: DerAttribute[];
+  position?: DiagramPosition;
 }
 
 export interface DerRelationship {
@@ -116,6 +122,7 @@ export interface DerRelationship {
   entityBId: string;
   cardinality: CardinalityOptions;
   type: TypeOptions;
+  position?: DiagramPosition;
 }
 
 export interface Diagram {

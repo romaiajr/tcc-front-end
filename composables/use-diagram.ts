@@ -1,12 +1,14 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import { ref } from 'vue';
+import { diagramMock } from '~/mock/diagram.mock';
 import type {
   CardinalityOptions,
   DerAttribute,
   DerEntity,
   DerRelationship,
   Diagram,
+  DiagramPosition,
   SqlDataType,
   TypeOptions,
 } from '~/src/interfaces/der-diagram';
@@ -17,6 +19,7 @@ type UseDiagramReturn = {
   createDiagram: (name: string) => void;
   createEntity: (name: string) => void;
   editEntityName: (newName: string) => void;
+  updateEntityPosition: (id: string, position: DiagramPosition) => void;
   getEntity: () => DerEntity | undefined;
   removeEntity: () => void;
   readEntities: () => void;
@@ -28,13 +31,15 @@ type UseDiagramReturn = {
     type: TypeOptions;
   }) => void;
   editRelationship: (newData: Omit<DerRelationship, 'id'>) => void;
+  updateRelationshipPosition: (id: string, position: DiagramPosition) => void;
   getRelationship: () => DerRelationship | undefined;
   removeRelationship: () => void;
   createAttribute: (props: { name: string; type: SqlDataType }) => void;
   editAttribute: (newData: Omit<DerAttribute, 'id'>) => void;
   getAttribute: () => DerAttribute | undefined;
   removeAttribute: () => void;
-  loadDiagram: (diagramId: string) => void;
+  // loadDiagram: (diagramId: string) => void;
+  loadDiagram: () => void;
   updateDiagram: (diagramId: string) => void;
   deleteDiagram: (diagramId: string) => void;
 };
@@ -50,8 +55,12 @@ export function useDiagram() {
   if (!instance) {
     const diagram = ref<Diagram | null>(null);
 
-    const loadDiagram = (diagramId: string) => {
-      /** TODO - Função de get diagram */
+    // const loadDiagram = (diagramId: string) => {
+    //   /** TODO - Função de get diagram */
+    // };
+
+    const loadDiagram = () => {
+      diagram.value = diagramMock;
     };
 
     const createDiagram = (name: string) => {
@@ -78,6 +87,10 @@ export function useDiagram() {
           id,
           name: name.toLowerCase(),
           attrs: [],
+          position: {
+            x: null,
+            y: null,
+          },
         });
       }
       derStore.setCurrentEntityId(id);
@@ -91,6 +104,13 @@ export function useDiagram() {
           entity.name = newName.toLowerCase();
         }
         menu.setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
+      }
+    };
+
+    const updateEntityPosition = (id: string, position: DiagramPosition) => {
+      const entity = diagram.value?.entities.find((e) => e.id === id);
+      if (entity) {
+        entity.position = { ...position };
       }
     };
 
@@ -161,6 +181,10 @@ export function useDiagram() {
             entityBId: props.entityBId,
             cardinality: props.cardinality,
             type: props.type,
+            position: {
+              x: null,
+              y: null,
+            },
           });
           derStore.setCurrentRelationshipId(id);
           menu.setActiveDerMenu(DerFlowEnum.RELATIONSHIP_OPTIONS);
@@ -182,6 +206,18 @@ export function useDiagram() {
           relationship.type = newData.type;
         }
         menu.setActiveDerMenu(DerFlowEnum.RELATIONSHIP_OPTIONS);
+      }
+    };
+
+    const updateRelationshipPosition = (
+      id: string,
+      position: DiagramPosition,
+    ) => {
+      const relationship = diagram.value?.relationships.find(
+        (r) => r.id === id,
+      );
+      if (relationship) {
+        relationship.position = position;
       }
     };
 
@@ -257,11 +293,13 @@ export function useDiagram() {
       createDiagram,
       createEntity,
       editEntityName,
+      updateEntityPosition,
       removeEntity,
       getEntity,
       readEntities,
       createRelationship,
       editRelationship,
+      updateRelationshipPosition,
       removeRelationship,
       getRelationship,
       createAttribute,

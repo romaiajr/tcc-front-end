@@ -1,5 +1,8 @@
 <template>
-  <PDVDraggable ref="teste" :initial-x="initialX" :initial-y="initialY">
+  <PDVDraggable
+    :initial-x="relationship.position?.x"
+    :initial-y="relationship.position?.y"
+  >
     <svg :width="width" :height="height">
       <!-- Renderiza a forma correta dependendo do tipo de relacionamento -->
       <template v-if="relationship.type === TypeOptions.COMMON">
@@ -47,12 +50,10 @@ import {
 
 interface PDVRelationshipProps {
   relationship: DerRelationship;
-  initialX: number;
-  initialY: number;
 }
 
-const { relationship, initialX, initialY } =
-  defineProps<PDVRelationshipProps>();
+const props = defineProps<PDVRelationshipProps>();
+const { relationship } = toRefs(props);
 
 const getDiamondPoints = (width: number, height: number) => {
   return `${width / 2},0 ${width},${height / 2} ${width / 2},${height} 0,${height / 2}`;
@@ -62,9 +63,9 @@ const getTrianglePoints = (width: number, height: number) => {
   return `0,${height} ${width / 2},0 ${width},${height}`;
 };
 
-const textLength = relationship.name.length;
+const textLength = relationship.value.name.length;
 const fontSize = 14;
-const width = textLength * 10;
+const width = textLength * 10 > 100 ? textLength * 10 : 100;
 const height = Math.max(60, fontSize * 2);
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <PDVDraggable :initial-x="initialX" :initial-y="initialY">
+  <PDVDraggable :initial-x="x" :initial-y="y">
     <table class="entity-card">
       <tbody>
         <th colspan="2" class="entity-name">
@@ -25,11 +25,11 @@ import type { DerEntity } from '~/src/interfaces/der-diagram';
 
 interface PDVEntityProps {
   entity: DerEntity;
-  initialX: number;
-  initialY: number;
 }
 
-defineProps<PDVEntityProps>();
+const props = defineProps<PDVEntityProps>();
+const x = ref(props.entity.position?.x ?? 0);
+const y = ref(props.entity.position?.y ?? 0);
 </script>
 
 <style scoped lang="css">

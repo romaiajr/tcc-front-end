@@ -1,7 +1,6 @@
 <template>
   <div ref="diagramContainer" class="diagram">
-    <!-- Camada para linhas -->
-    <svg ref="linesLayer" class="lines-layer">
+    <svg v-if="lines" ref="linesLayer" class="lines-layer">
       <line
         v-for="(line, index) in lines"
         :key="index"
@@ -14,54 +13,109 @@
       />
     </svg>
 
-    <!-- Entidades e Relacionamentos -->
     <PDVEntity
-      v-for="(entity, index) in diagramMock.entities"
+      v-for="entity in diagramTool.diagram.value.entities"
       :id="entity.id"
       :key="entity.id"
       :entity="entity"
-      :initial-x="positions[index].x"
-      :initial-y="positions[index].y"
       @update="updateLines"
     />
     <PDVRelationship
-      v-for="(relationship, index) in diagramMock.relationships"
+      v-for="relationship in diagramTool.diagram.value.relationships"
       :id="relationship.id"
       :key="relationship.id"
       :relationship="relationship"
-      :initial-x="positions[index].x"
-      :initial-y="positions[index].y"
       @update="updateLines"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { diagramMock } from '~/mock/diagram.mock';
-
+let internalUpdate = false;
 const diagramContainer = ref(null);
 const linesLayer = ref(null);
-const positions = ref([]);
-const lines = ref([]); // Armazena as coordenadas das linhas
-const window = useWindowSize();
+const diagramTool = useDiagram();
+const lines = ref([]);
 
-const spacing = 50;
-const itemWidth = 250;
-const itemHeight = 250;
+const spacing = 20;
 
-// Função para calcular as posições iniciais das entidades e relacionamentos
 const calculatePositions = () => {
-  const itemsInRow = Math.floor(window.width.value / (itemWidth + spacing));
+  internalUpdate = true;
+  const diagram = diagramTool.diagram.value;
+  const elements = [
+    ...(diagram?.entities || []),
+    ...(diagram?.relationships || []),
+  ];
 
-  positions.value = diagramMock.entities.map((_, index) => {
-    const x = (index % itemsInRow) * (itemWidth + spacing); // Posição x
-    const y = Math.floor(index / itemsInRow) * (itemHeight + spacing); // Posição y
-    return { x, y };
-  });
+  if (elements.length) {
+    const containerRect = diagramContainer.value.getBoundingClientRect();
+    const containerOffsetX = containerRect.left;
+    const containerOffsetY = containerRect.top;
+    let actualY = spacing;
+    let actualX = spacing;
+    let newLine = true;
+    elements.forEach((e, index) => {
+      const currentPos = e.position;
+      if (!newLine) {
+        const previousElementWidth = document
+          .getElementById(elements[index - 1].id)
+          ?.getBoundingClientRect().width;
+
+        const actualElement = document.getElementById(e.id);
+
+        if (previousElementWidth) {
+          actualX = actualX + previousElementWidth + spacing;
+
+          const possiblyWidth =
+            actualX +
+            (actualElement
+              ? actualElement.getBoundingClientRect().width
+              : e.name.length * 5);
+
+          if (possiblyWidth > containerRect.width) {
+            actualX = spacing;
+            actualY = actualY + spacing * 10;
+            newLine = true;
+          }
+        }
+      } else {
+        newLine = false;
+      }
+
+      const adjustedX = actualX + containerOffsetX;
+      const adjustedY = actualY + containerOffsetY;
+
+      if (
+        !currentPos ||
+        currentPos.x !== adjustedX ||
+        currentPos.y !== adjustedY
+      ) {
+        e.position = {
+          x: adjustedX,
+          y: adjustedY,
+        };
+        diagramTool.updateEntityPosition(e.id, e.position);
+      }
+    });
+  }
+
+  internalUpdate = false;
 };
 
-// Função para calcular as coordenadas das extremidades entre os elementos
+watch(
+  () => [
+    diagramTool.diagram.value?.entities,
+    diagramTool.diagram.value?.relationships,
+  ],
+  () => {
+    if (!internalUpdate) {
+      calculatePositions();
+      updateLines();
+    }
+  },
+  { deep: true },
+);
+
 const getClosestPoints = (rectA, rectB) => {
   const pointsA = {
     top: { x: rectA.left + rectA.width / 2, y: rectA.top },
@@ -77,7 +131,6 @@ const getClosestPoints = (rectA, rectB) => {
     left: { x: rectB.left, y: rectB.top + rectB.height / 2 },
   };
 
-  // Encontrar a distância mínima entre os pontos das bordas de A e B
   let minDist = Infinity;
   let bestPointA = pointsA.top;
   let bestPointB = pointsB.top;
@@ -99,9 +152,8 @@ const getClosestPoints = (rectA, rectB) => {
   return { bestPointA, bestPointB };
 };
 
-// Função para calcular as coordenadas das linhas entre entidades e relacionamentos
 const updateLines = () => {
-  lines.value = diagramMock.relationships
+  lines.value = diagramTool.diagram.value.relationships
     .map((relationship) => {
       const entityA = document.getElementById(relationship.entityAId);
       const entityB = document.getElementById(relationship.entityBId);
@@ -112,7 +164,6 @@ const updateLines = () => {
         const entityBBox = entityB.getBoundingClientRect();
         const relationshipBox = relationshipEl.getBoundingClientRect();
 
-        // Obter os pontos de conexão mais próximos entre os elementos
         const { bestPointA, bestPointB: bestPointR } = getClosestPoints(
           entityABox,
           relationshipBox,
@@ -128,27 +179,19 @@ const updateLines = () => {
             y1: bestPointA.y,
             x2: bestPointR.x,
             y2: bestPointR.y,
-          }, // Linha de A para relacionamento
+          },
           {
             x1: bestPointR2.x,
             y1: bestPointR2.y,
             x2: bestPointB.x,
             y2: bestPointB.y,
-          }, // Linha do relacionamento para B
+          },
         ];
       }
       return null;
     })
     .flat();
 };
-
-onMounted(() => {
-  updateLines();
-});
-
-onBeforeMount(() => {
-  calculatePositions();
-});
 </script>
 
 <style scoped>
@@ -161,6 +204,7 @@ onBeforeMount(() => {
   border: var(--border-style);
   padding: 20px;
   position: relative;
+  margin-top: 32px;
 }
 
 .lines-layer {

@@ -19,6 +19,7 @@ export const diagramMock: Diagram = {
         { id: 'attr4', name: 'DateOfBirth', type: SqlDataType.TIMESTAMP },
         { id: 'attr5', name: 'Salary', type: SqlDataType.FLOAT },
       ],
+      position: { x: 244, y: 510 },
     },
     {
       id: 'entity2',
@@ -28,6 +29,7 @@ export const diagramMock: Diagram = {
         { id: 'attr2', name: 'DepartmentName', type: SqlDataType.VARCHAR },
         { id: 'attr3', name: 'ManagerID', type: SqlDataType.UUID },
       ],
+      position: { x: 468.859375, y: 510 },
     },
     {
       id: 'entity3',
@@ -37,6 +39,7 @@ export const diagramMock: Diagram = {
         { id: 'attr2', name: 'ProjectName', type: SqlDataType.VARCHAR },
         { id: 'attr3', name: 'Budget', type: SqlDataType.DOUBLE },
       ],
+      position: { x: 710.65625, y: 510 },
     },
     {
       id: 'entity4',
@@ -46,6 +49,7 @@ export const diagramMock: Diagram = {
         { id: 'attr2', name: 'ClientName', type: SqlDataType.VARCHAR },
         { id: 'attr3', name: 'ContactInfo', type: SqlDataType.TEXT },
       ],
+      position: { x: 919.53125, y: 510 },
     },
     {
       id: 'entity5',
@@ -56,40 +60,45 @@ export const diagramMock: Diagram = {
         { id: 'attr3', name: 'DueDate', type: SqlDataType.TIMESTAMP },
         { id: 'attr4', name: 'Status', type: SqlDataType.VARCHAR },
       ],
+      position: { x: 1117.75, y: 510 },
     },
   ],
   relationships: [
     {
       id: 'relationship1',
       name: 'EmployeeDepartment',
-      entityAId: 'entity1', // Employee
-      entityBId: 'entity2', // Department
+      entityAId: 'entity1',
+      entityBId: 'entity2',
       cardinality: CardinalityOptions.OneToMany,
       type: TypeOptions.COMMON,
+      position: { x: 244, y: 710 },
     },
     {
       id: 'relationship2',
       name: 'EmployeeProject',
-      entityAId: 'entity1', // Employee
-      entityBId: 'entity3', // Project
-      cardinality: CardinalityOptions.ManyToMany,
-      type: TypeOptions.ASSOCIATIVE,
+      entityAId: 'entity1',
+      entityBId: 'entity3',
+      cardinality: CardinalityOptions.OneToOne,
+      type: TypeOptions.WEAK,
+      position: { x: 244, y: 710 },
     },
     {
       id: 'relationship3',
       name: 'ClientProject',
-      entityAId: 'entity4', // Client
-      entityBId: 'entity3', // Project
+      entityAId: 'entity4',
+      entityBId: 'entity3',
       cardinality: CardinalityOptions.OneToOne,
       type: TypeOptions.INHERITANCE,
+      position: { x: 438, y: 710 },
     },
     {
       id: 'relationship4',
       name: 'ProjectTask',
-      entityAId: 'entity3', // Project
-      entityBId: 'entity5', // Task
-      cardinality: CardinalityOptions.OneToOne,
-      type: TypeOptions.WEAK,
+      entityAId: 'entity3',
+      entityBId: 'entity5',
+      cardinality: CardinalityOptions.ManyToMany,
+      type: TypeOptions.ASSOCIATIVE,
+      position: { x: 612, y: 710 },
     },
   ],
 };

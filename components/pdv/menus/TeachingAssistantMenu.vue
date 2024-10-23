@@ -13,6 +13,7 @@
       </ul>
     </div>
   </div>
+  <PDVDiagram v-if="diagramTool.diagram.value" />
 </template>
 <script setup lang="ts">
 const diagramTool = useDiagram();

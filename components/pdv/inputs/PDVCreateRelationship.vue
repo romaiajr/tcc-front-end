@@ -43,8 +43,8 @@
 import {
   cardinalityInfo,
   typeInfo,
-  TypeOptions,
   CardinalityOptions,
+  TypeOptions,
 } from '~/src/interfaces/der-diagram';
 
 const diagramTool = useDiagram();
