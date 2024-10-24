@@ -13,3 +13,6 @@ const handleKeydown = (event: KeyboardEvent) => {
   hotkeys(event);
 };
 </script>
+<style>
+@import 'vue-draggable-resizable/style.css';
+</style>

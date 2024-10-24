@@ -71,5 +71,9 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
-  css: ['vue-json-pretty/lib/styles.css', '@/assets/styles/global.css'],
+  css: [
+    'vue-json-pretty/lib/styles.css',
+    '@/assets/styles/global.css',
+    'vue-draggable-resizable/style.css',
+  ],
 });

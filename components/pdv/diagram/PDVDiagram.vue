@@ -1,197 +1,157 @@
 <template>
   <div ref="diagramContainer" class="diagram">
-    <svg v-if="lines" ref="linesLayer" class="lines-layer">
-      <line
-        v-for="(line, index) in lines"
-        :key="index"
-        :x1="line.x1"
-        :y1="line.y1"
-        :x2="line.x2"
-        :y2="line.y2"
-        stroke="black"
-        stroke-width="2"
-      />
-    </svg>
-
-    <PDVEntity
+    <vueDraggableResizable
       v-for="entity in diagramTool.diagram.value.entities"
       :id="entity.id"
       :key="entity.id"
-      :entity="entity"
-      @update="updateLines"
-    />
-    <PDVRelationship
+      :parent="true"
+      :resizable="false"
+      :x="entity.position.x"
+      :y="entity.position.y"
+      :w="'auto'"
+      :h="'auto'"
+      :disable-user-select="true"
+      class="draggable"
+      @drag-stop="(...event) => handleEntityDragStop(entity.id, event)"
+    >
+      <PDVEntity :entity="entity" />
+    </vueDraggableResizable>
+    <vueDraggableResizable
       v-for="relationship in diagramTool.diagram.value.relationships"
       :id="relationship.id"
       :key="relationship.id"
-      :relationship="relationship"
-      @update="updateLines"
-    />
+      :parent="true"
+      :resizable="false"
+      :x="relationship.position.x"
+      :y="relationship.position.y"
+      :w="'auto'"
+      :h="'auto'"
+      :disable-user-select="true"
+      class="draggable"
+      @drag-stop="
+        (...event) => handleRelationshipDragStop(relationship.id, event)
+      "
+    >
+      <PDVRelationship :relationship="relationship" />
+    </vueDraggableResizable>
   </div>
 </template>
 
 <script setup lang="ts">
-let internalUpdate = false;
+import type {
+  DerEntity,
+  DerRelationship,
+  DiagramPosition,
+} from '~/src/interfaces/der-diagram';
+
 const diagramContainer = ref(null);
-const linesLayer = ref(null);
 const diagramTool = useDiagram();
-const lines = ref([]);
 
-const spacing = 20;
+let entitiesLength = 0;
+let relationshipsLength = 0;
+let lastElementId: string;
+const spacing = 16;
+let actualY = spacing;
+let actualX = spacing;
 
-const calculatePositions = () => {
-  internalUpdate = true;
-  const diagram = diagramTool.diagram.value;
-  const elements = [
-    ...(diagram?.entities || []),
-    ...(diagram?.relationships || []),
-  ];
+const calculateEntityPosition = (entity: DerEntity) => {
+  calculatePositionForElement(entity, diagramTool.updateEntityPosition);
+};
 
-  if (elements.length) {
-    const containerRect = diagramContainer.value.getBoundingClientRect();
-    const containerOffsetX = containerRect.left;
-    const containerOffsetY = containerRect.top;
-    let actualY = spacing;
-    let actualX = spacing;
-    let newLine = true;
-    elements.forEach((e, index) => {
-      const currentPos = e.position;
-      if (!newLine) {
-        const previousElementWidth = document
-          .getElementById(elements[index - 1].id)
-          ?.getBoundingClientRect().width;
+const calculateRelationshipPosition = (relationship: DerRelationship) => {
+  calculatePositionForElement(
+    relationship,
+    diagramTool.updateRelationshipPosition,
+  );
+};
 
-        const actualElement = document.getElementById(e.id);
+const calculatePositionForElement = (
+  element: DerEntity | DerRelationship,
+  updateFn: (id: string, pos: DiagramPosition) => void,
+) => {
+  const newPosition = calculatePosition(element.position);
+  lastElementId = element.id;
+  if (newPosition !== element.position) {
+    updateFn(element.id, newPosition);
+  }
+};
 
-        if (previousElementWidth) {
-          actualX = actualX + previousElementWidth + spacing;
-
-          const possiblyWidth =
-            actualX +
-            (actualElement
-              ? actualElement.getBoundingClientRect().width
-              : e.name.length * 5);
-
-          if (possiblyWidth > containerRect.width) {
-            actualX = spacing;
-            actualY = actualY + spacing * 10;
-            newLine = true;
-          }
-        }
-      } else {
-        newLine = false;
-      }
-
-      const adjustedX = actualX + containerOffsetX;
-      const adjustedY = actualY + containerOffsetY;
-
-      if (
-        !currentPos ||
-        currentPos.x !== adjustedX ||
-        currentPos.y !== adjustedY
-      ) {
-        e.position = {
-          x: adjustedX,
-          y: adjustedY,
-        };
-        diagramTool.updateEntityPosition(e.id, e.position);
-      }
-    });
+const calculatePosition = (position: DiagramPosition): DiagramPosition => {
+  const currentPos = position;
+  const containerRect = diagramContainer.value?.getBoundingClientRect();
+  if (currentPos?.x !== null && currentPos?.y !== null) {
+    return position;
   }
 
-  internalUpdate = false;
+  if (lastElementId) {
+    const previousElement = document.getElementById(lastElementId);
+    if (previousElement) {
+      const previousElementWidth =
+        previousElement.getBoundingClientRect().width;
+      actualX = actualX + (previousElementWidth ?? 0) + spacing * 8;
+    }
+
+    if (shouldStartNewLine(containerRect.width)) {
+      actualX = spacing;
+      actualY = actualY + spacing * 15;
+    }
+  }
+
+  return {
+    x: actualX,
+    y: actualY,
+  };
+};
+
+const shouldStartNewLine = (containerWidth: number): boolean => {
+  return actualX + 250 > containerWidth;
+};
+
+const handleEntityDragStop = (id: string, position: number[]) => {
+  diagramTool.updateEntityPosition(id, { x: position[0], y: position[1] });
+};
+
+const handleRelationshipDragStop = (id: string, position: number[]) => {
+  diagramTool.updateRelationshipPosition(id, {
+    x: position[0],
+    y: position[1],
+  });
 };
 
 watch(
-  () => [
-    diagramTool.diagram.value?.entities,
-    diagramTool.diagram.value?.relationships,
-  ],
-  () => {
-    if (!internalUpdate) {
-      calculatePositions();
-      updateLines();
+  () => ({
+    entities: diagramTool.diagram.value?.entities,
+    relationships: diagramTool.diagram.value?.relationships,
+  }),
+  async ({ entities, relationships }) => {
+    if (entities && entities?.length > entitiesLength) {
+      calculateEntityPosition(entities[entities.length - 1] as DerEntity);
+      entitiesLength = entities.length;
     }
+    if (relationships && relationships?.length > relationshipsLength) {
+      calculateRelationshipPosition(
+        relationships[relationships.length - 1] as DerRelationship,
+      );
+      relationshipsLength = relationships.length;
+    }
+    await nextTick();
   },
   { deep: true },
 );
 
-const getClosestPoints = (rectA, rectB) => {
-  const pointsA = {
-    top: { x: rectA.left + rectA.width / 2, y: rectA.top },
-    right: { x: rectA.right, y: rectA.top + rectA.height / 2 },
-    bottom: { x: rectA.left + rectA.width / 2, y: rectA.bottom },
-    left: { x: rectA.left, y: rectA.top + rectA.height / 2 },
-  };
-
-  const pointsB = {
-    top: { x: rectB.left + rectB.width / 2, y: rectB.top },
-    right: { x: rectB.right, y: rectB.top + rectB.height / 2 },
-    bottom: { x: rectB.left + rectB.width / 2, y: rectB.bottom },
-    left: { x: rectB.left, y: rectB.top + rectB.height / 2 },
-  };
-
-  let minDist = Infinity;
-  let bestPointA = pointsA.top;
-  let bestPointB = pointsB.top;
-
-  Object.keys(pointsA).forEach((keyA) => {
-    Object.keys(pointsB).forEach((keyB) => {
-      const dist = Math.hypot(
-        pointsA[keyA].x - pointsB[keyB].x,
-        pointsA[keyA].y - pointsB[keyB].y,
-      );
-      if (dist < minDist) {
-        minDist = dist;
-        bestPointA = pointsA[keyA];
-        bestPointB = pointsB[keyB];
-      }
-    });
+onMounted(async () => {
+  const diagram = diagramTool.diagram.value;
+  entitiesLength = diagram?.entities.length ?? 0;
+  relationshipsLength = diagram?.relationships.length ?? 0;
+  diagram?.entities.forEach((e) => {
+    calculateEntityPosition(e as DerEntity);
+  });
+  diagram?.relationships.forEach((r) => {
+    calculateRelationshipPosition(r as DerRelationship);
   });
 
-  return { bestPointA, bestPointB };
-};
-
-const updateLines = () => {
-  lines.value = diagramTool.diagram.value.relationships
-    .map((relationship) => {
-      const entityA = document.getElementById(relationship.entityAId);
-      const entityB = document.getElementById(relationship.entityBId);
-      const relationshipEl = document.getElementById(relationship.id);
-
-      if (entityA && relationshipEl && entityB) {
-        const entityABox = entityA.getBoundingClientRect();
-        const entityBBox = entityB.getBoundingClientRect();
-        const relationshipBox = relationshipEl.getBoundingClientRect();
-
-        const { bestPointA, bestPointB: bestPointR } = getClosestPoints(
-          entityABox,
-          relationshipBox,
-        );
-        const { bestPointA: bestPointR2, bestPointB } = getClosestPoints(
-          relationshipBox,
-          entityBBox,
-        );
-
-        return [
-          {
-            x1: bestPointA.x,
-            y1: bestPointA.y,
-            x2: bestPointR.x,
-            y2: bestPointR.y,
-          },
-          {
-            x1: bestPointR2.x,
-            y1: bestPointR2.y,
-            x2: bestPointB.x,
-            y2: bestPointB.y,
-          },
-        ];
-      }
-      return null;
-    })
-    .flat();
-};
+  await nextTick();
+});
 </script>
 
 <style scoped>
@@ -202,9 +162,10 @@ const updateLines = () => {
   width: 100%;
   height: 100dvh;
   border: var(--border-style);
-  padding: 20px;
-  position: relative;
   margin-top: 32px;
+  .draggable {
+    border: none;
+  }
 }
 
 .lines-layer {

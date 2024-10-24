@@ -112,7 +112,7 @@ export interface DerEntity {
   id: string;
   name: string;
   attrs?: DerAttribute[];
-  position?: DiagramPosition;
+  position: DiagramPosition;
 }
 
 export interface DerRelationship {
@@ -122,7 +122,7 @@ export interface DerRelationship {
   entityBId: string;
   cardinality: CardinalityOptions;
   type: TypeOptions;
-  position?: DiagramPosition;
+  position: DiagramPosition;
 }
 
 export interface Diagram {

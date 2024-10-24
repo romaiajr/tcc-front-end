@@ -1,23 +1,17 @@
 <template>
-  <PDVDraggable :initial-x="x" :initial-y="y">
-    <table class="entity-card">
-      <tbody>
-        <th colspan="2" class="entity-name">
-          <strong>{{ entity.name.toLowerCase() }}</strong>
-        </th>
-        <tr
-          v-for="(attr, index) in entity.attrs"
-          :key="index"
-          class="attributes"
-        >
-          <td>{{ attr.name.toLowerCase() }}</td>
-          <td class="attribute-type">
-            <b>{{ attr.type.toLowerCase() }}</b>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </PDVDraggable>
+  <table class="entity-card">
+    <tbody>
+      <th colspan="2" class="entity-name">
+        <strong>{{ entity.name.toLowerCase() }}</strong>
+      </th>
+      <tr v-for="(attr, index) in entity.attrs" :key="index" class="attributes">
+        <td>{{ attr.name.toLowerCase() }}</td>
+        <td class="attribute-type">
+          <b>{{ attr.type.toLowerCase() }}</b>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <script setup lang="ts">
@@ -27,9 +21,7 @@ interface PDVEntityProps {
   entity: DerEntity;
 }
 
-const props = defineProps<PDVEntityProps>();
-const x = ref(props.entity.position?.x ?? 0);
-const y = ref(props.entity.position?.y ?? 0);
+defineProps<PDVEntityProps>();
 </script>
 
 <style scoped lang="css">

@@ -1,45 +1,37 @@
 <template>
-  <PDVDraggable
-    :initial-x="relationship.position?.x"
-    :initial-y="relationship.position?.y"
-  >
-    <svg :width="width" :height="height">
-      <!-- Renderiza a forma correta dependendo do tipo de relacionamento -->
-      <template v-if="relationship.type === TypeOptions.COMMON">
-        <polygon
-          :points="getDiamondPoints(width, height)"
-          class="shape common"
-        />
-      </template>
-      <template v-else-if="relationship.type === TypeOptions.ASSOCIATIVE">
-        <rect :width="width" :height="height" class="shape associative" />
-      </template>
-      <template v-else-if="relationship.type === TypeOptions.INHERITANCE">
-        <polygon
-          :points="getTrianglePoints(width, height)"
-          class="shape inheritance"
-        />
-      </template>
-      <template v-else-if="relationship.type === TypeOptions.WEAK">
-        <!-- Dois losangos sobrepostos com mais espaço entre eles -->
-        <polygon :points="getDiamondPoints(width, height)" class="shape weak" />
-        <polygon
-          :points="getDiamondPoints(width - 14, height - 14)"
-          class="shape weak-overlay"
-          :transform="`translate(7, 7)`"
-        />
-      </template>
-      <text
-        x="50%"
-        :y="relationship.type === TypeOptions.INHERITANCE ? '80%' : '50%'"
-        text-anchor="middle"
-        dominant-baseline="middle"
-        class="relationship-text"
-      >
-        {{ relationship.name.toLowerCase() }}
-      </text>
-    </svg>
-  </PDVDraggable>
+  <svg :width="width" :height="height">
+    <!-- Renderiza a forma correta dependendo do tipo de relacionamento -->
+    <template v-if="relationship.type === TypeOptions.COMMON">
+      <polygon :points="getDiamondPoints(width, height)" class="shape common" />
+    </template>
+    <template v-else-if="relationship.type === TypeOptions.ASSOCIATIVE">
+      <rect :width="width" :height="height" class="shape associative" />
+    </template>
+    <template v-else-if="relationship.type === TypeOptions.INHERITANCE">
+      <polygon
+        :points="getTrianglePoints(width, height)"
+        class="shape inheritance"
+      />
+    </template>
+    <template v-else-if="relationship.type === TypeOptions.WEAK">
+      <!-- Dois losangos sobrepostos com mais espaço entre eles -->
+      <polygon :points="getDiamondPoints(width, height)" class="shape weak" />
+      <polygon
+        :points="getDiamondPoints(width - 14, height - 14)"
+        class="shape weak-overlay"
+        :transform="`translate(7, 7)`"
+      />
+    </template>
+    <text
+      x="50%"
+      :y="relationship.type === TypeOptions.INHERITANCE ? '80%' : '50%'"
+      text-anchor="middle"
+      dominant-baseline="middle"
+      class="relationship-text"
+    >
+      {{ relationship.name.toLowerCase() }}
+    </text>
+  </svg>
 </template>
 
 <script setup lang="ts">
@@ -53,7 +45,6 @@ interface PDVRelationshipProps {
 }
 
 const props = defineProps<PDVRelationshipProps>();
-const { relationship } = toRefs(props);
 
 const getDiamondPoints = (width: number, height: number) => {
   return `${width / 2},0 ${width},${height / 2} ${width / 2},${height} 0,${height / 2}`;
@@ -63,7 +54,7 @@ const getTrianglePoints = (width: number, height: number) => {
   return `0,${height} ${width / 2},0 ${width},${height}`;
 };
 
-const textLength = relationship.value.name.length;
+const textLength = props.relationship.name.length;
 const fontSize = 14;
 const width = textLength * 10 > 100 ? textLength * 10 : 100;
 const height = Math.max(60, fontSize * 2);

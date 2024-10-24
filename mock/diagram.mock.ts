@@ -19,7 +19,7 @@ export const diagramMock: Diagram = {
         { id: 'attr4', name: 'DateOfBirth', type: SqlDataType.TIMESTAMP },
         { id: 'attr5', name: 'Salary', type: SqlDataType.FLOAT },
       ],
-      position: { x: 244, y: 510 },
+      position: { x: null, y: null },
     },
     {
       id: 'entity2',
@@ -29,7 +29,7 @@ export const diagramMock: Diagram = {
         { id: 'attr2', name: 'DepartmentName', type: SqlDataType.VARCHAR },
         { id: 'attr3', name: 'ManagerID', type: SqlDataType.UUID },
       ],
-      position: { x: 468.859375, y: 510 },
+      position: { x: null, y: null },
     },
     {
       id: 'entity3',
@@ -39,7 +39,7 @@ export const diagramMock: Diagram = {
         { id: 'attr2', name: 'ProjectName', type: SqlDataType.VARCHAR },
         { id: 'attr3', name: 'Budget', type: SqlDataType.DOUBLE },
       ],
-      position: { x: 710.65625, y: 510 },
+      position: { x: null, y: null },
     },
     {
       id: 'entity4',
@@ -49,7 +49,7 @@ export const diagramMock: Diagram = {
         { id: 'attr2', name: 'ClientName', type: SqlDataType.VARCHAR },
         { id: 'attr3', name: 'ContactInfo', type: SqlDataType.TEXT },
       ],
-      position: { x: 919.53125, y: 510 },
+      position: { x: null, y: null },
     },
     {
       id: 'entity5',
@@ -60,7 +60,7 @@ export const diagramMock: Diagram = {
         { id: 'attr3', name: 'DueDate', type: SqlDataType.TIMESTAMP },
         { id: 'attr4', name: 'Status', type: SqlDataType.VARCHAR },
       ],
-      position: { x: 1117.75, y: 510 },
+      position: { x: null, y: null },
     },
   ],
   relationships: [
@@ -71,16 +71,7 @@ export const diagramMock: Diagram = {
       entityBId: 'entity2',
       cardinality: CardinalityOptions.OneToMany,
       type: TypeOptions.COMMON,
-      position: { x: 244, y: 710 },
-    },
-    {
-      id: 'relationship2',
-      name: 'EmployeeProject',
-      entityAId: 'entity1',
-      entityBId: 'entity3',
-      cardinality: CardinalityOptions.OneToOne,
-      type: TypeOptions.WEAK,
-      position: { x: 244, y: 710 },
+      position: { x: null, y: null },
     },
     {
       id: 'relationship3',
@@ -89,7 +80,7 @@ export const diagramMock: Diagram = {
       entityBId: 'entity3',
       cardinality: CardinalityOptions.OneToOne,
       type: TypeOptions.INHERITANCE,
-      position: { x: 438, y: 710 },
+      position: { x: null, y: null },
     },
     {
       id: 'relationship4',
@@ -98,7 +89,16 @@ export const diagramMock: Diagram = {
       entityBId: 'entity5',
       cardinality: CardinalityOptions.ManyToMany,
       type: TypeOptions.ASSOCIATIVE,
-      position: { x: 612, y: 710 },
+      position: { x: null, y: null },
+    },
+    {
+      id: 'relationship2',
+      name: 'EmployeeProject',
+      entityAId: 'entity1',
+      entityBId: 'entity3',
+      cardinality: CardinalityOptions.OneToOne,
+      type: TypeOptions.WEAK,
+      position: { x: null, y: null },
     },
   ],
 };
