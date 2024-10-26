@@ -1,5 +1,6 @@
 <template>
   <div class="pdv-menu-summary">
+    <p ref="initialFocus" :tabindex="-1" />
     <table>
       <thead>
         <tr class="menu-item">
@@ -36,10 +37,10 @@ interface PDVMenuProps {
   menu: Menu;
 }
 
-const { menu } = defineProps<PDVMenuProps>();
+defineProps<PDVMenuProps>();
 const tts = useTTS();
 
-const tableTitle = ref();
+const initialFocus = ref();
 
 const readInfoText = (infoText: string) => {
   if (infoText) {
@@ -49,7 +50,7 @@ const readInfoText = (infoText: string) => {
 
 onMounted(async () => {
   await nextTick();
-  tableTitle.value.focusableRef.focus();
+  initialFocus.value.focus();
 });
 </script>
 

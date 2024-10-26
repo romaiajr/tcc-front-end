@@ -44,6 +44,8 @@ function handleBack() {
     }
   } else if (menu.activeMainMenu === PDVMenusEnum.TTS) {
     menu.setActiveMainMenu(PDVMenusEnum.DEFAULT);
+  } else if (menu.activeMainMenu === PDVMenusEnum.DEFAULT) {
+    navigateTo(Routes.WELCOME);
   }
 }
 

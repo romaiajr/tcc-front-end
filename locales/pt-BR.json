@@ -130,10 +130,18 @@
         "has_no_relationships": "É necessário criar ao menos um relacionamento para acessar essa funcionalidade.",
         "has_not_two_entities": "É necessário criar ao menos duas entidades para acessar essa funcionalidade.",
         "has_no_attributes": "É necessário que a entidade possua ao menos um atributo para acessar essa funcionalidade.",
-        "delete_entity": "Ao excluir a entidade, todos os relacionamentos associados serão perdidos."
+        "delete_entity": "Ao excluir a entidade, todos os relacionamentos associados serão perdidos.",
+        "loading": "Carregando, por favor aguarde..."
     },
     "common": {
         "confirm": "Confirmar",
         "cancel": "Cancelar"
+    },
+    "welcome": {
+        "welcome": "Bem-vindo ao Diagrama Além da Visão!",
+        "goal": "Este projeto foi desenvolvido para facilitar o aprendizado de Diagramas Entidade-Relacionamento, oferecendo um ambiente inclusivo para pessoas com e sem deficiência visual.",
+        "tts": "Nossa aplicação possui uma síntese de voz integrada para uma experiência mais acessível. Recomendamos desativar o leitor de tela, pois algumas informações são transmitidas exclusivamente pela nossa síntese nativa, que pode ser configurada para atender às suas necessidades.",
+        "hotkeys": "Navegação na plataforma: CIMA/BAIXO: mova-se entre as opções. TAB: avance para a próxima opção. ENTER: confirme a seleção. ESC: retorne ao menu anterior.",
+        "guest": "Acessar como convidado"
     }
 }

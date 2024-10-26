@@ -44,6 +44,8 @@ export function useKeyboardNavigation() {
         }
       } else if (menuStore.activeMainMenu === PDVMenusEnum.TTS) {
         menuStore.setActiveMainMenu(PDVMenusEnum.DEFAULT);
+      } else if (menuStore.activeMainMenu === PDVMenusEnum.DEFAULT) {
+        navigateTo(Routes.WELCOME);
       }
     } else if (event.key === 'Home' && event.ctrlKey) {
       menuStore.setActiveMainMenu(PDVMenusEnum.DEFAULT);

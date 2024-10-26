@@ -14,7 +14,9 @@ const menu = ref();
 
 onBeforeMount(() => {
   menu.value = {
-    title: t('menu.der_flow.titles.default'),
+    title: t('menu.der_flow.titles.default', {
+      project: diagramTool.diagram.value?.name,
+    }),
     items: [
       {
         label: t('menu.der_flow.options.entity.create'),
