@@ -1,5 +1,5 @@
 <template>
-  <div class="teaching-assistant-menu" :tabindex="-1" aria-hidden="true">
+  <div class="teaching-assistant-menu">
     <vueJsonPretty
       v-if="diagramTool.diagram.value"
       :data="diagramTool.diagram.value"

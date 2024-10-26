@@ -1,22 +1,78 @@
 <template>
-  <v-container>
-    <div class="menu">
-      <PDVMainMenu v-if="menu.activeMainMenu === PDVMenusEnum.DEFAULT" />
-      <PDVDerMenu v-else-if="menu.activeMainMenu === PDVMenusEnum.PROJECTS" />
-      <PDVTtsMenu v-else-if="menu.activeMainMenu === PDVMenusEnum.TTS" />
+  <v-container class="menu">
+    <p ref="initialFocus" :tabindex="-1" />
+    <div v-if="!tts.voicesReady.value" class="loading-screen">
+      {{ t('message.loading') }}
     </div>
-    <NavigationMenu />
-    <TeachingAssistantMenu />
+    <div v-else>
+      <FocusableElement
+        v-for="(element, index) in elements"
+        :key="index"
+        :tabindex="index"
+        :tag="element.tag"
+        :title="element.title"
+      >
+        {{ element.title }}</FocusableElement
+      >
+      <FocusableElement
+        :title="t('welcome.guest')"
+        @click="navigateTo(Routes.HOME)"
+      >
+        {{ t('welcome.guest') }}
+      </FocusableElement>
+    </div>
   </v-container>
 </template>
 <script setup lang="ts">
-import { PDVMenusEnum } from '~/src/interfaces/pdv-menu';
-const menu = useMenuOptions();
+const { t } = useI18n();
+const initialFocus = ref();
+const tts = useTTS();
+
+const elements = [
+  {
+    title: t('welcome.welcome'),
+    tag: 'h2',
+  },
+  {
+    title: t('welcome.goal'),
+    tag: 'p',
+  },
+  {
+    title: t('welcome.tts'),
+    tag: 'p',
+  },
+  {
+    title: t('welcome.hotkeys'),
+    tag: 'b',
+  },
+];
+
+const loadVoices = async () => {
+  await tts.loadVoices();
+};
+
+onBeforeMount(async () => {
+  await loadVoices();
+});
+
+onMounted(async () => {
+  await nextTick();
+  initialFocus.value.focus();
+});
 </script>
-<style lang="css" scoped>
-.menu {
+
+<style scoped>
+.loading-screen {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 1.5em;
+  color: #555;
+}
+
+.focusable-element:focus {
+  outline: auto;
+  border: auto;
 }
 </style>

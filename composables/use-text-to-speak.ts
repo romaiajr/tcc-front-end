@@ -3,6 +3,22 @@ export function useTTS() {
   const { t, locale } = useI18n();
   const phrasesQueue = ref<string[]>([]);
   const voice = ref();
+  const voicesReady = ref(false);
+
+  const loadVoices = () => {
+    return new Promise<void>((resolve) => {
+      const voices = speechSynthesis.getVoices();
+      if (voices.length > 0) {
+        voicesReady.value = true;
+        resolve();
+      } else {
+        speechSynthesis.onvoiceschanged = () => {
+          voicesReady.value = true;
+          resolve();
+        };
+      }
+    });
+  };
 
   const configSpeech = (phrase: string) => {
     const voices = speechSynthesis.getVoices();
@@ -14,7 +30,9 @@ export function useTTS() {
     return speech;
   };
 
-  const speakPhrase = (phrase: string) => {
+  const speakPhrase = async (phrase: string) => {
+    if (!voicesReady.value) await loadVoices(); // Aguarda até que as vozes estejam prontas
+
     if (speechSynthesis.speaking) {
       speechSynthesis.cancel();
       phrasesQueue.value = [];
@@ -28,7 +46,9 @@ export function useTTS() {
     phrasesQueue.value.push(phrase);
   };
 
-  const speakPhraseQueue = () => {
+  const speakPhraseQueue = async () => {
+    if (!voicesReady.value) await loadVoices();
+
     if (phrasesQueue.value.length > 0) {
       const phrase = phrasesQueue.value.shift();
       const speech = configSpeech(phrase as string);
@@ -49,6 +69,8 @@ export function useTTS() {
   };
 
   return {
+    voicesReady,
+    loadVoices,
     speakPhrase,
     addPhraseToQueue,
     speakPhraseQueue,
