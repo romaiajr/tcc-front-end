@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   modules: [
     '@pinia/nuxt', // https://nuxt.com/modules/pinia
     '@pinia-plugin-persistedstate/nuxt', // https://nuxt.com/modules/pinia-plugin-persistedstate
@@ -22,7 +22,7 @@ export default defineNuxtConfig({
         file: 'pt-BR.json',
       },
       {
-        code: 'en-GB',
+        code: 'en-US',
         language: 'en-US',
         name: 'English(US)',
         file: 'en-US.json',
@@ -31,9 +31,6 @@ export default defineNuxtConfig({
     defaultLocale: 'pt-BR',
     strategy: 'no_prefix',
     vueI18n: './i18n.config.ts',
-  },
-  pinia: {
-    autoImports: ['defineStore'],
   },
   piniaPersistedstate: {
     cookieOptions: {
@@ -63,4 +60,20 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['store', 'src/constants/routes'],
   },
+  components: [
+    {
+      path: '~/components',
+      extensions: ['vue'],
+    },
+    {
+      path: '~/components/pdv',
+      extensions: ['vue'],
+      pathPrefix: false,
+    },
+  ],
+  css: [
+    'vue-json-pretty/lib/styles.css',
+    '@/assets/styles/global.css',
+    'vue-draggable-resizable/style.css',
+  ],
 });
