@@ -1,6 +1,6 @@
 export function useTTS() {
   const tts = useTtsStore();
-  const { t, locale } = useI18n();
+  const { t } = useI18n();
   const phrasesQueue = ref<string[]>([]);
   const voice = ref();
   const voicesReady = ref(false);
@@ -22,7 +22,7 @@ export function useTTS() {
 
   const configSpeech = (phrase: string) => {
     const voices = speechSynthesis.getVoices();
-    voice.value = voices.find((v) => v.lang === locale.value);
+    voice.value = voices.find((v) => v.lang === 'pt-BR');
     const speech = useSpeechSynthesis(phrase, {
       voice,
       rate: tts.speech.rate,
@@ -31,7 +31,7 @@ export function useTTS() {
   };
 
   const speakPhrase = async (phrase: string) => {
-    if (!voicesReady.value) await loadVoices(); // Aguarda até que as vozes estejam prontas
+    if (!voicesReady.value) await loadVoices();
 
     if (speechSynthesis.speaking) {
       speechSynthesis.cancel();

@@ -1,56 +1,56 @@
-export enum SqlDataType {
-  VARCHAR = 'VARCHAR',
-  TEXT = 'TEXT',
-  INT = 'INT',
-  FLOAT = 'FLOAT',
-  DOUBLE = 'DOUBLE',
-  TIMESTAMP = 'TIMESTAMP',
-  BOOLEAN = 'BOOLEAN',
-  BLOB = 'BLOB',
-  JSON = 'JSON',
-  UUID = 'UUID',
+export enum DatabaseTypeOptions {
+  VARCHAR,
+  TEXT,
+  INT,
+  FLOAT,
+  DOUBLE,
+  TIMESTAMP,
+  BOOLEAN,
+  BLOB,
+  JSON,
+  UUID,
 }
 
-export const sqlDataTypeInfo = {
-  [SqlDataType.VARCHAR]: {
-    title: SqlDataType.VARCHAR,
-    infoText: 'sql.explanation.VARCHAR',
+export const databaseTypeInfo = {
+  [DatabaseTypeOptions.VARCHAR]: {
+    title: 'VARCHAR',
+    infoText: 'der.explanation.VARCHAR',
   },
-  [SqlDataType.TEXT]: {
-    title: SqlDataType.TEXT,
-    infoText: 'sql.explanation.TEXT',
+  [DatabaseTypeOptions.TEXT]: {
+    title: 'TEXT',
+    infoText: 'der.explanation.TEXT',
   },
-  [SqlDataType.INT]: {
-    title: SqlDataType.INT,
-    infoText: 'sql.explanation.INT',
+  [DatabaseTypeOptions.INT]: {
+    title: 'INT',
+    infoText: 'der.explanation.INT',
   },
-  [SqlDataType.FLOAT]: {
-    title: SqlDataType.FLOAT,
-    infoText: 'sql.explanation.FLOAT',
+  [DatabaseTypeOptions.FLOAT]: {
+    title: 'FLOAT',
+    infoText: 'der.explanation.FLOAT',
   },
-  [SqlDataType.DOUBLE]: {
-    title: SqlDataType.DOUBLE,
-    infoText: 'sql.explanation.DOUBLE',
+  [DatabaseTypeOptions.DOUBLE]: {
+    title: 'DOUBLE',
+    infoText: 'der.explanation.DOUBLE',
   },
-  [SqlDataType.TIMESTAMP]: {
-    title: SqlDataType.TIMESTAMP,
-    infoText: 'sql.explanation.TIMESTAMP',
+  [DatabaseTypeOptions.TIMESTAMP]: {
+    title: 'TIMESTAMP',
+    infoText: 'der.explanation.TIMESTAMP',
   },
-  [SqlDataType.BOOLEAN]: {
-    title: SqlDataType.BOOLEAN,
-    infoText: 'sql.explanation.BOOLEAN',
+  [DatabaseTypeOptions.BOOLEAN]: {
+    title: 'BOOLEAN',
+    infoText: 'der.explanation.BOOLEAN',
   },
-  [SqlDataType.BLOB]: {
-    title: SqlDataType.BLOB,
-    infoText: 'sql.explanation.BLOB',
+  [DatabaseTypeOptions.BLOB]: {
+    title: 'BLOB',
+    infoText: 'der.explanation.BLOB',
   },
-  [SqlDataType.JSON]: {
-    title: SqlDataType.JSON,
-    infoText: 'sql.explanation.JSON',
+  [DatabaseTypeOptions.JSON]: {
+    title: 'JSON',
+    infoText: 'der.explanation.JSON',
   },
-  [SqlDataType.UUID]: {
-    title: SqlDataType.UUID,
-    infoText: 'sql.explanation.UUID',
+  [DatabaseTypeOptions.UUID]: {
+    title: 'UUID',
+    infoText: 'der.explanation.UUID',
   },
 };
 
@@ -62,50 +62,82 @@ export enum CardinalityOptions {
 
 export const cardinalityInfo = {
   [CardinalityOptions.OneToOne]: {
-    title: 'sql.cardinality.OneToOne',
-    infoText: 'sql.explanation.OneToOne',
+    title: 'der.cardinality.OneToOne',
+    infoText: 'der.explanation.OneToOne',
   },
   [CardinalityOptions.OneToMany]: {
-    title: 'sql.cardinality.OneToMany',
-    infoText: 'sql.explanation.OneToMany',
+    title: 'der.cardinality.OneToMany',
+    infoText: 'der.explanation.OneToMany',
   },
 };
 
-export enum TypeOptions {
+export enum RelationshipTypeOptions {
   COMMON,
   WEAK,
   INHERITANCE,
   ASSOCIATIVE,
 }
 
-export const typeInfo = {
-  [TypeOptions.COMMON]: {
-    title: 'sql.relationship_type.common',
-    infoText: 'sql.explanation.common',
+export const relationshipTypeinfo = {
+  [RelationshipTypeOptions.COMMON]: {
+    title: 'der.relationship_type.common',
+    infoText: 'der.explanation.common',
   },
-  [TypeOptions.WEAK]: {
-    title: 'sql.relationship_type.weak',
-    infoText: 'sql.explanation.weak',
+  [RelationshipTypeOptions.WEAK]: {
+    title: 'der.relationship_type.weak',
+    infoText: 'der.explanation.weak',
   },
-  [TypeOptions.INHERITANCE]: {
-    title: 'sql.relationship_type.inheritance',
-    infoText: 'sql.explanation.inheritance',
+  [RelationshipTypeOptions.INHERITANCE]: {
+    title: 'der.relationship_type.inheritance',
+    infoText: 'der.explanation.inheritance',
   },
-  [TypeOptions.ASSOCIATIVE]: {
-    title: 'sql.relationship_type.associative',
-    infoText: 'sql.explanation.associative',
+  [RelationshipTypeOptions.ASSOCIATIVE]: {
+    title: 'der.relationship_type.associative',
+    infoText: 'der.explanation.associative',
   },
 };
 
-export interface DerAttribute {
-  id: string;
-  name: string;
-  type: SqlDataType;
-}
+export const DatabaseTypeOptionsMap = {
+  [DatabaseTypeOptions.VARCHAR]: 'VARCHAR',
+  [DatabaseTypeOptions.TEXT]: 'TEXT',
+  [DatabaseTypeOptions.INT]: 'INT',
+  [DatabaseTypeOptions.FLOAT]: 'FLOAT',
+  [DatabaseTypeOptions.DOUBLE]: 'DOUBLE',
+  [DatabaseTypeOptions.TIMESTAMP]: 'TIMESTAMP',
+  [DatabaseTypeOptions.BOOLEAN]: 'BOOLEAN',
+  [DatabaseTypeOptions.BLOB]: 'BLOB',
+  [DatabaseTypeOptions.JSON]: 'JSON',
+  [DatabaseTypeOptions.UUID]: 'UUID',
+};
+
+export const CardinalityOptionsMap = {
+  [CardinalityOptions.OneToOne]: 'der.cardinality.OneToOne',
+  [CardinalityOptions.OneToMany]: 'der.cardinality.OneToMany',
+  [CardinalityOptions.ManyToMany]: 'der.cardinality.ManyToMany',
+};
+
+export const RelationshipTypeOptionsMap = {
+  [RelationshipTypeOptions.COMMON]: 'der.relationship_type.common',
+  [RelationshipTypeOptions.WEAK]: 'der.relationship_type.weak',
+  [RelationshipTypeOptions.INHERITANCE]: 'der.relationship_type.inheritance',
+  [RelationshipTypeOptions.ASSOCIATIVE]: 'der.relationship_type.associative',
+};
 
 export interface DiagramPosition {
   x: number | null;
   y: number | null;
+}
+
+export interface DerAttribute {
+  id: string;
+  name: string;
+  type: DatabaseTypeOptions;
+}
+
+export interface ParsedAttribute {
+  id: string;
+  name: string;
+  type: string;
 }
 
 export interface DerEntity {
@@ -115,14 +147,31 @@ export interface DerEntity {
   position: DiagramPosition;
 }
 
+export interface ParsedEntity {
+  id: string;
+  name: string;
+  attrs: ParsedAttribute[];
+}
+
 export interface DerRelationship {
   id: string;
   name: string;
   entityAId: string;
   entityBId: string;
   cardinality: CardinalityOptions;
-  type: TypeOptions;
+  type: RelationshipTypeOptions;
   position: DiagramPosition;
+}
+
+export interface ParsedRelationship {
+  id: string;
+  name: string;
+  entityA: string;
+  entityB: string;
+  entityAId: string;
+  entityBId: string;
+  cardinality: string;
+  type: string;
 }
 
 export interface Diagram {
@@ -130,4 +179,10 @@ export interface Diagram {
   name: string;
   entities: DerEntity[];
   relationships: DerRelationship[];
+}
+
+export interface ParsedDiagram {
+  name: string;
+  entities: ParsedEntity[];
+  relationships: ParsedRelationship[];
 }

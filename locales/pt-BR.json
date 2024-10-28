@@ -89,7 +89,7 @@
             }
         }
     },
-    "sql": {
+    "der": {
         "explanation": {
             "VARCHAR": "Usado para armazenar strings de tamanho variável.",
             "TEXT": "Usado para armazenar textos longos.",
@@ -113,7 +113,8 @@
         },
         "cardinality": {
             "OneToOne": "Um para um",
-            "OneToMany": "Um para muitos"
+            "OneToMany": "Um para muitos",
+            "ManyToMany": "Muitos para muitos"
         },
         "relationship_type": {
             "common": "Relacionamento Comum",

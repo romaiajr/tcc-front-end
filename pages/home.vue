@@ -6,7 +6,9 @@
       <PDVTtsMenu v-else-if="menu.activeMainMenu === PDVMenusEnum.TTS" />
     </div>
     <NavigationMenu />
-    <TeachingAssistantMenu :tabindex="-1" aria-hidden="true" />
+    <div :tabindex="-1" aria-hidden="true">
+      <TeachingAssistantArea />
+    </div>
   </v-container>
 </template>
 <script setup lang="ts">

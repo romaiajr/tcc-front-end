@@ -1,20 +1,23 @@
 <template>
   <svg :width="width" :height="height">
     <!-- Renderiza a forma correta dependendo do tipo de relacionamento -->
-    <template v-if="relationship.type === TypeOptions.COMMON">
+    <template v-if="relationship.type === RelationshipTypeOptions.COMMON">
       <polygon :points="getDiamondPoints(width, height)" class="shape common" />
     </template>
-    <template v-else-if="relationship.type === TypeOptions.ASSOCIATIVE">
+    <template
+      v-else-if="relationship.type === RelationshipTypeOptions.ASSOCIATIVE"
+    >
       <rect :width="width" :height="height" class="shape associative" />
     </template>
-    <template v-else-if="relationship.type === TypeOptions.INHERITANCE">
+    <template
+      v-else-if="relationship.type === RelationshipTypeOptions.INHERITANCE"
+    >
       <polygon
         :points="getTrianglePoints(width, height)"
         class="shape inheritance"
       />
     </template>
-    <template v-else-if="relationship.type === TypeOptions.WEAK">
-      <!-- Dois losangos sobrepostos com mais espaço entre eles -->
+    <template v-else-if="relationship.type === RelationshipTypeOptions.WEAK">
       <polygon :points="getDiamondPoints(width, height)" class="shape weak" />
       <polygon
         :points="getDiamondPoints(width - 14, height - 14)"
@@ -24,7 +27,11 @@
     </template>
     <text
       x="50%"
-      :y="relationship.type === TypeOptions.INHERITANCE ? '80%' : '50%'"
+      :y="
+        relationship.type === RelationshipTypeOptions.INHERITANCE
+          ? '80%'
+          : '50%'
+      "
       text-anchor="middle"
       dominant-baseline="middle"
       class="relationship-text"
@@ -36,7 +43,7 @@
 
 <script setup lang="ts">
 import {
-  TypeOptions,
+  RelationshipTypeOptions,
   type DerRelationship,
 } from '~/src/interfaces/der-diagram';
 

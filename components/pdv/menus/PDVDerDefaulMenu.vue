@@ -24,7 +24,7 @@ onBeforeMount(() => {
           menuStore.setActiveDerMenu(DerFlowEnum.NEW_ENTITY);
           menuStore.setScope(FormScope.CREATE);
         },
-        infoText: t('sql.explanation.entity'),
+        infoText: t('der.explanation.entity'),
       },
       {
         label: t('menu.der_flow.options.entity.navigate', {
@@ -49,7 +49,7 @@ onBeforeMount(() => {
       {
         label: t('menu.der_flow.options.relationship.create'),
         action: createRelationships,
-        infoText: t('sql.explanation.relationship'),
+        infoText: t('der.explanation.relationship'),
       },
       {
         label: t('menu.der_flow.options.relationship.navigate'),

@@ -17,19 +17,22 @@
 </template>
 
 <script setup lang="ts">
-import { SqlDataType, sqlDataTypeInfo } from '~/src/interfaces/der-diagram';
+import {
+  DatabaseTypeOptions,
+  databaseTypeInfo,
+} from '~/src/interfaces/der-diagram';
 
 const diagramTool = useDiagram();
 const { scope, isEditScope } = useMenuOptions();
 
-const sqlTypes = Object.values(sqlDataTypeInfo).map((data) => ({
+const sqlTypes = Object.values(databaseTypeInfo).map((data) => ({
   title: data.title,
   infotext: data.infoText,
 }));
 
 const attributeForm = reactive({
   name: '',
-  type: '' as SqlDataType,
+  type: '' as DatabaseTypeOptions,
 });
 
 enum AttrFormSteps {
