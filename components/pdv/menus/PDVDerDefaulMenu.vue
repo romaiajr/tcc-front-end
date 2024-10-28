@@ -38,7 +38,7 @@ onBeforeMount(() => {
         label: t('menu.der_flow.options.entity.read'),
         action: () => {
           if (hasEntities()) {
-            diagramTool.readEntities();
+            diagramTool.readAllEntities();
           }
         },
       },
@@ -59,12 +59,17 @@ onBeforeMount(() => {
         label: t('menu.der_flow.options.relationship.read'),
         action: () => {
           if (hasRelationships()) {
-            // TODO - Read relationships
+            diagramTool.readAllRelationships();
           }
         },
       },
       {
         label: t('menu.der_flow.options.diagram.read'),
+        action: () => {
+          if (hasEntities()) {
+            diagramTool.readDiagram();
+          }
+        },
       },
     ],
   };

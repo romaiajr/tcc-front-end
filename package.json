@@ -20,6 +20,7 @@
     "@vueuse/components": "^11.1.0",
     "@vueuse/core": "^11.0.3",
     "@vueuse/nuxt": "^11.0.3",
+    "lodash": "^4.17.21",
     "nuxt": "^3.13.0",
     "nuxt-icons": "^3.2.1",
     "pinia": "^2.2.2",

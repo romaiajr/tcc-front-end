@@ -3,7 +3,6 @@
 </template>
 <script setup lang="ts">
 const diagramTool = useDiagram();
-const { t } = useI18n();
 
 function omitIds(data: any) {
   return {
@@ -13,17 +12,8 @@ function omitIds(data: any) {
       attrs: entity.attrs.map(({ id, ...attr }: any) => attr),
     })),
     relationships: data.relationships.map(
-      ({
-        id,
-        entityAId,
-        entityBId,
-        type,
-        cardinality,
-        ...relationship
-      }: any) => ({
+      ({ id, entityAId, entityBId, ...relationship }: any) => ({
         ...relationship,
-        type: t(type),
-        cardinality: t(cardinality),
       }),
     ),
   };

@@ -1,7 +1,6 @@
 export function useTTS() {
   const tts = useTtsStore();
   const { t } = useI18n();
-  const phrasesQueue = ref<string[]>([]);
   const voice = ref();
   const voicesReady = ref(false);
 
@@ -35,32 +34,10 @@ export function useTTS() {
 
     if (speechSynthesis.speaking) {
       speechSynthesis.cancel();
-      phrasesQueue.value = [];
     }
     const speech = configSpeech(phrase);
     speech.speak();
     tts.addPhraseToHistory(phrase);
-  };
-
-  const addPhraseToQueue = (phrase: string) => {
-    phrasesQueue.value.push(phrase);
-  };
-
-  const speakPhraseQueue = async () => {
-    if (!voicesReady.value) await loadVoices();
-
-    if (phrasesQueue.value.length > 0) {
-      const phrase = phrasesQueue.value.shift();
-      const speech = configSpeech(phrase as string);
-      speech.utterance.value.onend = () => {
-        speakPhraseQueue();
-      };
-
-      speech.speak();
-      if (phrase) {
-        tts.addPhraseToHistory(phrase);
-      }
-    }
   };
 
   const updateTTSPreferences = (increase: boolean) => {
@@ -72,8 +49,6 @@ export function useTTS() {
     voicesReady,
     loadVoices,
     speakPhrase,
-    addPhraseToQueue,
-    speakPhraseQueue,
     updateTTSPreferences,
   };
 }

@@ -74,6 +74,7 @@
                     "create": "Criar relacionamento",
                     "navigate": "Navegar pelos relacionamentos do diagrama",
                     "read":"Leitura dos relacionamentos do diagrama",
+                    "readOnly": "Leitura do relacionamento",
                     "name": "Digite o nome do relacionamento",
                     "edit": "Editar relacionamento",
                     "delete": "Excluir relacionamento",
@@ -118,8 +119,8 @@
             "ManyToMany": "Muitos para muitos"
         },
         "relationship_type": {
-            "common": "Relacionamento Comum",
-            "weak": "Relacionamento Fraco",
+            "common": "Comum",
+            "weak": "Fraco",
             "inheritance": "Herança",
             "associative": "Associativo"
         }

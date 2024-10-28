@@ -35,7 +35,7 @@ const menu = ref({
       label: t('menu.der_flow.options.entity.attribute.read'),
       action: () => {
         if (hasAttrs()) {
-          // TODO - Read attributes
+          diagramTool.readEntityAttrs();
         }
       },
     },

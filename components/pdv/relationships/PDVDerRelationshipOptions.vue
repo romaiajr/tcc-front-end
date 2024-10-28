@@ -15,6 +15,12 @@ const menu = ref({
   }),
   items: [
     {
+      label: t('menu.der_flow.options.relationship.readOnly'),
+      action: () => {
+        diagramTool.readRelationship();
+      },
+    },
+    {
       label: t('menu.der_flow.options.relationship.edit'),
       action: () => {
         menuStore.setActiveDerMenu(DerFlowEnum.NEW_RELATIONSHIP);

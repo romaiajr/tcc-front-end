@@ -21,43 +21,7 @@ import {
 } from '~/src/interfaces/der-diagram';
 import { DerFlowEnum } from '~/src/interfaces/pdv-menu';
 
-type UseDiagramReturn = {
-  diagram: ReturnType<typeof ref<Diagram | null>>;
-  parsedDiagram: ReturnType<typeof ref<ParsedDiagram | null>>;
-  createDiagram: (name: string) => void;
-  parseDiagram: () => void;
-  createEntity: (name: string) => void;
-  editEntityName: (newName: string) => void;
-  updateEntityPosition: (id: string, position: DiagramPosition) => void;
-  getEntity: (parsed?: boolean) => DerEntity | ParsedEntity | undefined;
-  removeEntity: () => void;
-  readEntities: () => void;
-  createRelationship: (props: {
-    name: string;
-    entityAId: string;
-    entityBId: string;
-    cardinality: CardinalityOptions;
-    type: RelationshipTypeOptions;
-  }) => void;
-  editRelationship: (newData: Omit<DerRelationship, 'id'>) => void;
-  updateRelationshipPosition: (id: string, position: DiagramPosition) => void;
-  getRelationship: (
-    parsed?: boolean,
-  ) => DerRelationship | ParsedRelationship | undefined;
-  removeRelationship: () => void;
-  createAttribute: (props: { name: string; type: DatabaseTypeOptions }) => void;
-  editAttribute: (newData: Omit<DerAttribute, 'id'>) => void;
-  getAttribute: (
-    parsed?: boolean,
-  ) => DerAttribute | ParsedAttribute | undefined;
-  removeAttribute: () => void;
-  // loadDiagram: (diagramId: string) => void;
-  loadDiagram: () => void;
-  // updateDiagram: (diagramId: string) => void;
-  // deleteDiagram: (diagramId: string) => void;
-};
-
-let instance: UseDiagramReturn | null = null;
+let instance: any;
 
 export function useDiagram() {
   const derStore = useDerOptions();
@@ -107,9 +71,10 @@ export function useDiagram() {
                     entityBId,
                     entityA: entityA?.name,
                     entityB: entityB?.name,
-                    cardinality:
-                      CardinalityOptionsMap[relationship.cardinality], // Converte a cardinalidade
-                    type: RelationshipTypeOptionsMap[relationship.type], // Converte o tipo do relacionamento
+                    cardinality: i18n.t(
+                      CardinalityOptionsMap[relationship.cardinality],
+                    ),
+                    type: i18n.t(RelationshipTypeOptionsMap[relationship.type]),
                   };
                 },
               )
@@ -217,23 +182,6 @@ export function useDiagram() {
       }
     };
 
-    const readEntities = () => {
-      if (diagram.value) {
-        if (diagram.value.entities) {
-          let entities = '';
-          diagram.value.entities.forEach((e) => {
-            entities += `${e.name}, `;
-          });
-
-          tts.speakPhrase(
-            i18n.t('menu.der_flow.options.entity.created_entities', {
-              entities,
-            }),
-          );
-        }
-      }
-    };
-
     const getRelationshipEntities = (idA: string, idB: string) => {
       if (diagram.value) {
         const entityA = diagram.value.entities.find((e) => e.id === idA);
@@ -277,8 +225,8 @@ export function useDiagram() {
             entityBId: props.entityBId,
             entityA: entityA.name,
             entityB: entityB.name,
-            cardinality: CardinalityOptionsMap[props.cardinality],
-            type: RelationshipTypeOptionsMap[props.type],
+            cardinality: i18n.t(CardinalityOptionsMap[props.cardinality]),
+            type: i18n.t(RelationshipTypeOptionsMap[props.type]),
           });
           derStore.setCurrentRelationshipId(id);
           menu.setActiveDerMenu(DerFlowEnum.RELATIONSHIP_OPTIONS);
@@ -307,9 +255,12 @@ export function useDiagram() {
             parsedRelationship.entityA = entityA.name;
             parsedRelationship.entityB = entityB.name;
           }
-          parsedRelationship.cardinality =
-            CardinalityOptionsMap[newData.cardinality];
-          parsedRelationship.type = RelationshipTypeOptionsMap[newData.type];
+          parsedRelationship.cardinality = i18n.t(
+            CardinalityOptionsMap[newData.cardinality],
+          );
+          parsedRelationship.type = i18n.t(
+            RelationshipTypeOptionsMap[newData.type],
+          );
         }
         menu.setActiveDerMenu(DerFlowEnum.RELATIONSHIP_OPTIONS);
       }
@@ -414,6 +365,78 @@ export function useDiagram() {
       }
     };
 
+    function describeEntity(entity: ParsedEntity): string {
+      let output = `A entidade "${entity.name}" é composta pelos seguintes atributos:`;
+      entity.attrs.forEach((attr: any) => {
+        output += ` Atributo "${attr.name}" de tipo "${attr.type}".`;
+      });
+      return output;
+    }
+
+    function describeRelationship(relationship: ParsedRelationship): string {
+      return (
+        `O relacionamento "${relationship.name}" conecta as entidades "${relationship.entityA}" e "${relationship.entityB}".` +
+        ` Tipo de relacionamento: ${i18n.t(relationship.type)}.` +
+        ` Cardinalidade: ${i18n.t(relationship.cardinality)}.`
+      );
+    }
+
+    const readDiagram = () => {
+      if (parsedDiagram.value && parsedDiagram.value.entities) {
+        let output = `Leitura Completa do Diagrama: "${parsedDiagram.value.name}"`;
+
+        output += 'Entidades e seus Atributos:';
+        parsedDiagram.value.entities.forEach((entity: any) => {
+          output += describeEntity(entity) + '';
+        });
+
+        if (parsedDiagram.value.relationships) {
+          output += 'Relacionamentos entre Entidades:';
+          parsedDiagram.value.relationships.forEach((relationship: any) => {
+            output += describeRelationship(relationship);
+          });
+        }
+
+        tts.speakPhrase(output);
+      }
+    };
+
+    const readAllEntities = () => {
+      if (parsedDiagram.value && parsedDiagram.value.entities) {
+        let output = 'Entidades e seus Atributos:';
+        parsedDiagram.value.entities.forEach((entity: any) => {
+          output += describeEntity(entity) + '';
+        });
+        tts.speakPhrase(output);
+      }
+    };
+
+    const readAllRelationships = () => {
+      if (parsedDiagram.value && parsedDiagram.value.relationships) {
+        let output = 'Relacionamentos entre Entidades:';
+        parsedDiagram.value.relationships.forEach((relationship: any) => {
+          output += describeRelationship(relationship);
+        });
+        tts.speakPhrase(output);
+      }
+    };
+
+    const readEntityAttrs = () => {
+      const entity = getEntity(true) as ParsedEntity;
+      if (entity && entity.attrs) {
+        const output = describeEntity(entity);
+        tts.speakPhrase(output);
+      }
+    };
+
+    const readRelationship = () => {
+      const relationship = getRelationship(true) as ParsedRelationship;
+      if (relationship) {
+        const output = describeRelationship(relationship);
+        tts.speakPhrase(output);
+      }
+    };
+
     instance = {
       diagram,
       parsedDiagram,
@@ -424,7 +447,6 @@ export function useDiagram() {
       updateEntityPosition,
       removeEntity,
       getEntity,
-      readEntities,
       createRelationship,
       editRelationship,
       updateRelationshipPosition,
@@ -435,6 +457,11 @@ export function useDiagram() {
       removeAttribute,
       getAttribute,
       loadDiagram,
+      readDiagram,
+      readAllEntities,
+      readAllRelationships,
+      readEntityAttrs,
+      readRelationship,
       // updateDiagram,
       // deleteDiagram,
     };
