@@ -24,12 +24,10 @@ onBeforeMount(() => {
           menuStore.setActiveDerMenu(DerFlowEnum.NEW_ENTITY);
           menuStore.setScope(FormScope.CREATE);
         },
-        infoText: t('sql.explanation.entity'),
+        infoText: t('der.explanation.entity'),
       },
       {
-        label: t('menu.der_flow.options.entity.navigate', {
-          diagram: diagramTool.diagram.value?.name,
-        }),
+        label: t('menu.der_flow.options.entity.navigate'),
         action: () => {
           if (hasEntities()) {
             menuStore.setActiveDerMenu(DerFlowEnum.ENTITIES);
@@ -37,19 +35,17 @@ onBeforeMount(() => {
         },
       },
       {
-        label: t('menu.der_flow.options.entity.read', {
-          diagram: diagramTool.diagram.value?.name,
-        }),
+        label: t('menu.der_flow.options.entity.read'),
         action: () => {
           if (hasEntities()) {
-            diagramTool.readEntities();
+            diagramTool.readAllEntities();
           }
         },
       },
       {
         label: t('menu.der_flow.options.relationship.create'),
         action: createRelationships,
-        infoText: t('sql.explanation.relationship'),
+        infoText: t('der.explanation.relationship'),
       },
       {
         label: t('menu.der_flow.options.relationship.navigate'),
@@ -63,12 +59,17 @@ onBeforeMount(() => {
         label: t('menu.der_flow.options.relationship.read'),
         action: () => {
           if (hasRelationships()) {
-            // TODO - Read relationships
+            diagramTool.readAllRelationships();
           }
         },
       },
       {
         label: t('menu.der_flow.options.diagram.read'),
+        action: () => {
+          if (hasEntities()) {
+            diagramTool.readDiagram();
+          }
+        },
       },
     ],
   };

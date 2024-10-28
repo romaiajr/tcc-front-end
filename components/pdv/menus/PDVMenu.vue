@@ -1,6 +1,6 @@
 <template>
+  <p ref="initialFocus" :tabindex="-1" />
   <div class="pdv-menu-summary">
-    <p ref="initialFocus" :tabindex="-1" />
     <table>
       <thead>
         <tr class="menu-item">

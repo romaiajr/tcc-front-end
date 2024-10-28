@@ -21,7 +21,7 @@
   />
   <FocusableSelect
     v-else-if="step === RelationshipFormStep.TYPE"
-    :items="typeOptions"
+    :items="relationshipTypeOptions"
     :title="$t('menu.der_flow.options.relationship.type')"
     shift-flag
     should-translate
@@ -42,9 +42,9 @@
 <script setup lang="ts">
 import {
   cardinalityInfo,
-  typeInfo,
+  relationshipTypeinfo,
   CardinalityOptions,
-  TypeOptions,
+  RelationshipTypeOptions,
 } from '~/src/interfaces/der-diagram';
 
 const diagramTool = useDiagram();
@@ -87,11 +87,13 @@ const cardinalityOptions = Object.values(cardinalityInfo).map(
   }),
 );
 
-const typeOptions = Object.values(typeInfo).map((data, index) => ({
-  id: index,
-  title: data.title,
-  infotext: data.infoText,
-}));
+const relationshipTypeOptions = Object.values(relationshipTypeinfo).map(
+  (data, index) => ({
+    id: index,
+    title: data.title,
+    infotext: data.infoText,
+  }),
+);
 
 const step = ref(RelationshipFormStep.NAME);
 
@@ -112,20 +114,20 @@ const saveRelationshipEntityBId = (index: number) => {
 };
 
 const handleRelationshipType = (index: number) => {
-  relationshipForm.type = typeOptions[index].id;
+  relationshipForm.type = relationshipTypeOptions[index].id;
   switch (index) {
-    case TypeOptions.COMMON:
+    case RelationshipTypeOptions.COMMON:
       step.value = RelationshipFormStep.CARDINALITY;
       break;
-    case TypeOptions.WEAK:
+    case RelationshipTypeOptions.WEAK:
       relationshipForm.cardinality = CardinalityOptions.OneToOne;
       createRelationship();
       break;
-    case TypeOptions.INHERITANCE:
+    case RelationshipTypeOptions.INHERITANCE:
       relationshipForm.cardinality = CardinalityOptions.OneToOne;
       createRelationship();
       break;
-    case TypeOptions.ASSOCIATIVE:
+    case RelationshipTypeOptions.ASSOCIATIVE:
       relationshipForm.cardinality = CardinalityOptions.ManyToMany;
       createRelationship();
       break;

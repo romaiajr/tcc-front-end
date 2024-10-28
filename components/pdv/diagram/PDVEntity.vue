@@ -7,7 +7,7 @@
       <tr v-for="(attr, index) in entity.attrs" :key="index" class="attributes">
         <td>{{ attr.name.toLowerCase() }}</td>
         <td class="attribute-type">
-          <b>{{ attr.type.toLowerCase() }}</b>
+          <b>{{ DatabaseTypeOptionsMap[attr.type].toLowerCase() }}</b>
         </td>
       </tr>
     </tbody>
@@ -15,7 +15,10 @@
 </template>
 
 <script setup lang="ts">
-import type { DerEntity } from '~/src/interfaces/der-diagram';
+import {
+  type DerEntity,
+  DatabaseTypeOptionsMap,
+} from '~/src/interfaces/der-diagram';
 
 interface PDVEntityProps {
   entity: DerEntity;

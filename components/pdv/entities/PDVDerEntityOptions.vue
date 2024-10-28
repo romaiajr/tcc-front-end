@@ -12,7 +12,7 @@ const tts = useTTS();
 
 const menu = ref({
   title: t('menu.der_flow.titles.entity_options', {
-    diagram: diagramTool.getEntity()?.name,
+    entity: diagramTool.getEntity()?.name,
   }),
   items: [
     {
@@ -21,7 +21,7 @@ const menu = ref({
         menuStore.setActiveDerMenu(DerFlowEnum.NEW_ATTR);
         menuStore.setScope(FormScope.CREATE);
       },
-      infoText: t('sql.explanation.attribute'),
+      infoText: t('der.explanation.attribute'),
     },
     {
       label: t('menu.der_flow.options.entity.attribute.navigate'),
@@ -35,7 +35,7 @@ const menu = ref({
       label: t('menu.der_flow.options.entity.attribute.read'),
       action: () => {
         if (hasAttrs()) {
-          // TODO - Read attributes
+          diagramTool.readEntityAttrs();
         }
       },
     },

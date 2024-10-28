@@ -51,8 +51,8 @@
             "options": {
                 "entity": {
                     "create": "Criar entidade",
-                    "navigate": "Navegar pelas entidades do diagrama {diagram}",
-                    "read": "Leitura das entidades do diagrama {diagram}",
+                    "navigate": "Navegar pelas entidades do diagrama",
+                    "read": "Leitura das entidades do diagrama",
                     "created_entities": "Entidades criadas: {entities}",
                     "name": "Digite o nome da entidade",
                     "edit": "Editar entidade",
@@ -60,8 +60,8 @@
                     "update_name": "Editar o nome da entidade",
                     "attribute": {
                         "create": "Criar atributo",
-                        "navigate":"Navegar pelos atributos da entidade {entity}",
-                        "read": "Leitura dos atributos da entidade {entity}",
+                        "navigate":"Navegar pelos atributos da entidade",
+                        "read": "Leitura dos atributos da entidade",
                         "name": "Digite o nome do atributo",
                         "type": "Selecione o tipo do atributo",
                         "delete": "Excluir atributo",
@@ -72,8 +72,9 @@
                 },
                 "relationship": {
                     "create": "Criar relacionamento",
-                    "navigate": "Navegar pelos relacionamentos do diagrama {diagram}",
-                    "read":"Leitura dos relacionamentos do diagrama {diagram}",
+                    "navigate": "Navegar pelos relacionamentos do diagrama",
+                    "read":"Leitura dos relacionamentos do diagrama",
+                    "readOnly": "Leitura do relacionamento",
                     "name": "Digite o nome do relacionamento",
                     "edit": "Editar relacionamento",
                     "delete": "Excluir relacionamento",
@@ -89,7 +90,7 @@
             }
         }
     },
-    "sql": {
+    "der": {
         "explanation": {
             "VARCHAR": "Usado para armazenar strings de tamanho variável.",
             "TEXT": "Usado para armazenar textos longos.",
@@ -103,6 +104,7 @@
             "UUID": "Usado para armazenar identificadores únicos universais (UUID).",
             "OneToOne": "Esse tipo de relacionamento ocorre quando cada instância da entidade A está associada a, no máximo, uma instância da entidade B",
             "OneToMany": "Esse tipo de relacionamento ocorre quando cada instância da entidade A pode estar associada a várias instâncias da entidade B, mas cada instância da entidade B está associada a, no máximo, uma instância da entidade A.",
+            "ManyToMany": "Esse tipo de relacionamento ocorre quando várias instâncias da entidade A podem estar associadas a várias instâncias da entidade B, e vice-versa. Ou seja, uma instância da entidade A pode estar ligada a várias instâncias da entidade B, e uma instância da entidade B pode estar ligada a várias instâncias da entidade A.",
             "common": "Esse tipo de relacionamento ocorre quando uma entidade depende totalmente da outra para existir",
             "weak": "Esse tipo de relacionamento ocorre quando uma entidade, chamada de entidade fraca, depende de outra entidade, conhecida como entidade forte, para existir.",
             "inheritance": "Esse tipo de relacionamento reflete um modelo de herança entre entidades. No contexto de bancos de dados, isso pode ser representado por entidades que compartilham atributos comuns",
@@ -113,13 +115,23 @@
         },
         "cardinality": {
             "OneToOne": "Um para um",
-            "OneToMany": "Um para muitos"
+            "OneToMany": "Um para muitos",
+            "ManyToMany": "Muitos para muitos"
         },
         "relationship_type": {
-            "common": "Relacionamento Comum",
-            "weak": "Relacionamento Fraco",
+            "common": "Comum",
+            "weak": "Fraco",
             "inheritance": "Herança",
             "associative": "Associativo"
+        },
+        "read_aux": {
+            "diagram": "Leitura Completa do Diagrama: {diagram}. \n",
+            "entities": "Entidades e seus Atributos: \n",
+            "entity_with_attrs": "A entidade {entity} é composta pelos seguintes atributos: \n",
+            "entity_without_attrs": "Entidade {entity}, sem atributos. \n",
+            "attr": "Atributo {name} de tipo {type}. \n",
+            "relationships": "Relacionamentos entre Entidades: \n",
+            "relationship": "O relacionamento {name} conecta as entidades {entityA} e {entityB}. Tipo de relacionamento: {type}.  Cardinalidade: {cardinality}. \n"
         }
     },
     "message": {

@@ -15,6 +15,8 @@
   </div>
 </template>
 <script setup lang="ts">
+import { debounce } from 'lodash';
+
 interface FocusableInputProps {
   title: string;
   modelValue?: string;
@@ -25,15 +27,18 @@ const props = defineProps<FocusableInputProps>();
 const inputValue = ref(props.modelValue);
 let isInternalUpdate = false;
 
-const { addPhraseToQueue, speakPhraseQueue, speakPhrase } = useTTS();
+const { speakPhrase } = useTTS();
 
 const emit = defineEmits(['submit', 'update:modelValue']);
+
+const debouncedAddPhraseToQueue = debounce((phrase: string) => {
+  speakPhrase(phrase);
+}, 1500);
 
 const handleInput = (event: any) => {
   if (inputValue.value) {
     speakPhrase(event.target.value.charAt(inputValue.value.length - 1));
-    addPhraseToQueue(event.target.value);
-    speakPhraseQueue();
+    debouncedAddPhraseToQueue(event.target.value);
   }
 };
 

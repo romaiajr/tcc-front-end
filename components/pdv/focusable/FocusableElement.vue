@@ -31,22 +31,17 @@ const { shiftFlag, complementText } = defineProps({
   },
 });
 
-const { speakPhrase, speakPhraseQueue, addPhraseToQueue } = useTTS();
+const { speakPhrase } = useTTS();
 const { t } = useI18n();
 
 const handleFocus = (event: any) => {
-  const phrase = event.target.title;
-  if (!shiftFlag && !complementText) {
-    speakPhrase(phrase);
-    return;
-  }
-  addPhraseToQueue(phrase);
+  let phrase = event.target.title;
   if (shiftFlag) {
-    addPhraseToQueue(t('message.shift_helper'));
+    phrase += '. ' + t('message.shift_helper');
   } else if (complementText) {
-    addPhraseToQueue(complementText);
+    phrase += '. ' + complementText;
   }
-  speakPhraseQueue();
+  speakPhrase(phrase);
 };
 
 const focusableRef = ref<HTMLElement | null>(null);

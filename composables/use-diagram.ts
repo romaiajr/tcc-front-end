@@ -1,50 +1,26 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { ref } from 'vue';
 import { diagramMock } from '~/mock/diagram.mock';
-import type {
+import {
   CardinalityOptions,
-  DerAttribute,
-  DerEntity,
-  DerRelationship,
-  Diagram,
-  DiagramPosition,
-  SqlDataType,
-  TypeOptions,
+  type DerAttribute,
+  type DerEntity,
+  type DerRelationship,
+  type Diagram,
+  type DiagramPosition,
+  DatabaseTypeOptions,
+  RelationshipTypeOptions,
+  type ParsedDiagram,
+  DatabaseTypeOptionsMap,
+  CardinalityOptionsMap,
+  RelationshipTypeOptionsMap,
+  type ParsedEntity,
+  type ParsedRelationship,
+  type ParsedAttribute,
 } from '~/src/interfaces/der-diagram';
 import { DerFlowEnum } from '~/src/interfaces/pdv-menu';
 
-type UseDiagramReturn = {
-  diagram: ReturnType<typeof ref<Diagram | null>>;
-  createDiagram: (name: string) => void;
-  createEntity: (name: string) => void;
-  editEntityName: (newName: string) => void;
-  updateEntityPosition: (id: string, position: DiagramPosition) => void;
-  getEntity: () => DerEntity | undefined;
-  removeEntity: () => void;
-  readEntities: () => void;
-  createRelationship: (props: {
-    name: string;
-    entityAId: string;
-    entityBId: string;
-    cardinality: CardinalityOptions;
-    type: TypeOptions;
-  }) => void;
-  editRelationship: (newData: Omit<DerRelationship, 'id'>) => void;
-  updateRelationshipPosition: (id: string, position: DiagramPosition) => void;
-  getRelationship: () => DerRelationship | undefined;
-  removeRelationship: () => void;
-  createAttribute: (props: { name: string; type: SqlDataType }) => void;
-  editAttribute: (newData: Omit<DerAttribute, 'id'>) => void;
-  getAttribute: () => DerAttribute | undefined;
-  removeAttribute: () => void;
-  // loadDiagram: (diagramId: string) => void;
-  loadDiagram: () => void;
-  updateDiagram: (diagramId: string) => void;
-  deleteDiagram: (diagramId: string) => void;
-};
-
-let instance: UseDiagramReturn | null = null;
+let instance: any;
 
 export function useDiagram() {
   const derStore = useDerOptions();
@@ -54,6 +30,7 @@ export function useDiagram() {
 
   if (!instance) {
     const diagram = ref<Diagram | null>(null);
+    const parsedDiagram = ref<ParsedDiagram | null>(null);
 
     // const loadDiagram = (diagramId: string) => {
     //   /** TODO - Função de get diagram */
@@ -61,24 +38,72 @@ export function useDiagram() {
 
     const loadDiagram = () => {
       diagram.value = diagramMock;
+      parseDiagram();
+    };
+
+    const parseDiagram = () => {
+      if (diagram.value) {
+        parsedDiagram.value = {
+          ...diagram.value,
+          entities: diagram.value.entities
+            ? diagram.value.entities.map(({ position, ...entity }) => ({
+                ...entity,
+                attrs: entity.attrs
+                  ? entity.attrs.map((attr) => ({
+                      ...attr,
+                      type: DatabaseTypeOptionsMap[attr.type], // Converte o tipo do atributo
+                    }))
+                  : [],
+              }))
+            : [],
+          relationships: diagram.value.relationships
+            ? diagram.value.relationships.map(
+                ({ position, entityAId, entityBId, ...relationship }) => {
+                  const [entityA, entityB] = getRelationshipEntities(
+                    entityAId,
+                    entityBId,
+                  );
+
+                  return {
+                    ...relationship,
+                    entityAId,
+                    entityBId,
+                    entityA: entityA?.name,
+                    entityB: entityB?.name,
+                    cardinality: i18n.t(
+                      CardinalityOptionsMap[relationship.cardinality],
+                    ),
+                    type: i18n.t(RelationshipTypeOptionsMap[relationship.type]),
+                  };
+                },
+              )
+            : [],
+        };
+      }
+      return null;
     };
 
     const createDiagram = (name: string) => {
       diagram.value = {
         id: uuidv4(),
         name: name.toLowerCase(),
-        entities: [],
-        relationships: [],
+        entities: [] as DerEntity[],
+        relationships: [] as DerRelationship[],
+      };
+      parsedDiagram.value = {
+        name: name.toLowerCase(),
+        entities: [] as ParsedEntity[],
+        relationships: [] as ParsedRelationship[],
       };
     };
 
-    const updateDiagram = (diagramId: string) => {
-      /** TODO - Função de update diagram */
-    };
+    // const updateDiagram = (diagramId: string) => {
+    //   /** TODO - Função de update diagram */
+    // };
 
-    const deleteDiagram = (diagramId: string) => {
-      /** TODO - Função de delete diagram */
-    };
+    // const deleteDiagram = (diagramId: string) => {
+    //   /** TODO - Função de delete diagram */
+    // };
 
     const createEntity = (name: string) => {
       const id = uuidv4();
@@ -86,11 +111,16 @@ export function useDiagram() {
         diagram.value.entities.push({
           id,
           name: name.toLowerCase(),
-          attrs: [],
+          attrs: [] as DerAttribute[],
           position: {
             x: null,
             y: null,
           },
+        });
+        parsedDiagram.value?.entities.push({
+          id,
+          name: name.toLowerCase(),
+          attrs: [] as ParsedAttribute[],
         });
       }
       derStore.setCurrentEntityId(id);
@@ -100,8 +130,10 @@ export function useDiagram() {
     const editEntityName = (newName: string) => {
       if (diagram.value) {
         const entity = getEntity();
-        if (entity) {
+        const parsedEntity = getEntity(true);
+        if (entity && parsedEntity) {
           entity.name = newName.toLowerCase();
+          parsedEntity.name = newName.toLowerCase();
         }
         menu.setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
       }
@@ -114,17 +146,22 @@ export function useDiagram() {
       }
     };
 
-    const getEntity = () => {
-      if (diagram.value) {
+    const getEntity = (parsed?: boolean) => {
+      if (diagram.value && parsedDiagram.value) {
         const id = derStore.currentEntityId;
-        return diagram.value.entities.find((e) => e.id === id);
+        return parsed
+          ? parsedDiagram.value.entities.find((e) => e.id === id)
+          : diagram.value.entities.find((e) => e.id === id);
       }
     };
 
     const removeEntity = () => {
-      if (diagram.value) {
+      if (diagram.value && parsedDiagram.value) {
         const id = derStore.currentEntityId;
         diagram.value.entities = diagram.value.entities.filter(
+          (e) => e.id !== id,
+        );
+        parsedDiagram.value.entities = parsedDiagram.value.entities.filter(
           (e) => e.id !== id,
         );
         diagram.value.relationships = diagram.value.relationships.filter(
@@ -132,6 +169,10 @@ export function useDiagram() {
             return r.entityAId !== id && r.entityBId !== id;
           },
         );
+        parsedDiagram.value.relationships =
+          parsedDiagram.value.relationships.filter((r) => {
+            return r.entityAId !== id && r.entityBId !== id;
+          });
         if (diagram.value.entities.length > 0) {
           menu.setActiveDerMenu(DerFlowEnum.ENTITIES);
         } else {
@@ -140,21 +181,13 @@ export function useDiagram() {
       }
     };
 
-    const readEntities = () => {
+    const getRelationshipEntities = (idA: string, idB: string) => {
       if (diagram.value) {
-        if (diagram.value.entities) {
-          let entities = '';
-          diagram.value.entities.forEach((e) => {
-            entities += `${e.name}, `;
-          });
-
-          tts.speakPhrase(
-            i18n.t('menu.der_flow.options.entity.created_entities', {
-              entities,
-            }),
-          );
-        }
+        const entityA = diagram.value.entities.find((e) => e.id === idA);
+        const entityB = diagram.value.entities.find((e) => e.id === idB);
+        return [entityA, entityB];
       }
+      return [];
     };
 
     const createRelationship = (props: {
@@ -162,17 +195,15 @@ export function useDiagram() {
       entityAId: string;
       entityBId: string;
       cardinality: CardinalityOptions;
-      type: TypeOptions;
+      type: RelationshipTypeOptions;
     }) => {
-      if (diagram.value) {
-        const entityAExists = diagram.value.entities.some(
-          (e) => e.id === props.entityAId,
-        );
-        const entityBExists = diagram.value.entities.some(
-          (e) => e.id === props.entityBId,
+      if (diagram.value && parsedDiagram.value) {
+        const [entityA, entityB] = getRelationshipEntities(
+          props.entityAId,
+          props.entityBId,
         );
 
-        if (entityAExists && entityBExists) {
+        if (entityA && entityB) {
           const id = uuidv4();
           diagram.value.relationships.push({
             id,
@@ -186,6 +217,16 @@ export function useDiagram() {
               y: null,
             },
           });
+          parsedDiagram.value.relationships.push({
+            id,
+            name: props.name.toLowerCase(),
+            entityAId: props.entityAId,
+            entityBId: props.entityBId,
+            entityA: entityA.name,
+            entityB: entityB.name,
+            cardinality: i18n.t(CardinalityOptionsMap[props.cardinality]),
+            type: i18n.t(RelationshipTypeOptionsMap[props.type]),
+          });
           derStore.setCurrentRelationshipId(id);
           menu.setActiveDerMenu(DerFlowEnum.RELATIONSHIP_OPTIONS);
         }
@@ -194,16 +235,31 @@ export function useDiagram() {
 
     const editRelationship = (newData: Omit<DerRelationship, 'id'>) => {
       if (diagram.value) {
-        const id = derStore.currentRelationshipId;
-        const relationship = diagram.value.relationships.find(
-          (r) => r.id === id,
-        );
-        if (relationship) {
+        const relationship = getRelationship() as DerRelationship;
+        const parsedRelationship = getRelationship(true) as ParsedRelationship;
+        if (relationship && parsedRelationship) {
           relationship.name = newData.name.toLowerCase();
           relationship.entityAId = newData.entityAId;
           relationship.entityBId = newData.entityBId;
           relationship.cardinality = newData.cardinality;
           relationship.type = newData.type;
+          relationship.name = newData.name.toLowerCase();
+          parsedRelationship.entityAId = newData.entityAId;
+          parsedRelationship.entityBId = newData.entityBId;
+          const [entityA, entityB] = getRelationshipEntities(
+            newData.entityAId,
+            newData.entityBId,
+          );
+          if (entityA && entityB) {
+            parsedRelationship.entityA = entityA.name;
+            parsedRelationship.entityB = entityB.name;
+          }
+          parsedRelationship.cardinality = i18n.t(
+            CardinalityOptionsMap[newData.cardinality],
+          );
+          parsedRelationship.type = i18n.t(
+            RelationshipTypeOptionsMap[newData.type],
+          );
         }
         menu.setActiveDerMenu(DerFlowEnum.RELATIONSHIP_OPTIONS);
       }
@@ -221,32 +277,45 @@ export function useDiagram() {
       }
     };
 
-    const getRelationship = () => {
-      if (diagram.value) {
+    const getRelationship = (parsed?: boolean) => {
+      if (diagram.value && parsedDiagram.value) {
         const id = derStore.currentRelationshipId;
-        return diagram.value.relationships.find((r) => r.id === id);
+        return parsed
+          ? parsedDiagram.value.relationships.find((r) => r.id === id)
+          : diagram.value.relationships.find((r) => r.id === id);
       }
     };
 
     const removeRelationship = () => {
-      if (diagram.value) {
+      if (diagram.value && parsedDiagram.value) {
         const id = derStore.currentRelationshipId;
         diagram.value.relationships = diagram.value.relationships.filter(
           (r) => r.id !== id,
         );
+        parsedDiagram.value.relationships =
+          parsedDiagram.value.relationships.filter((r) => r.id !== id);
         menu.setActiveDerMenu(DerFlowEnum.RELATIONSHIPS);
       }
     };
 
-    const createAttribute = (props: { name: string; type: SqlDataType }) => {
-      if (diagram.value) {
+    const createAttribute = (props: {
+      name: string;
+      type: DatabaseTypeOptions;
+    }) => {
+      if (diagram.value && parsedDiagram.value) {
         const entity = getEntity();
-        if (entity?.attrs) {
+        const parsedEntity = getEntity(true);
+        if (entity?.attrs && parsedEntity?.attrs) {
           const id = uuidv4();
           entity.attrs.push({
             id,
             name: props.name.toLowerCase(),
             type: props.type,
+          });
+          parsedEntity.attrs.push({
+            id,
+            name: props.name.toLowerCase(),
+            type: DatabaseTypeOptionsMap[props.type],
           });
           menu.setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
         }
@@ -256,29 +325,36 @@ export function useDiagram() {
     const editAttribute = (newData: Omit<DerAttribute, 'id'>) => {
       if (diagram.value) {
         const attr = getAttribute();
-
-        if (attr) {
+        const parsedAttr = getAttribute(true);
+        if (attr && parsedAttr) {
           attr.name = newData.name.toLowerCase();
           attr.type = newData.type;
+          parsedAttr.name = newData.name.toLowerCase();
+          parsedAttr.type = DatabaseTypeOptionsMap[newData.type];
         }
         menu.setActiveDerMenu(DerFlowEnum.ENTITY_OPTIONS);
       }
     };
 
-    const getAttribute = () => {
+    const getAttribute = (parsed?: boolean) => {
       const entity = getEntity();
-      if (entity && entity.attrs) {
+      const parsedEntity = getEntity(true);
+      if (entity && entity.attrs && parsedEntity && parsedEntity.attrs) {
         const id = derStore.currentAttrId;
-        return entity.attrs.find((a) => a.id === id);
+        return parsed
+          ? parsedEntity.attrs.find((a) => a.id === id)
+          : entity.attrs.find((a) => a.id === id);
       }
     };
 
     const removeAttribute = () => {
       if (diagram.value) {
         const entity = getEntity();
-        if (entity && entity.attrs) {
+        const parsedEntity = getEntity(true);
+        if (entity && entity.attrs && parsedEntity && parsedEntity.attrs) {
           const id = derStore.currentAttrId;
           entity.attrs = entity.attrs.filter((a) => a.id !== id);
+          parsedEntity.attrs = parsedEntity.attrs.filter((a) => a.id !== id);
           if (entity?.attrs?.length > 0) {
             menu.setActiveDerMenu(DerFlowEnum.ATTRS);
           } else {
@@ -288,15 +364,103 @@ export function useDiagram() {
       }
     };
 
+    function describeEntity(entity: ParsedEntity): string {
+      let output: string;
+      if (entity.attrs.length) {
+        output = i18n.t('der.read_aux.entity_with_attrs', {
+          entity: entity.name,
+        });
+        entity.attrs.forEach((attr: ParsedAttribute) => {
+          output += i18n.t('der.read_aux.attr', {
+            name: attr.name,
+            type: attr.type,
+          });
+        });
+      } else
+        output = i18n.t('der.read_aux.entity_without_attrs', {
+          entity: entity.name,
+        });
+      return output;
+    }
+
+    function describeRelationship(relationship: ParsedRelationship): string {
+      return i18n.t('der.read_aux.relationship', {
+        name: relationship.name,
+        entityA: relationship.entityA,
+        entityB: relationship.entityB,
+        type: i18n.t(relationship.type),
+        cardinality: i18n.t(relationship.cardinality),
+      });
+    }
+
+    const readDiagram = () => {
+      if (parsedDiagram.value && parsedDiagram.value.entities) {
+        let output = i18n.t('der.read_aux.diagram', {
+          diagram: parsedDiagram.value.name,
+        });
+
+        output += i18n.t('der.read_aux.entities');
+        parsedDiagram.value.entities.forEach((entity: any) => {
+          output += describeEntity(entity);
+        });
+
+        if (parsedDiagram.value.relationships) {
+          output += i18n.t('der.read_aux.relationships');
+          parsedDiagram.value.relationships.forEach((relationship: any) => {
+            output += describeRelationship(relationship);
+          });
+        }
+
+        tts.speakPhrase(output);
+      }
+    };
+
+    const readAllEntities = () => {
+      if (parsedDiagram.value && parsedDiagram.value.entities) {
+        let output = i18n.t('der.read_aux.entity');
+        parsedDiagram.value.entities.forEach((entity: any) => {
+          output += describeEntity(entity) + '';
+        });
+        tts.speakPhrase(output);
+      }
+    };
+
+    const readAllRelationships = () => {
+      if (parsedDiagram.value && parsedDiagram.value.relationships) {
+        let output = i18n.t('der.read_aux.relationships');
+        parsedDiagram.value.relationships.forEach((relationship: any) => {
+          output += describeRelationship(relationship);
+        });
+        tts.speakPhrase(output);
+      }
+    };
+
+    const readEntityAttrs = () => {
+      const entity = getEntity(true) as ParsedEntity;
+      if (entity && entity.attrs) {
+        const output = describeEntity(entity);
+        tts.speakPhrase(output);
+      }
+    };
+
+    const readRelationship = () => {
+      const relationship = getRelationship(true) as ParsedRelationship;
+      if (relationship) {
+        const output = describeRelationship(relationship);
+        tts.speakPhrase(output);
+      }
+    };
+
     instance = {
       diagram,
+      parsedDiagram,
       createDiagram,
+      parseDiagram,
       createEntity,
       editEntityName,
       updateEntityPosition,
       removeEntity,
       getEntity,
-      readEntities,
       createRelationship,
       editRelationship,
       updateRelationshipPosition,
@@ -307,8 +471,13 @@ export function useDiagram() {
       removeAttribute,
       getAttribute,
       loadDiagram,
-      updateDiagram,
-      deleteDiagram,
+      readDiagram,
+      readAllEntities,
+      readAllRelationships,
+      readEntityAttrs,
+      readRelationship,
+      // updateDiagram,
+      // deleteDiagram,
     };
   }
 
