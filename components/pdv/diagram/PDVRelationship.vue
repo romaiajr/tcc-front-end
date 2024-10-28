@@ -8,6 +8,10 @@
       v-else-if="relationship.type === RelationshipTypeOptions.ASSOCIATIVE"
     >
       <rect :width="width" :height="height" class="shape associative" />
+      <polygon
+        :points="getDiamondPoints(width, height)"
+        class="shape weak-overlay"
+      />
     </template>
     <template
       v-else-if="relationship.type === RelationshipTypeOptions.INHERITANCE"
