@@ -12,7 +12,7 @@ const tts = useTTS();
 
 const menu = ref({
   title: t('menu.der_flow.titles.entity_options', {
-    diagram: diagramTool.getEntity()?.name,
+    entity: diagramTool.getEntity()?.name,
   }),
   items: [
     {

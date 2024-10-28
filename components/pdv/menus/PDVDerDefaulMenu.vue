@@ -27,9 +27,7 @@ onBeforeMount(() => {
         infoText: t('der.explanation.entity'),
       },
       {
-        label: t('menu.der_flow.options.entity.navigate', {
-          diagram: diagramTool.diagram.value?.name,
-        }),
+        label: t('menu.der_flow.options.entity.navigate'),
         action: () => {
           if (hasEntities()) {
             menuStore.setActiveDerMenu(DerFlowEnum.ENTITIES);
@@ -37,9 +35,7 @@ onBeforeMount(() => {
         },
       },
       {
-        label: t('menu.der_flow.options.entity.read', {
-          diagram: diagramTool.diagram.value?.name,
-        }),
+        label: t('menu.der_flow.options.entity.read'),
         action: () => {
           if (hasEntities()) {
             diagramTool.readEntities();
