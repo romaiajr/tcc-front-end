@@ -28,6 +28,7 @@ const inputValue = ref(props.modelValue);
 let isInternalUpdate = false;
 
 const { speakPhrase } = useTTS();
+const i18n = useI18n();
 
 const emit = defineEmits(['submit', 'update:modelValue']);
 
@@ -47,7 +48,11 @@ const handleFocus = (event: any) => {
 };
 
 const handleSubmit = () => {
-  emit('submit', inputValue.value);
+  if (inputValue.value) {
+    emit('submit', inputValue.value);
+  } else {
+    speakPhrase(i18n.t('message.empty_input'));
+  }
 };
 
 watch(inputValue, (newValue) => {
