@@ -117,21 +117,17 @@ const handleRelationshipType = (index: number) => {
   relationshipForm.type = relationshipTypeOptions[index].id;
   switch (index) {
     case RelationshipTypeOptions.COMMON:
+    case RelationshipTypeOptions.ASSOCIATIVE:
       step.value = RelationshipFormStep.CARDINALITY;
-      break;
+      return;
     case RelationshipTypeOptions.WEAK:
       relationshipForm.cardinality = CardinalityOptions.OneToOne;
-      createRelationship();
       break;
     case RelationshipTypeOptions.INHERITANCE:
       relationshipForm.cardinality = CardinalityOptions.OneToOne;
-      createRelationship();
-      break;
-    case RelationshipTypeOptions.ASSOCIATIVE:
-      relationshipForm.cardinality = CardinalityOptions.ManyToMany;
-      createRelationship();
       break;
   }
+  createRelationship();
 };
 
 const saveRelationshipCardinality = (index: number) => {
