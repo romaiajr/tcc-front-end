@@ -48,7 +48,7 @@ const saveAttrName = (attrName: string) => {
 };
 
 const createAttr = (index: number) => {
-  attributeForm.type = sqlTypes[index].title;
+  attributeForm.type = index;
 
   if (scope === FormScope.CREATE) {
     diagramTool.createAttribute(attributeForm);

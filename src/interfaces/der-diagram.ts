@@ -69,6 +69,10 @@ export const cardinalityInfo = {
     title: 'der.cardinality.OneToMany',
     infoText: 'der.explanation.OneToMany',
   },
+  [CardinalityOptions.ManyToMany]: {
+    title: 'der.cardinality.ManyToMany',
+    infoText: 'der.explanation.ManyToMany',
+  },
 };
 
 export enum RelationshipTypeOptions {

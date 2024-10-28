@@ -103,6 +103,7 @@
             "UUID": "Usado para armazenar identificadores únicos universais (UUID).",
             "OneToOne": "Esse tipo de relacionamento ocorre quando cada instância da entidade A está associada a, no máximo, uma instância da entidade B",
             "OneToMany": "Esse tipo de relacionamento ocorre quando cada instância da entidade A pode estar associada a várias instâncias da entidade B, mas cada instância da entidade B está associada a, no máximo, uma instância da entidade A.",
+            "ManyToMany": "Esse tipo de relacionamento ocorre quando várias instâncias da entidade A podem estar associadas a várias instâncias da entidade B, e vice-versa. Ou seja, uma instância da entidade A pode estar ligada a várias instâncias da entidade B, e uma instância da entidade B pode estar ligada a várias instâncias da entidade A.",
             "common": "Esse tipo de relacionamento ocorre quando uma entidade depende totalmente da outra para existir",
             "weak": "Esse tipo de relacionamento ocorre quando uma entidade, chamada de entidade fraca, depende de outra entidade, conhecida como entidade forte, para existir.",
             "inheritance": "Esse tipo de relacionamento reflete um modelo de herança entre entidades. No contexto de bancos de dados, isso pode ser representado por entidades que compartilham atributos comuns",
