@@ -3,7 +3,7 @@
     <PDVJson v-if="diagramTool.parsedDiagram.value" class="assistant-item" />
     <PDVTtsHistory class="assistant-item" />
   </div>
-  <PDVDiagram v-if="diagramTool.diagram.value" />
+  <!-- <PDVDiagram v-if="diagramTool.diagram.value" /> -->
 </template>
 <script setup lang="ts">
 const diagramTool = useDiagram();
