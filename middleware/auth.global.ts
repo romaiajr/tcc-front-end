@@ -1,5 +1,5 @@
 export default defineNuxtRouteMiddleware((to) => {
-  if (to.fullPath === '/') {
+  if (!['/welcome', '/home'].includes(to.path)) {
     return navigateTo(Routes.WELCOME);
   }
 });
