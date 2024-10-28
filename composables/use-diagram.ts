@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { ref } from 'vue';
 import { diagramMock } from '~/mock/diagram.mock';
 import {
   CardinalityOptions,
@@ -366,32 +365,47 @@ export function useDiagram() {
     };
 
     function describeEntity(entity: ParsedEntity): string {
-      let output = `A entidade "${entity.name}" é composta pelos seguintes atributos:`;
-      entity.attrs.forEach((attr: any) => {
-        output += ` Atributo "${attr.name}" de tipo "${attr.type}".`;
-      });
+      let output: string;
+      if (entity.attrs.length) {
+        output = i18n.t('der.read_aux.entity_with_attrs', {
+          entity: entity.name,
+        });
+        entity.attrs.forEach((attr: ParsedAttribute) => {
+          output += i18n.t('der.read_aux.attr', {
+            name: attr.name,
+            type: attr.type,
+          });
+        });
+      } else
+        output = i18n.t('der.read_aux.entity_without_attrs', {
+          entity: entity.name,
+        });
       return output;
     }
 
     function describeRelationship(relationship: ParsedRelationship): string {
-      return (
-        `O relacionamento "${relationship.name}" conecta as entidades "${relationship.entityA}" e "${relationship.entityB}".` +
-        ` Tipo de relacionamento: ${i18n.t(relationship.type)}.` +
-        ` Cardinalidade: ${i18n.t(relationship.cardinality)}.`
-      );
+      return i18n.t('der.read_aux.relationship', {
+        name: relationship.name,
+        entityA: relationship.entityA,
+        entityB: relationship.entityB,
+        type: i18n.t(relationship.type),
+        cardinality: i18n.t(relationship.cardinality),
+      });
     }
 
     const readDiagram = () => {
       if (parsedDiagram.value && parsedDiagram.value.entities) {
-        let output = `Leitura Completa do Diagrama: "${parsedDiagram.value.name}"`;
+        let output = i18n.t('der.read_aux.diagram', {
+          diagram: parsedDiagram.value.name,
+        });
 
-        output += 'Entidades e seus Atributos:';
+        output += i18n.t('der.read_aux.entities');
         parsedDiagram.value.entities.forEach((entity: any) => {
-          output += describeEntity(entity) + '';
+          output += describeEntity(entity);
         });
 
         if (parsedDiagram.value.relationships) {
-          output += 'Relacionamentos entre Entidades:';
+          output += i18n.t('der.read_aux.relationships');
           parsedDiagram.value.relationships.forEach((relationship: any) => {
             output += describeRelationship(relationship);
           });
@@ -403,7 +417,7 @@ export function useDiagram() {
 
     const readAllEntities = () => {
       if (parsedDiagram.value && parsedDiagram.value.entities) {
-        let output = 'Entidades e seus Atributos:';
+        let output = i18n.t('der.read_aux.entity');
         parsedDiagram.value.entities.forEach((entity: any) => {
           output += describeEntity(entity) + '';
         });
@@ -413,7 +427,7 @@ export function useDiagram() {
 
     const readAllRelationships = () => {
       if (parsedDiagram.value && parsedDiagram.value.relationships) {
-        let output = 'Relacionamentos entre Entidades:';
+        let output = i18n.t('der.read_aux.relationships');
         parsedDiagram.value.relationships.forEach((relationship: any) => {
           output += describeRelationship(relationship);
         });

@@ -123,6 +123,15 @@
             "weak": "Fraco",
             "inheritance": "Herança",
             "associative": "Associativo"
+        },
+        "read_aux": {
+            "diagram": "Leitura Completa do Diagrama: {diagram}. \n",
+            "entities": "Entidades e seus Atributos: \n",
+            "entity_with_attrs": "A entidade {entity} é composta pelos seguintes atributos: \n",
+            "entity_without_attrs": "Entidade {entity}, sem atributos. \n",
+            "attr": "Atributo {name} de tipo {type}. \n",
+            "relationships": "Relacionamentos entre Entidades: \n",
+            "relationship": "O relacionamento {name} conecta as entidades {entityA} e {entityB}. Tipo de relacionamento: {type}.  Cardinalidade: {cardinality}. \n"
         }
     },
     "message": {
