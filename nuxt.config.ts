@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     'nuxt-icons', // https://nuxt.com/modules/icons
     '@nuxtjs/i18n', // https://nuxt.com/modules/i18n
     '@vueuse/nuxt', // https://nuxt.com/modules/vueuse
+    '@nuxtjs/device',
   ],
   i18n: {
     lazy: true,

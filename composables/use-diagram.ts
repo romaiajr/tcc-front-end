@@ -417,7 +417,7 @@ export function useDiagram() {
 
     const readAllEntities = () => {
       if (parsedDiagram.value && parsedDiagram.value.entities) {
-        let output = i18n.t('der.read_aux.entity');
+        let output = i18n.t('der.read_aux.entities');
         parsedDiagram.value.entities.forEach((entity: any) => {
           output += describeEntity(entity) + '';
         });
