@@ -144,6 +144,7 @@
         "has_no_attributes": "É necessário que a entidade possua ao menos um atributo para acessar essa funcionalidade.",
         "delete_entity": "Ao excluir a entidade, todos os relacionamentos associados serão perdidos.",
         "loading": "Carregando, por favor aguarde...",
+        "desktop_only": "Olá! Nosso sistema foi otimizado para uso em desktop, com navegação e funcionalidades específicas para teclado, garantindo uma experiência completa e eficiente. Para aproveitar todos os recursos, recomendamos acessar a plataforma em um computador. Agradecemos sua compreensão!",
         "empty_input": "A informação 'Nome' está em branco. Por favor, preencha para continuar."
     },
     "common": {
@@ -155,6 +156,6 @@
         "goal": "Este projeto foi desenvolvido para facilitar o aprendizado de Diagramas Entidade-Relacionamento, oferecendo um ambiente inclusivo para pessoas com e sem deficiência visual.",
         "tts": "Nossa aplicação possui uma síntese de voz integrada para uma experiência mais acessível. Recomendamos desativar o leitor de tela, pois algumas informações são transmitidas exclusivamente pela nossa síntese nativa, que pode ser configurada para atender às suas necessidades.",
         "hotkeys": "Navegação na plataforma: CIMA/BAIXO: mova-se entre as opções. TAB: avance para a próxima opção. ENTER: confirme a seleção. ESC: retorne ao menu anterior.",
-        "guest": "Acessar como convidado"
+        "guest": "Acessar como convidado",
     }
 }
