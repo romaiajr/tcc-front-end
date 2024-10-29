@@ -144,6 +144,7 @@
         "has_no_attributes": "É necessário que a entidade possua ao menos um atributo para acessar essa funcionalidade.",
         "delete_entity": "Ao excluir a entidade, todos os relacionamentos associados serão perdidos.",
         "loading": "Carregando, por favor aguarde...",
+        "desktop_only": "Olá! Nosso sistema foi otimizado para uso em desktop, com navegação e funcionalidades específicas para teclado, garantindo uma experiência completa e eficiente. Para aproveitar todos os recursos, recomendamos acessar a plataforma em um computador. Agradecemos sua compreensão!",
         "empty_input": "A informação 'Nome' está em branco. Por favor, preencha para continuar."
     },
     "common": {
