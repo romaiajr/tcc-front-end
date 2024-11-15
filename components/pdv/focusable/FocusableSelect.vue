@@ -4,7 +4,7 @@
       <thead>
         <tr class="focusable-select-title">
           <th colspan="2">
-            <FocusableElement ref="selectTitle" :title="title" shift-flag>
+            <FocusableElement ref="selectTitle" :title="title" help-flag>
               {{ title }}
             </FocusableElement>
           </th>
@@ -20,7 +20,7 @@
             <FocusableElement
               :title="shouldTranslate ? $t(item.title) : item.title"
               @click="() => handleSubmit(index)"
-              @keydown.shift="() => readInfoText($t(item.infotext ?? ''))"
+              @keydown="(event) => readInfoText(event, $t(item.infotext ?? ''))"
             >
               {{ shouldTranslate ? $t(item.title) : item.title }}
             </FocusableElement>
@@ -38,18 +38,19 @@ interface FocusableSelectProps {
     title: string;
     infotext?: string;
   }[];
-  shiftFlag?: boolean;
+  helpFlag?: boolean;
   shouldTranslate?: boolean;
 }
 
-const { title, items, shiftFlag } = defineProps<FocusableSelectProps>();
+const { title, items, helpFlag } = defineProps<FocusableSelectProps>();
 
 const tts = useTTS();
 
 const emit = defineEmits(['submit']);
 
-const readInfoText = (infoText: string) => {
-  if (shiftFlag) {
+const readInfoText = (event: KeyboardEvent, infoText: string) => {
+  if (event.key === 'F1' && helpFlag) {
+    event.preventDefault();
     tts.speakPhrase(infoText);
   }
 };

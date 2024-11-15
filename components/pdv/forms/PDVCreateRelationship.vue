@@ -23,7 +23,7 @@
     v-else-if="step === RelationshipFormStep.TYPE"
     :items="relationshipTypeOptions"
     :title="$t('menu.der_flow.options.relationship.type')"
-    shift-flag
+    help-flag
     should-translate
     @submit="handleRelationshipType"
     @keydown.esc.stop="() => (step = RelationshipFormStep.ENTITYB)"
@@ -32,7 +32,7 @@
     v-else-if="step === RelationshipFormStep.CARDINALITY"
     :items="cardinalityOptions"
     :title="$t('menu.der_flow.options.relationship.cardinality')"
-    shift-flag
+    help-flag
     should-translate
     @submit="saveRelationshipCardinality"
     @keydown.esc.stop="() => (step = RelationshipFormStep.TYPE)"

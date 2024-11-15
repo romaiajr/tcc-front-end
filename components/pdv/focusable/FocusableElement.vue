@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-const { shiftFlag, complementText } = defineProps({
+const { helpFlag, complementText } = defineProps({
   title: {
     type: String,
     required: true,
@@ -21,7 +21,7 @@ const { shiftFlag, complementText } = defineProps({
     type: String,
     default: 'button',
   },
-  shiftFlag: {
+  helpFlag: {
     type: Boolean,
     default: false,
   },
@@ -36,8 +36,8 @@ const { t } = useI18n();
 
 const handleFocus = (event: any) => {
   let phrase = event.target.title;
-  if (shiftFlag) {
-    phrase += '. ' + t('message.shift_helper');
+  if (helpFlag) {
+    phrase += '. ' + t('message.helper_text');
   } else if (complementText) {
     phrase += '. ' + complementText;
   }
