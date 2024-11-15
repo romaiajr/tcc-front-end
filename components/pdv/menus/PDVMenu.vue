@@ -16,10 +16,10 @@
           <td colspan="2">
             <FocusableElement
               :title="item.label"
-              :shift-flag="Boolean(item.infoText)"
+              :help-flag="Boolean(item.infoText)"
               :complement-text="item.complementText"
               @click="item.action"
-              @keydown.shift="() => readInfoText($t(item.infoText ?? ''))"
+              @keydown="(event) => readInfoText(event, $t(item.infoText ?? ''))"
             >
               {{ item.label }}
             </FocusableElement>
@@ -39,18 +39,25 @@ interface PDVMenuProps {
 
 defineProps<PDVMenuProps>();
 const tts = useTTS();
+const ttsStore = useTtsStore();
 
 const initialFocus = ref();
+const tableTitle = ref();
 
-const readInfoText = (infoText: string) => {
-  if (infoText) {
+const readInfoText = (event: KeyboardEvent, infoText: string) => {
+  if (event.key === 'F1' && infoText) {
+    event.preventDefault();
     tts.speakPhrase(infoText);
   }
 };
 
 onMounted(async () => {
   await nextTick();
-  initialFocus.value.focus();
+  if (ttsStore.hasUserInteracted) {
+    tableTitle.value.focusableRef.focus();
+  } else {
+    initialFocus.value.focus();
+  }
 });
 </script>
 

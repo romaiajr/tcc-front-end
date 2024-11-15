@@ -9,7 +9,7 @@
     v-else
     :items="sqlTypes"
     :title="$t('menu.der_flow.options.entity.attribute.type')"
-    shift-flag
+    help-flag
     :should-translate="false"
     @submit="createAttr"
     @keydown.esc.stop="() => (step = AttrFormSteps.NAME)"

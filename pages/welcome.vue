@@ -8,6 +8,7 @@
       <FocusableElement
         v-for="(element, index) in elements"
         :key="index"
+        ref="welcomeElement"
         :tabindex="index"
         :tag="element.tag"
         :title="element.title"
@@ -26,6 +27,7 @@
 <script setup lang="ts">
 const { t } = useI18n();
 const initialFocus = ref();
+const welcomeElement = ref(null);
 const tts = useTTS();
 
 const elements = [

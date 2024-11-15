@@ -32,9 +32,8 @@ export function useTTS() {
   const speakPhrase = async (phrase: string) => {
     if (!voicesReady.value) await loadVoices();
 
-    if (speechSynthesis.speaking) {
-      speechSynthesis.cancel();
-    }
+    stopSpeaking();
+
     const speech = configSpeech(phrase);
     speech.speak();
     tts.addPhraseToHistory(phrase);
@@ -45,10 +44,17 @@ export function useTTS() {
     speakPhrase(t('message.speech_rate_test', { rate: tts.speech.rate / 2 }));
   };
 
+  const stopSpeaking = () => {
+    if (speechSynthesis.speaking) {
+      speechSynthesis.cancel();
+    }
+  };
+
   return {
     voicesReady,
     loadVoices,
     speakPhrase,
     updateTTSPreferences,
+    stopSpeaking,
   };
 }

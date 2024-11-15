@@ -136,8 +136,8 @@
     },
     "message": {
         "speech_rate_test": "Essa é uma fala teste para verificar a velocidade da leitura. Ajuste conforme necessário para garantir que a fala esteja clara e compreensível. Velocidade atual: {rate}",
-        "navigation_helper": "Para navegar entre as opções do menu, utilize as teclas CIMA e BAIXO para se mover entre as opções. Se preferir, use TAB para avançar para a próxima opção. Pressione ENTER para confirmar sua escolha ou ESC para voltar ao menu anterior. Para retornar ao menu principal, pressione CTRL + HOME. Para acessar o menu de configuração da síntese de voz, pressione CTRL + ALT.",
-        "shift_helper": "Pressione a tecla SHIFT para mais informações sobre a opção selecionada",
+        "navigation_helper": "Para navegar entre as opções do menu, utilize as teclas CIMA e BAIXO para se mover entre as opções. Se preferir, use TAB para avançar para a próxima opção. Pressione ENTER para confirmar sua escolha ou ESC para voltar ao menu anterior. Para retornar ao menu principal, pressione CTRL + HOME. Para acessar o menu de configuração da síntese de voz, pressione CTRL + ALT. Caso deseje interromper a leitura, pressione CTRL.",
+        "helper_text": "Pressione a tecla F1 para mais informações sobre a opção selecionada",
         "has_no_entities": "É necessário criar ao menos uma entidade para acessar essa funcionalidade.",
         "has_no_relationships": "É necessário criar ao menos um relacionamento para acessar essa funcionalidade.",
         "has_not_two_entities": "É necessário criar ao menos duas entidades para acessar essa funcionalidade.",
@@ -154,7 +154,7 @@
         "welcome": "Bem-vindo ao Diagrama Além da Visão!",
         "goal": "Este projeto foi desenvolvido para facilitar o aprendizado de Diagramas Entidade-Relacionamento, oferecendo um ambiente inclusivo para pessoas com e sem deficiência visual.",
         "tts": "Nossa aplicação possui uma síntese de voz integrada para uma experiência mais acessível. Recomendamos desativar o leitor de tela, pois algumas informações são transmitidas exclusivamente pela nossa síntese nativa, que pode ser configurada para atender às suas necessidades.",
-        "hotkeys": "Navegação na plataforma: CIMA/BAIXO: mova-se entre as opções. TAB: avance para a próxima opção. ENTER: confirme a seleção. ESC: retorne ao menu anterior.",
+        "hotkeys": "Navegação na plataforma: CIMA e BAIXO: mova-se entre as opções. TAB: avance para a próxima opção. ENTER: confirme a seleção. ESC: retorne ao menu anterior. CTRL: Interrompa a leitura.",
         "guest": "Acessar como convidado"
     }
 }

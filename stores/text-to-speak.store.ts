@@ -3,11 +3,16 @@ export type SpeechPreferences = {
 };
 
 export const useTtsStore = defineStore('tts', {
-  state: (): { speech: SpeechPreferences; history: string[] } => ({
+  state: (): {
+    speech: SpeechPreferences;
+    history: string[];
+    hasUserInteracted: boolean;
+  } => ({
     speech: {
       rate: 4,
     },
     history: [],
+    hasUserInteracted: false,
   }),
   actions: {
     addPhraseToHistory(phrase: string) {
@@ -18,6 +23,9 @@ export const useTtsStore = defineStore('tts', {
     },
     setRate(rate: number) {
       this.speech.rate = rate <= 0 ? 2 : rate;
+    },
+    setUserInteracted() {
+      this.hasUserInteracted = true;
     },
   },
   persist: {

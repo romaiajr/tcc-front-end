@@ -3,6 +3,8 @@ import { PDVMenusEnum } from '~/src/interfaces/pdv-menu';
 export function useKeyboardNavigation() {
   const focusableElements = ref<HTMLElement[]>([]);
   const menuStore = useMenuOptions();
+  const ttsStore = useTtsStore();
+  const tts = useTTS();
 
   const updateFocusableElements = () => {
     focusableElements.value = Array.from(
@@ -14,6 +16,7 @@ export function useKeyboardNavigation() {
 
   const hotkeys = (event: KeyboardEvent) => {
     updateFocusableElements();
+    ttsStore.setUserInteracted();
 
     const currentIndex = focusableElements.value.findIndex(
       (el) => el === document.activeElement,
@@ -21,7 +24,7 @@ export function useKeyboardNavigation() {
     focusableElements.value.forEach((el, index) => {
       (el as HTMLElement).tabIndex = index + 1;
     });
-    if (event.code === 'ArrowUp') {
+    if (event.code === 'ArrowUp' || (event.code === 'Tab' && event.shiftKey)) {
       const prevIndex = getPrevIndex(
         currentIndex,
         focusableElements.value.length,
@@ -51,6 +54,9 @@ export function useKeyboardNavigation() {
       menuStore.setActiveMainMenu(PDVMenusEnum.DEFAULT);
     } else if (event.key === 'Alt' && event.ctrlKey) {
       menuStore.setActiveMainMenu(PDVMenusEnum.TTS);
+    }
+    if (event.key === 'Control') {
+      tts.stopSpeaking();
     }
   };
 
