@@ -43,7 +43,7 @@ const diagramTool = useDiagram();
 const menuStore = useMenuOptions();
 
 onBeforeMount(() => {
-  diagramTool.createDiagram('Exemplo');
+  diagramTool.loadDiagram();
 });
 </script>
 <style scoped lang="css">

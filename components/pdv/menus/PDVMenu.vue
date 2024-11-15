@@ -91,5 +91,6 @@ th {
 .menu-item th:focus-within {
   border: var(--focus-border-style);
   background-color: var(--focus-background-color);
+  color: var(--high-contrast-text-color);
 }
 </style>

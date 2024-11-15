@@ -102,6 +102,7 @@ onMounted(async () => {
 
 input:focus {
   background-color: var(--focus-background-color);
+  color: var(--high-contrast-text-color);
   outline: var(--focus-border-style);
 }
 </style>

@@ -1,21 +1,26 @@
 <template>
   <div ref="diagramContainer" class="diagram">
-    <vueDraggableResizable
-      v-for="entity in diagramTool.diagram.value.entities"
-      :id="entity.id"
-      :key="entity.id"
-      :parent="true"
-      :resizable="false"
-      :x="entity.position.x"
-      :y="entity.position.y"
-      :w="'auto'"
-      :h="'auto'"
-      :disable-user-select="true"
-      class="draggable"
-      @drag-stop="(...event) => handleEntityDragStop(entity.id, event)"
-    >
-      <PDVEntity :entity="entity" />
-    </vueDraggableResizable>
+    <svg ref="svgContainer" class="diagram-lines">
+      <text
+        v-for="cardinality in cardinalities"
+        :key="cardinality.id"
+        :x="cardinality.x"
+        :y="cardinality.y"
+        class="cardinality"
+      >
+        {{ cardinality.text }}
+      </text>
+      <line
+        v-for="line in lines"
+        :key="line.id"
+        :x1="line.x1"
+        :y1="line.y1"
+        :x2="line.x2"
+        :y2="line.y2"
+        stroke="black"
+        stroke-width="2"
+      />
+    </svg>
     <vueDraggableResizable
       v-for="relationship in diagramTool.diagram.value.relationships"
       :id="relationship.id"
@@ -31,21 +36,57 @@
       @drag-stop="
         (...event) => handleRelationshipDragStop(relationship.id, event)
       "
+      @dragging="calculateLinePosition"
     >
       <PDVRelationship :relationship="relationship" />
+    </vueDraggableResizable>
+    <vueDraggableResizable
+      v-for="entity in diagramTool.diagram.value.entities"
+      :id="entity.id"
+      :key="entity.id"
+      :parent="true"
+      :resizable="false"
+      :x="entity.position.x"
+      :y="entity.position.y"
+      :w="'auto'"
+      :h="'auto'"
+      :disable-user-select="true"
+      class="draggable"
+      @drag-stop="(...event) => handleEntityDragStop(entity.id, event)"
+      @dragging="calculateLinePosition"
+    >
+      <PDVEntity :entity="entity" />
     </vueDraggableResizable>
   </div>
 </template>
 
 <script setup lang="ts">
-import type {
-  DerEntity,
-  DerRelationship,
-  DiagramPosition,
+import {
+  CardinalityOptions,
+  type DerEntity,
+  type DerRelationship,
+  type DiagramPosition,
 } from '~/src/interfaces/der-diagram';
+
+interface Line {
+  id: string;
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+}
+
+interface CardinalityLabel {
+  id: string;
+  x: number;
+  y: number;
+  text: string;
+}
 
 const diagramContainer = ref(null);
 const diagramTool = useDiagram();
+const lines = reactive<Line[]>([]);
+const cardinalities = reactive<CardinalityLabel[]>([]);
 
 let entitiesLength = 0;
 let relationshipsLength = 0;
@@ -62,6 +103,90 @@ const calculateRelationshipPosition = (relationship: DerRelationship) => {
   calculatePositionForElement(
     relationship,
     diagramTool.updateRelationshipPosition,
+  );
+};
+
+const calculateLinePosition = () => {
+  lines.length = 0;
+  cardinalities.length = 0;
+  diagramTool.diagram.value.relationships.forEach(
+    (relationship: DerRelationship) => {
+      const fromEntity = document.getElementById(relationship.entityAId);
+      const toEntity = document.getElementById(relationship.entityBId);
+      const relationshipNode = document.getElementById(relationship.id);
+
+      if (fromEntity && toEntity && relationshipNode) {
+        const fromRect = fromEntity.getBoundingClientRect();
+        const toRect = toEntity.getBoundingClientRect();
+        const relationshipRect = relationshipNode.getBoundingClientRect();
+        const containerRect = diagramContainer.value.getBoundingClientRect();
+
+        const fromX = fromRect.left + fromRect.width / 2 - containerRect.left;
+        const fromY = fromRect.top + fromRect.height / 2 - containerRect.top;
+
+        const toX = toRect.left + toRect.width / 2 - containerRect.left;
+        const toY = toRect.top + toRect.height / 2 - containerRect.top;
+
+        const relationshipX =
+          relationshipRect.left +
+          relationshipRect.width / 2 -
+          containerRect.left;
+        const relationshipY =
+          relationshipRect.top +
+          relationshipRect.height / 2 -
+          containerRect.top;
+
+        lines.push({
+          id: `${relationship.id}-line1`,
+          x1: fromX,
+          y1: fromY,
+          x2: relationshipX,
+          y2: relationshipY,
+        });
+
+        lines.push({
+          id: `${relationship.id}-line2`,
+          x1: relationshipX,
+          y1: relationshipY,
+          x2: toX,
+          y2: toY,
+        });
+
+        let cardinalityA = '1';
+        let cardinalityB = '1';
+        if (relationship.cardinality === CardinalityOptions.OneToMany) {
+          cardinalityA = '1';
+          cardinalityB = 'M';
+        } else if (relationship.cardinality === CardinalityOptions.ManyToMany) {
+          cardinalityA = 'M';
+          cardinalityB = 'M';
+        }
+
+        const offsetRatio = 0.5;
+        const fromCardinalityX = fromX + (relationshipX - fromX) * offsetRatio;
+        const fromCardinalityY = fromY + (relationshipY - fromY) * offsetRatio;
+
+        const toCardinalityX =
+          relationshipX + (toX - relationshipX) * offsetRatio;
+        const toCardinalityY =
+          relationshipY + (toY - relationshipY) * offsetRatio;
+
+        cardinalities.push(
+          {
+            id: `${relationship.id}-cardinalityA`,
+            x: fromCardinalityX - 16,
+            y: fromCardinalityY,
+            text: cardinalityA,
+          },
+          {
+            id: `${relationship.id}-cardinalityB`,
+            x: toCardinalityX - 16,
+            y: toCardinalityY,
+            text: cardinalityB,
+          },
+        );
+      }
+    },
   );
 };
 
@@ -134,6 +259,7 @@ watch(
       );
       relationshipsLength = relationships.length;
     }
+    calculateLinePosition();
     await nextTick();
   },
   { deep: true },
@@ -149,12 +275,12 @@ onMounted(async () => {
   diagram?.relationships.forEach((r) => {
     calculateRelationshipPosition(r as DerRelationship);
   });
-
   await nextTick();
+  calculateLinePosition();
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .diagram {
   display: flex;
   flex-wrap: wrap;
@@ -163,8 +289,25 @@ onMounted(async () => {
   height: 100dvh;
   border: var(--border-style);
   margin-top: 32px;
+  position: relative;
+
   .draggable {
     border: none;
+  }
+
+  .diagram-lines {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    .cardinality {
+      width: 20px;
+      height: 20px;
+      text-anchor: middle;
+      font-weight: bold;
+      font-size: 16px;
+    }
   }
 }
 

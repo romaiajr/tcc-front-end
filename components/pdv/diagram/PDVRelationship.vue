@@ -1,6 +1,5 @@
 <template>
   <svg :width="width" :height="height">
-    <!-- Renderiza a forma correta dependendo do tipo de relacionamento -->
     <template v-if="relationship.type === RelationshipTypeOptions.COMMON">
       <polygon :points="getDiamondPoints(width, height)" class="shape common" />
     </template>
