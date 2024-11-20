@@ -23,6 +23,9 @@ watch(
 );
 </script>
 <style scoped css>
+ul {
+  list-style-type: none;
+}
 .phrase-history li:last-child {
   font-weight: bold;
 }

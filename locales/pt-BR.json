@@ -145,11 +145,16 @@
         "delete_entity": "Ao excluir a entidade, todos os relacionamentos associados serão perdidos.",
         "loading": "Carregando, por favor aguarde...",
         "desktop_only": "Olá! Nosso sistema foi otimizado para uso em desktop, com navegação e funcionalidades específicas para teclado, garantindo uma experiência completa e eficiente. Para aproveitar todos os recursos, recomendamos acessar a plataforma em um computador. Agradecemos sua compreensão!",
-        "empty_input": "A informação 'Nome' está em branco. Por favor, preencha para continuar."
+        "empty_input": "A informação 'Nome' está em branco. Por favor, preencha para continuar.",
+        "hide_assistant": "Ocultar Assistente",
+        "show_assistant": "Exibir Assistente"
     },
     "common": {
         "confirm": "Confirmar",
-        "cancel": "Cancelar"
+        "cancel": "Cancelar",
+        "back": "Voltar",
+        "home": "Início",
+        "help": "Ajuda"
     },
     "welcome": {
         "welcome": "Bem-vindo ao Diagrama Além da Visão!",

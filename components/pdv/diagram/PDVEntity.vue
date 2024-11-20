@@ -30,10 +30,12 @@ defineProps<PDVEntityProps>();
 <style scoped lang="css">
 .entity-name {
   background-color: var(--focus-background-color);
+  color: var(--high-contrast-text-color);
 }
 
 .entity-card {
   border-collapse: collapse;
+  background-color: var(--neutral-color);
 }
 
 .entity-card th,

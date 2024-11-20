@@ -17,23 +17,24 @@
 <script setup lang="ts">
 import { PDVMenusEnum } from '~/src/interfaces/pdv-menu';
 
+const { t } = useI18n();
+
 const options = ref([
   {
-    title: 'Voltar',
+    title: t('common.back'),
     action: handleBack,
   },
   {
-    title: 'Início',
+    title: t('common.home'),
     action: handleStart,
   },
   {
-    title: 'Ajuda',
+    title: t('common.help'),
     action: handleHelp,
   },
 ]);
 const menu = useMenuOptions();
 const tts = useTTS();
-const { t } = useI18n();
 
 function handleBack() {
   if (menu.activeMainMenu === PDVMenusEnum.PROJECTS) {
@@ -85,5 +86,6 @@ function handleHelp() {
 .option:focus-within {
   border: var(--focus-border-style) !important;
   background-color: var(--focus-background-color);
+  color: var(--high-contrast-text-color);
 }
 </style>
